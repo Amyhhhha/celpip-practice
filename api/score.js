@@ -11,7 +11,14 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  // Support both legacy AIza keys (query param) and new AQ. keys (Authorization header)
+  const isNewFormat = apiKey.startsWith('AQ.');
+  const url = isNewFormat
+    ? 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'
+    : `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (isNewFormat) headers['Authorization'] = `Bearer ${apiKey}`;
 
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
@@ -28,7 +35,7 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(body)
     });
     if (!response.ok) {

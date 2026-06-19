@@ -8,43 +8,44 @@ export default async function handler(req, res) {
   const { prompt } = req.body || {};
   if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
-
-  // Support both legacy AIza keys (query param) and new AQ. keys (Authorization header)
-  const isNewFormat = apiKey.startsWith('AQ.');
-  const url = isNewFormat
-    ? 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'
-    : `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-  const headers = { 'Content-Type': 'application/json' };
-  if (isNewFormat) headers['Authorization'] = `Bearer ${apiKey}`;
-
-  const body = {
-    contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature: 0.3,
-      maxOutputTokens: 1200,
-      responseMimeType: 'application/json'
-    },
-    systemInstruction: {
-      parts: [{ text: 'You are a certified CELPIP examiner. Return ONLY valid JSON — no markdown, no preamble.' }]
-    }
-  };
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'OPENROUTER_API_KEY not configured' });
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers,
-      body: JSON.stringify(body)
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://celpip-practice.vercel.app',
+        'X-Title': 'CELPIP Writing Practice'
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-flash-1.5',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a certified CELPIP examiner with 10+ years of experience. Return ONLY valid JSON — no markdown fences, no preamble, no extra text.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        max_tokens: 1200,
+        temperature: 0.3
+      })
     });
+
     if (!response.ok) {
       const err = await response.text();
       return res.status(response.status).json({ error: err });
     }
+
     const data = await response.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data?.choices?.[0]?.message?.content || '';
     return res.status(200).json({ text });
+
   } catch (e) {
     return res.status(500).json({ error: e.message || 'Server error' });
   }

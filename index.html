@@ -15,15 +15,16 @@
   --red: #8B1A1A; --red-bg: #FDEAEA; --red-text: #5C1010;
   --radius: 10px; --radius-sm: 6px;
 }
-body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
-.shell { max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+.shell { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-.topbar-brand { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.topbar-brand { font-size: 15px; font-weight: 600; }
 .topbar-brand span { color: var(--accent); }
 .topbar-tag { font-size: 12px; font-weight: 500; color: var(--accent-text); background: var(--accent-bg); padding: 3px 10px; border-radius: 20px; }
 .phase { display: none; }
 .phase.active { display: block; }
 
+/* Start */
 .hero { padding: 48px 0 40px; text-align: center; }
 .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 12px; }
 .hero h1 em { font-style: normal; color: var(--accent); }
@@ -34,16 +35,15 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
 .task-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
 .task-card p { font-size: 13px; color: var(--text-secondary); }
 .task-card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 16px; }
-.icon-blue { background: var(--accent-bg); }
-.icon-green { background: var(--green-bg); }
+.icon-blue { background: var(--accent-bg); } .icon-green { background: var(--green-bg); }
 
+/* Buttons */
 .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--text); color: #fff; border: none; border-radius: var(--radius-sm); padding: 13px 30px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s, transform .1s; }
-.btn-primary:hover { opacity: .85; }
-.btn-primary:active { transform: scale(.98); }
+.btn-primary:hover { opacity: .85; } .btn-primary:active { transform: scale(.98); }
 .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: none; color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .15s; }
 .btn-ghost:hover { background: var(--surface2); }
-.btn-ghost:active { transform: scale(.98); }
 
+/* Write */
 .write-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .step-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
 .step-email { background: var(--accent-bg); color: var(--accent-text); }
@@ -52,20 +52,16 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
 .timer-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .timer-title { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 .timer-digits { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; transition: color .3s; }
-.timer-digits.warn { color: var(--amber); }
-.timer-digits.danger { color: var(--red); }
+.timer-digits.warn { color: var(--amber); } .timer-digits.danger { color: var(--red); }
 .timer-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 24px; }
 .timer-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width 1s linear, background .4s; }
-.timer-fill.warn { background: var(--amber); }
-.timer-fill.danger { background: var(--red); }
+.timer-fill.warn { background: var(--amber); } .timer-fill.danger { background: var(--red); }
 .prompt-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 18px; }
 .prompt-box h3 { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--text-hint); margin-bottom: 12px; }
 .prompt-body { font-size: 15px; line-height: 1.75; }
-.prompt-body p { margin-bottom: 10px; }
-.prompt-body p:last-child { margin-bottom: 0; }
-.prompt-body ul { padding-left: 20px; margin-top: 8px; }
-.prompt-body ul li { margin-bottom: 6px; }
-textarea#essay { width: 100%; min-height: 220px; padding: 16px 18px; font-family: 'Georgia', 'Times New Roman', serif; font-size: 15px; line-height: 1.8; color: var(--text); background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); resize: vertical; outline: none; transition: border-color .15s; }
+.prompt-body p { margin-bottom: 10px; } .prompt-body p:last-child { margin-bottom: 0; }
+.prompt-body ul { padding-left: 20px; margin-top: 8px; } .prompt-body ul li { margin-bottom: 6px; }
+textarea#essay { width: 100%; min-height: 220px; padding: 16px 18px; font-family: 'Georgia', serif; font-size: 15px; line-height: 1.8; color: var(--text); background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); resize: vertical; outline: none; transition: border-color .15s; }
 textarea#essay:focus { border-color: var(--accent); }
 .writing-footer { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 20px; }
 .word-pill { font-size: 12px; font-weight: 500; padding: 3px 10px; background: var(--surface2); border-radius: 20px; color: var(--text-hint); transition: background .2s, color .2s; }
@@ -78,26 +74,27 @@ textarea#essay:focus { border-color: var(--accent); }
 .draft-banner { display: none; background: var(--amber-bg); border: 1px solid #e6cc8a; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--amber-text); margin-bottom: 16px; }
 .draft-banner.show { display: block; }
 
+/* Scoring */
 .scoring-center { padding: 80px 0; text-align: center; }
 .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .9s linear infinite; margin: 0 auto 20px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .scoring-msg { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
 .scoring-sub { font-size: 14px; color: var(--text-secondary); }
 
+/* Error */
 .error-box { background: var(--red-bg); border: 1px solid #f0b0b0; border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
 .error-box h3 { font-size: 16px; font-weight: 600; color: var(--red-text); margin-bottom: 8px; }
 .error-box p { font-size: 14px; color: var(--red-text); margin-bottom: 14px; line-height: 1.6; }
 .recovered-essay { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; font-family: 'Georgia', serif; font-size: 14px; line-height: 1.75; max-height: 300px; overflow-y: auto; margin-bottom: 14px; white-space: pre-wrap; }
 .copy-confirm { font-size: 13px; color: var(--green); display: none; margin-left: 8px; }
 
+/* Results */
 .results-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
 .results-header h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
 .results-header p { font-size: 14px; color: var(--text-secondary); }
 .clb-display { display: flex; align-items: center; gap: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 20px; }
 .clb-number { font-size: 52px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; min-width: 90px; }
-.clb-high { color: var(--green); }
-.clb-mid { color: var(--amber); }
-.clb-low { color: var(--red); }
+.clb-high { color: var(--green); } .clb-mid { color: var(--amber); } .clb-low { color: var(--red); }
 .clb-info h4 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
 .clb-info p { font-size: 14px; color: var(--text-secondary); }
 .scores-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
@@ -110,6 +107,28 @@ textarea#essay:focus { border-color: var(--accent); }
 .feedback-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
 .feedback-card-head { padding: 14px 18px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .06em; }
 .feedback-card-body { padding: 18px; font-size: 14px; line-height: 1.75; color: var(--text-secondary); }
+
+/* Comparison */
+.comparison-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.comparison-head { padding: 16px 20px; background: var(--text); color: #fff; display: flex; align-items: center; justify-content: space-between; }
+.comparison-head h3 { font-size: 15px; font-weight: 600; }
+.comparison-head p { font-size: 13px; opacity: .65; }
+.comparison-legend { display: flex; gap: 16px; padding: 12px 20px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+.legend-added { background: #d4f0d4; border: 1px solid #6abf6a; }
+.legend-removed { background: #ffd4d4; border: 1px solid #e08080; }
+.legend-changed { background: #fff0c0; border: 1px solid #d4a800; }
+.comparison-cols { display: grid; grid-template-columns: 1fr 1fr; }
+.comparison-col { padding: 20px; }
+.comparison-col:first-child { border-right: 1px solid var(--border); }
+.comparison-col-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-hint); margin-bottom: 12px; }
+.comparison-text { font-family: 'Georgia', serif; font-size: 14px; line-height: 1.85; color: var(--text); white-space: pre-wrap; }
+.diff-added { background: #d4f0d4; border-radius: 2px; padding: 0 2px; }
+.diff-removed { background: #ffd4d4; border-radius: 2px; padding: 0 2px; text-decoration: line-through; color: #a00; }
+.diff-changed { background: #fff0c0; border-radius: 2px; padding: 0 2px; }
+
+/* Vocab */
 .vocab-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
 .vocab-card-head { padding: 16px 20px; background: var(--text); color: #fff; }
 .vocab-card-head h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
@@ -127,8 +146,9 @@ textarea#essay:focus { border-color: var(--accent); }
 .struct-use { font-size: 13px; color: var(--text-secondary); }
 .results-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
 
-@media (max-width: 560px) {
-  .task-cards, .scores-grid { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+  .task-cards, .scores-grid, .comparison-cols { grid-template-columns: 1fr; }
+  .comparison-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
   .hero h1 { font-size: 24px; }
   .clb-display { flex-direction: column; align-items: flex-start; gap: 12px; }
   .clb-number { font-size: 40px; }
@@ -142,10 +162,11 @@ textarea#essay:focus { border-color: var(--accent); }
     <div class="topbar-tag">CLB 9+ Target</div>
   </div>
 
+  <!-- START -->
   <div id="phase-start" class="phase active">
     <div class="hero">
       <h1>Writing practice for<br><em>CLB 9 and above</em></h1>
-      <p>Two timed tasks, AI-scored feedback, and a vocabulary bank tailored to each prompt — so every session makes the next one stronger.</p>
+      <p>Two timed tasks, AI-scored feedback, a vocabulary bank, and a side-by-side CLB 9+ rewrite of your answer.</p>
       <div class="task-cards">
         <div class="task-card">
           <div class="task-card-icon icon-blue">✉️</div>
@@ -164,6 +185,7 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
+  <!-- WRITE -->
   <div id="phase-write" class="phase">
     <div class="write-meta">
       <span id="step-badge" class="step-badge step-email">Email — Task 1</span>
@@ -190,14 +212,16 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
+  <!-- SCORING -->
   <div id="phase-scoring" class="phase">
     <div class="scoring-center">
       <div class="spinner"></div>
       <div class="scoring-msg" id="scoring-msg">Scoring your response…</div>
-      <div class="scoring-sub">This takes about 10–20 seconds</div>
+      <div class="scoring-sub">This takes about 15–25 seconds</div>
     </div>
   </div>
 
+  <!-- ERROR -->
   <div id="phase-error" class="phase">
     <div style="padding-top:32px">
       <div class="error-box">
@@ -214,6 +238,7 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
+  <!-- RESULTS -->
   <div id="phase-results" class="phase">
     <div class="results-header">
       <h2 id="results-title">Task 1 results</h2>
@@ -224,39 +249,132 @@ textarea#essay:focus { border-color: var(--accent); }
 </div>
 
 <script>
-const TASKS = [
+// ── Question bank ─────────────────────────────────────────────
+const EMAIL_TASKS = [
   {
-    id: 'email', label: 'Email — Task 1', stepLabel: 'Task 1 of 2',
-    badgeClass: 'step-email', duration: 27 * 60,
-    eyebrow: 'Situation &amp; prompts',
-    resultsTitle: 'Task 1 results — Email', resultsSub: '27 minutes · Email writing',
+    title: 'Community park conditions',
     prompt: `<p>You have recently moved to a new neighbourhood and noticed that the community park nearby is in very poor condition — the playground equipment is broken, there is litter everywhere, and the lights are not working at night.</p>
 <p>Write an email to your city councillor. In your email:</p>
-<ul>
-  <li>Describe the problems you have observed in the park</li>
-  <li>Explain how these issues affect local residents and children</li>
-  <li>Request specific improvements or actions from the city</li>
-</ul>`
+<ul><li>Describe the problems you have observed in the park</li>
+<li>Explain how these issues affect local residents and children</li>
+<li>Request specific improvements or actions from the city</li></ul>`
   },
   {
-    id: 'survey', label: 'Survey — Task 2', stepLabel: 'Task 2 of 2',
-    badgeClass: 'step-survey', duration: 26 * 60,
-    eyebrow: 'Survey question',
-    resultsTitle: 'Task 2 results — Survey', resultsSub: '26 minutes · Survey response',
-    prompt: `<p><strong>Community Improvement Survey</strong></p>
-<p>Your city is planning a major investment in one community project. Which should be the top priority?</p>
-<ul>
-  <li>Expanding and modernising public libraries</li>
-  <li>Building new recreational facilities (gym, pool, sports courts)</li>
-  <li>Improving public transportation routes and frequency</li>
-</ul>
-<p>Choose one option and write a detailed response explaining your choice. Include specific reasons, examples, and consider the impact on different groups in the community.</p>`
+    title: 'Noise complaint to landlord',
+    prompt: `<p>You rent an apartment and your upstairs neighbour has been making excessive noise late at night for the past two weeks, which is affecting your sleep and work.</p>
+<p>Write an email to your landlord. In your email:</p>
+<ul><li>Describe the noise problem and how long it has been happening</li>
+<li>Explain how it is affecting your daily life</li>
+<li>Request that the landlord take specific action to resolve the issue</li></ul>`
+  },
+  {
+    title: 'Request for remote work',
+    prompt: `<p>You have been working at your company for three years and would like to request permission to work from home two days per week for personal and professional reasons.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Explain why you are making this request</li>
+<li>Describe how working from home will not affect your productivity</li>
+<li>Suggest a trial period and propose how you will stay in communication with the team</li></ul>`
+  },
+  {
+    title: 'Library program suggestion',
+    prompt: `<p>You regularly visit your local public library and have noticed that there are very few programs or events available for teenagers and young adults in your community.</p>
+<p>Write an email to the library director. In your email:</p>
+<ul><li>Describe the current lack of programs for young adults</li>
+<li>Explain why this is a problem for the community</li>
+<li>Suggest two or three specific programs the library could offer</li></ul>`
+  },
+  {
+    title: 'Complaint about road construction',
+    prompt: `<p>Road construction near your home has been ongoing for four months. It has caused traffic delays, excessive dust and noise, and has blocked access to your driveway several times.</p>
+<p>Write an email to your local municipal office. In your email:</p>
+<ul><li>Describe the problems the construction has caused</li>
+<li>Explain the impact on you and your neighbours</li>
+<li>Request an update on the timeline and ask for specific measures to reduce disruption</li></ul>`
+  },
+  {
+    title: 'Childcare facility request',
+    prompt: `<p>Many parents in your neighbourhood, including yourself, struggle to find affordable and accessible childcare. You believe a community childcare centre would greatly benefit local families.</p>
+<p>Write an email to your city councillor. In your email:</p>
+<ul><li>Describe the childcare problem faced by families in your area</li>
+<li>Explain the impact this has on working parents</li>
+<li>Request that the city consider establishing an affordable childcare facility</li></ul>`
   }
 ];
 
+const SURVEY_TASKS = [
+  {
+    title: 'Community improvement priority',
+    prompt: `<p><strong>Community Improvement Survey</strong></p>
+<p>Your city is planning a major investment in one community project. Which should be the top priority?</p>
+<ul><li>Expanding and modernising public libraries</li>
+<li>Building new recreational facilities (gym, pool, sports courts)</li>
+<li>Improving public transportation routes and frequency</li></ul>
+<p>Choose one option and write a detailed response explaining your choice. Include specific reasons, examples, and consider the impact on different groups in the community.</p>`
+  },
+  {
+    title: 'Best way to reduce traffic',
+    prompt: `<p><strong>City Transportation Survey</strong></p>
+<p>Your city wants to reduce traffic congestion. Which approach do you think would be most effective?</p>
+<ul><li>Expanding cycling lanes and encouraging cycling to work</li>
+<li>Increasing parking fees in the city centre to discourage driving</li>
+<li>Subsidising public transit passes for all residents</li></ul>
+<p>Choose one option and write a detailed response. Include your reasons, potential benefits and drawbacks, and explain why your choice is better than the alternatives.</p>`
+  },
+  {
+    title: 'How to support new immigrants',
+    prompt: `<p><strong>Newcomer Settlement Survey</strong></p>
+<p>Your city wants to better support immigrants settling in the community. Which initiative would be most valuable?</p>
+<ul><li>Free language and job-skills training programs</li>
+<li>A community mentorship program pairing newcomers with established residents</li>
+<li>Financial assistance for the first six months after arrival</li></ul>
+<p>Choose one option and write a detailed response explaining your choice. Discuss specific benefits, who would be helped most, and why this approach is most effective.</p>`
+  },
+  {
+    title: 'School schedule format',
+    prompt: `<p><strong>School Board Community Survey</strong></p>
+<p>The school board is considering changing the format of the school day. Which option do you prefer?</p>
+<ul><li>A four-day school week with longer daily hours</li>
+<li>Keeping the standard five-day week but starting school one hour later</li>
+<li>Introducing flexible scheduling where students choose morning or afternoon sessions</li></ul>
+<p>Choose one option and write a detailed response. Explain your reasoning, discuss the impact on students, parents, and teachers, and address any potential concerns.</p>`
+  },
+  {
+    title: 'Addressing homelessness',
+    prompt: `<p><strong>Social Services Community Survey</strong></p>
+<p>Your city is developing a new strategy to address homelessness. Which approach should be prioritised?</p>
+<ul><li>Building more emergency shelters and temporary housing</li>
+<li>Investing in mental health and addiction treatment programs</li>
+<li>Creating subsidised permanent housing with on-site support services</li></ul>
+<p>Choose one option and write a detailed response. Support your choice with specific reasons and examples, and consider the short-term and long-term impact of your chosen approach.</p>`
+  },
+  {
+    title: 'Environmental action priority',
+    prompt: `<p><strong>Environmental Action Survey</strong></p>
+<p>Your city wants to take meaningful action on the environment. Which initiative should be the top priority?</p>
+<ul><li>Planting 100,000 trees across the city over five years</li>
+<li>Requiring all new buildings to meet strict green energy standards</li>
+<li>Providing rebates for residents who install solar panels or electric vehicle chargers</li></ul>
+<p>Choose one option and write a detailed response. Explain why this initiative would have the greatest impact, who would benefit, and how it compares to the other options.</p>`
+  }
+];
+
+function pickRandom(arr, excludeIdx) {
+  let idx;
+  do { idx = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && idx === excludeIdx);
+  return { idx, task: arr[idx] };
+}
+
+// ── State ─────────────────────────────────────────────────────
 let currentTaskIdx = 0, timerInterval = null, autosaveInterval = null;
-let timeLeft = 0, timerTotal = 0, savedEssay = '', savedTaskIdx = 0;
-const DRAFT_KEY = 'celpip_draft_v2';
+let timeLeft = 0, timerTotal = 0, savedEssay = '', savedTaskType = '';
+let savedPromptTitle = '', lastEmailIdx = -1, lastSurveyIdx = -1;
+let currentTaskType = 'email';
+const DRAFT_KEY = 'celpip_draft_v3';
+
+const TASK_META = [
+  { type: 'email', label: 'Email — Task 1', stepLabel: 'Task 1 of 2', badgeClass: 'step-email', duration: 27*60, eyebrow: 'Situation &amp; prompts', resultsTitle: 'Task 1 results — Email', resultsSub: '27 minutes · Email writing' },
+  { type: 'survey', label: 'Survey — Task 2', stepLabel: 'Task 2 of 2', badgeClass: 'step-survey', duration: 26*60, eyebrow: 'Survey question', resultsTitle: 'Task 2 results — Survey', resultsSub: '26 minutes · Survey response' }
+];
 
 function showPhase(id) {
   document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
@@ -267,13 +385,27 @@ function showPhase(id) {
 function startPractice() { currentTaskIdx = 0; clearDraft(); loadTask(0); }
 
 function loadTask(idx) {
-  const t = TASKS[idx];
+  const meta = TASK_META[idx];
+  currentTaskType = meta.type;
+
+  // Pick random question
+  let picked;
+  if (meta.type === 'email') {
+    picked = pickRandom(EMAIL_TASKS, lastEmailIdx);
+    lastEmailIdx = picked.idx;
+  } else {
+    picked = pickRandom(SURVEY_TASKS, lastSurveyIdx);
+    lastSurveyIdx = picked.idx;
+  }
+  savedPromptTitle = picked.task.title;
+
   const badge = document.getElementById('step-badge');
-  badge.textContent = t.label;
-  badge.className = 'step-badge ' + t.badgeClass;
-  document.getElementById('step-label').textContent = t.stepLabel;
-  document.getElementById('prompt-eyebrow').innerHTML = t.eyebrow;
-  document.getElementById('prompt-body').innerHTML = t.prompt;
+  badge.textContent = meta.label;
+  badge.className = 'step-badge ' + meta.badgeClass;
+  document.getElementById('step-label').textContent = meta.stepLabel;
+  document.getElementById('prompt-eyebrow').innerHTML = meta.eyebrow;
+  document.getElementById('prompt-body').innerHTML = picked.task.prompt;
+
   const draft = loadDraft();
   const ea = document.getElementById('essay');
   const banner = document.getElementById('draft-banner');
@@ -285,7 +417,7 @@ function loadTask(idx) {
     document.getElementById('word-pill').className = 'word-pill';
   }
   showPhase('write');
-  startTimer(t.duration);
+  startTimer(meta.duration);
   if (autosaveInterval) clearInterval(autosaveInterval);
   autosaveInterval = setInterval(saveDraft, 8000);
 }
@@ -293,131 +425,135 @@ function loadTask(idx) {
 function startTimer(s) {
   if (timerInterval) clearInterval(timerInterval);
   timeLeft = s; timerTotal = s; renderTimer();
-  timerInterval = setInterval(() => {
-    timeLeft--; renderTimer();
-    if (timeLeft <= 0) { clearInterval(timerInterval); doSubmit(); }
-  }, 1000);
+  timerInterval = setInterval(() => { timeLeft--; renderTimer(); if (timeLeft <= 0) { clearInterval(timerInterval); doSubmit(); } }, 1000);
 }
 
 function renderTimer() {
-  const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-  const pct = Math.max(0, (timeLeft / timerTotal) * 100);
-  document.getElementById('timer-digits').textContent = m + ':' + String(s).padStart(2, '0');
+  const m = Math.floor(timeLeft/60), s = timeLeft%60, pct = Math.max(0,(timeLeft/timerTotal)*100);
+  document.getElementById('timer-digits').textContent = m + ':' + String(s).padStart(2,'0');
   const d = document.getElementById('timer-digits'), f = document.getElementById('timer-fill');
   f.style.width = pct + '%';
-  if (pct <= 15) { d.className = 'timer-digits danger'; f.className = 'timer-fill danger'; }
-  else if (pct <= 30) { d.className = 'timer-digits warn'; f.className = 'timer-fill warn'; }
-  else { d.className = 'timer-digits'; f.className = 'timer-fill'; }
+  if (pct <= 15) { d.className='timer-digits danger'; f.className='timer-fill danger'; }
+  else if (pct <= 30) { d.className='timer-digits warn'; f.className='timer-fill warn'; }
+  else { d.className='timer-digits'; f.className='timer-fill'; }
 }
 
 function onEssayInput() { updateWordCount(); saveDraft(); }
-
 function updateWordCount() {
   const t = document.getElementById('essay').value.trim();
   const n = t ? t.split(/\s+/).length : 0;
   const p = document.getElementById('word-pill');
   p.textContent = n + ' words';
-  p.className = 'word-pill' + (n >= 150 && n <= 210 ? ' good' : n > 210 ? ' over' : '');
+  p.className = 'word-pill' + (n>=150&&n<=210?' good':n>210?' over':'');
 }
-
 function saveDraft() {
   const text = document.getElementById('essay').value;
   if (!text.trim()) return;
   try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify({ taskIdx: currentTaskIdx, text }));
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({taskIdx:currentTaskIdx,text}));
     const m = document.getElementById('autosave-msg');
-    m.textContent = '✓ Draft saved'; m.className = 'autosave-msg saved';
-    setTimeout(() => { m.textContent = 'Autosaving…'; m.className = 'autosave-msg'; }, 2000);
-  } catch (e) {}
+    m.textContent='✓ Draft saved'; m.className='autosave-msg saved';
+    setTimeout(()=>{ m.textContent='Autosaving…'; m.className='autosave-msg'; },2000);
+  } catch(e){}
 }
-function loadDraft() { try { const r = localStorage.getItem(DRAFT_KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
-function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} }
-function wc(text) { return text && text.trim() ? text.trim().split(/\s+/).length : 0; }
+function loadDraft() { try { const r=localStorage.getItem(DRAFT_KEY); return r?JSON.parse(r):null; } catch(e){return null;} }
+function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch(e){} }
+function wc(text) { return text&&text.trim()?text.trim().split(/\s+/).length:0; }
 
 function confirmSubmit() {
   const n = wc(document.getElementById('essay').value);
   if (n < 50 && !confirm('Only ' + n + ' words written. Submit anyway?')) return;
   doSubmit();
 }
-
 function doSubmit() {
   if (timerInterval) clearInterval(timerInterval);
   if (autosaveInterval) clearInterval(autosaveInterval);
   savedEssay = document.getElementById('essay').value;
-  savedTaskIdx = currentTaskIdx;
+  savedTaskType = currentTaskType;
   saveDraft();
   showPhase('scoring');
   runScoring();
 }
 
-const SCORE_MSGS = ['Scoring your response…', 'Analysing task fulfillment…', 'Checking vocabulary range…', 'Building your word bank…', 'Almost done…'];
+const SCORE_MSGS = ['Scoring your response…','Analysing task fulfillment…','Checking vocabulary and grammar…','Generating CLB 9+ rewrite…','Building your word bank…','Almost done…'];
 
 async function runScoring() {
   let mi = 0;
   const msgEl = document.getElementById('scoring-msg');
-  const loop = setInterval(() => { msgEl.textContent = SCORE_MSGS[++mi % SCORE_MSGS.length]; }, 2500);
-  const task = TASKS[savedTaskIdx];
+  const loop = setInterval(()=>{ msgEl.textContent=SCORE_MSGS[++mi%SCORE_MSGS.length]; },2500);
+  const meta = TASK_META[currentTaskIdx];
   const essay = savedEssay;
-  const taskDesc = task.id === 'email'
-    ? 'writing a formal email to a city councillor about poor park conditions'
-    : 'responding to a community survey choosing a priority improvement project';
+  const taskDesc = savedTaskType==='email'
+    ? `writing a formal email — topic: "${savedPromptTitle}"`
+    : `responding to a survey question — topic: "${savedPromptTitle}"`;
 
-  const prompt = `Score this CELPIP writing response for the task: ${taskDesc}.
+  const prompt = `You are a certified CELPIP examiner. Score this CELPIP writing response and provide a CLB 9+ rewrite.
+
+Task type: ${taskDesc}
 Word count: ${wc(essay)}
 
-RESPONSE:
+STUDENT'S RESPONSE:
 """
-${essay || '[No response provided]'}
+${essay||'[No response provided]'}
 """
 
-Return ONLY a JSON object with exactly this structure (no markdown, no backticks, no extra text):
+Return ONLY a single JSON object with EXACTLY this structure (no markdown, no backticks):
 {
   "clb": 8,
-  "scores": {"taskFulfillment":8,"coherenceOrganization":7,"vocabularyRange":8,"grammarAccuracy":7},
-  "strengths": "2-3 sentences about what was done well",
+  "scores": {
+    "taskFulfillment": 8,
+    "coherenceOrganization": 7,
+    "vocabularyRange": 8,
+    "grammarAccuracy": 7
+  },
+  "strengths": "2-3 sentences about specific strengths in this response",
   "improvements": "2-3 sentences of specific actionable improvements toward CLB 9+",
+  "rewrite": "A complete CLB 9+ rewrite of the student's response. Keep the same general meaning and ideas but fix all grammar errors, improve vocabulary, and elevate sentence structure to CLB 9+ level. Write as continuous paragraphs.",
+  "corrections": [
+    {"original": "the exact phrase from student text that was changed", "corrected": "the improved version", "reason": "brief explanation"},
+    {"original": "another phrase", "corrected": "improved version", "reason": "explanation"}
+  ],
   "vocabulary": [
-    {"word":"advocate","type":"verb","definition":"to publicly support a cause","example":"I would like to advocate for immediate park restoration."},
-    {"word":"deterioration","type":"noun","definition":"the process of becoming progressively worse","example":"The deterioration of public spaces reflects poorly on city management."},
-    {"word":"imperative","type":"adjective","definition":"of vital importance","example":"It is imperative that the council takes swift action."},
-    {"word":"allocate","type":"verb","definition":"to distribute resources for a purpose","example":"The city must allocate sufficient funds to park maintenance."},
-    {"word":"substantiate","type":"verb","definition":"to provide evidence to support a claim","example":"My concerns are substantiated by visible damage throughout the park."},
-    {"word":"infrastructure","type":"noun","definition":"the basic physical systems of a place","example":"Outdated infrastructure poses serious safety risks to children."},
-    {"word":"commensurate","type":"adjective","definition":"proportionate in size or degree","example":"The response must be commensurate with the severity of the problem."}
+    {"word": "word specific to this topic", "type": "verb/noun/adjective/adverb", "definition": "clear definition", "example": "example sentence using this word in context of the task topic"},
+    {"word": "another topic-specific word", "type": "noun", "definition": "definition", "example": "example sentence"}
   ],
   "structures": [
-    {"phrase":"I am writing to bring to your attention the matter of…","use":"Formal email opener that signals purpose immediately"},
-    {"phrase":"I would be grateful if you could…","use":"Polite formal request — higher register than please"},
-    {"phrase":"Not only… but also…","use":"Adds weight to two related points simultaneously"},
-    {"phrase":"Given the circumstances outlined above, I urge you to…","use":"Transition from evidence to recommendation"}
+    {"phrase": "a high-score sentence structure relevant to this task type", "use": "when and how to use this"},
+    {"phrase": "another structure", "use": "explanation"}
   ]
 }
-CLB scale: 12=native-like,10-11=exceptional,9=strong CLB9,7-8=competent minor issues,5-6=errors affecting clarity,below 5=significant issues.`;
+
+Rules:
+- vocabulary must contain exactly 7 words SPECIFIC to the topic of this particular task (not generic words)
+- structures must contain exactly 4 phrases relevant to this specific task type (email or survey)
+- corrections should list the 4-8 most important changes made
+- CLB scale: 12=native-like, 10-11=exceptional, 9=strong CLB9, 7-8=competent minor issues, 5-6=noticeable errors, below 5=significant issues
+- Score each criterion on a 4-12 scale`;
 
   let lastErr = 'Unknown error';
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const res = await fetch('/api/score', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({prompt})
       });
       if (!res.ok) {
-        const e = await res.json().catch(() => ({ error: res.statusText }));
-        throw new Error(e.error || 'HTTP ' + res.status);
+        const e = await res.json().catch(()=>({error:res.statusText}));
+        throw new Error(e.error||'HTTP '+res.status);
       }
       const data = await res.json();
       clearInterval(loop);
-      const raw = data.text || '';
+      const raw = data.text||'';
       const match = raw.match(/\{[\s\S]*\}/);
       if (!match) throw new Error('No JSON in response');
       const parsed = JSON.parse(match[0]);
       clearDraft();
-      showResults(task, parsed, essay);
+      showResults(meta, parsed, essay);
       return;
-    } catch (e) {
-      lastErr = e.message || String(e);
-      if (attempt < 2) await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+    } catch(e) {
+      lastErr = e.message||String(e);
+      if (attempt < 2) await new Promise(r=>setTimeout(r,2000*(attempt+1)));
     }
   }
   clearInterval(loop);
@@ -428,37 +564,63 @@ CLB scale: 12=native-like,10-11=exceptional,9=strong CLB9,7-8=competent minor is
 
 function copyEssay() {
   const text = document.getElementById('recovered-text').textContent;
-  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
-    .catch(() => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); })
-    .finally(() => {
-      const el = document.getElementById('copy-confirm'); el.style.display = 'inline';
-      setTimeout(() => { el.style.display = 'none'; }, 3000);
-    });
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject())
+    .catch(()=>{ const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); })
+    .finally(()=>{ const el=document.getElementById('copy-confirm'); el.style.display='inline'; setTimeout(()=>{ el.style.display='none'; },3000); });
 }
+function retryScoring() { document.getElementById('essay').value=savedEssay; showPhase('scoring'); runScoring(); }
 
-function retryScoring() { document.getElementById('essay').value = savedEssay; showPhase('scoring'); runScoring(); }
-
-function clbColor(c) { return c >= 9 ? 'clb-high' : c >= 7 ? 'clb-mid' : 'clb-low'; }
+function clbColor(c) { return c>=9?'clb-high':c>=7?'clb-mid':'clb-low'; }
 function clbLabel(c) {
-  if (c >= 10) return 'Exceptional — above CLB 9 target';
-  if (c === 9) return 'Strong — CLB 9 target met';
-  if (c === 8) return 'Competent — one step from CLB 9';
-  if (c === 7) return 'Developing — needs focused work';
+  if(c>=10) return 'Exceptional — above CLB 9 target';
+  if(c===9)  return 'Strong — CLB 9 target met';
+  if(c===8)  return 'Competent — one step from CLB 9';
+  if(c===7)  return 'Developing — needs focused work';
   return 'Needs improvement — keep practising';
 }
 
-function showResults(task, data, essay) {
-  document.getElementById('results-title').textContent = task.resultsTitle;
-  document.getElementById('results-sub').textContent = task.resultsSub;
-  const s = data.scores || {}, clb = data.clb || 6;
+// Build comparison view with highlighted changes
+function buildComparison(original, rewrite, corrections) {
+  // Highlight original text with removals/changes marked
+  let origHTML = escapeHtml(original);
+  let rewriteHTML = escapeHtml(rewrite);
+
+  if (corrections && corrections.length) {
+    corrections.forEach(c => {
+      if (!c.original || !c.corrected) return;
+      const escapedOrig = escapeHtml(c.original);
+      const escapedCorr = escapeHtml(c.corrected);
+      // Mark in original
+      origHTML = origHTML.replace(escapedOrig,
+        `<span class="diff-removed" title="${escapeHtml(c.reason)}">${escapedOrig}</span>`);
+      // Mark in rewrite
+      rewriteHTML = rewriteHTML.replace(escapedCorr,
+        `<span class="diff-added" title="${escapeHtml(c.reason)}">${escapedCorr}</span>`);
+    });
+  }
+  return { origHTML, rewriteHTML };
+}
+
+function escapeHtml(str) {
+  return String(str||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function showResults(meta, data, essay) {
+  document.getElementById('results-title').textContent = meta.resultsTitle;
+  document.getElementById('results-sub').textContent = meta.resultsSub + (savedPromptTitle ? ' · ' + savedPromptTitle : '');
+  const s = data.scores||{}, clb = data.clb||6;
 
   const scoresHTML = [
-    { label: 'Task fulfillment', val: s.taskFulfillment },
-    { label: 'Coherence & organization', val: s.coherenceOrganization },
-    { label: 'Vocabulary range', val: s.vocabularyRange },
-    { label: 'Grammar accuracy', val: s.grammarAccuracy }
-  ].map(item => {
-    const v = item.val || 0, pct = Math.round((v / 12) * 100);
+    {label:'Task fulfillment',val:s.taskFulfillment},
+    {label:'Coherence & organization',val:s.coherenceOrganization},
+    {label:'Vocabulary range',val:s.vocabularyRange},
+    {label:'Grammar accuracy',val:s.grammarAccuracy}
+  ].map(item=>{
+    const v=item.val||0, pct=Math.round((v/12)*100);
     return `<div class="score-tile">
       <div class="score-tile-label">${item.label}</div>
       <div class="score-tile-num">${v}<span class="score-tile-max">/12</span></div>
@@ -466,20 +628,43 @@ function showResults(task, data, essay) {
     </div>`;
   }).join('');
 
-  const vocabHTML = (data.vocabulary || []).map(v => `
+  // Comparison
+  const { origHTML, rewriteHTML } = buildComparison(essay, data.rewrite||'', data.corrections||[]);
+  const comparisonHTML = `
+    <div class="comparison-card">
+      <div class="comparison-head">
+        <div><h3>Side-by-side comparison</h3><p>Your answer vs CLB 9+ rewrite</p></div>
+      </div>
+      <div class="comparison-legend">
+        <div class="legend-item"><div class="legend-dot legend-removed"></div><span>Removed / changed in original</span></div>
+        <div class="legend-item"><div class="legend-dot legend-added"></div><span>Improved in CLB 9+ version</span></div>
+      </div>
+      <div class="comparison-cols">
+        <div class="comparison-col">
+          <div class="comparison-col-label">Your answer</div>
+          <div class="comparison-text">${origHTML}</div>
+        </div>
+        <div class="comparison-col">
+          <div class="comparison-col-label">CLB 9+ rewrite</div>
+          <div class="comparison-text">${rewriteHTML}</div>
+        </div>
+      </div>
+    </div>`;
+
+  const vocabHTML = (data.vocabulary||[]).map(v=>`
     <div class="vocab-item">
       <div class="vocab-word-row"><span class="vocab-word">${v.word}</span><span class="vocab-type-badge">${v.type}</span></div>
       <div class="vocab-def">${v.definition}</div>
       <div class="vocab-ex">"${v.example}"</div>
     </div>`).join('');
 
-  const structHTML = (data.structures || []).map(st => `
+  const structHTML = (data.structures||[]).map(st=>`
     <div class="struct-item">
       <div class="struct-phrase">"${st.phrase}"</div>
       <div class="struct-use">${st.use}</div>
     </div>`).join('');
 
-  const hasNext = savedTaskIdx < TASKS.length - 1;
+  const hasNext = currentTaskIdx < TASK_META.length - 1;
   document.getElementById('results-body').innerHTML = `
     <div class="clb-display">
       <div class="clb-number ${clbColor(clb)}">CLB ${clb}</div>
@@ -488,18 +673,19 @@ function showResults(task, data, essay) {
     <div class="scores-grid">${scoresHTML}</div>
     <div class="feedback-card">
       <div class="feedback-card-head">Strengths</div>
-      <div class="feedback-card-body">${data.strengths || '—'}</div>
+      <div class="feedback-card-body">${data.strengths||'—'}</div>
     </div>
     <div class="feedback-card">
       <div class="feedback-card-head">To reach CLB 9+</div>
-      <div class="feedback-card-body">${data.improvements || '—'}</div>
+      <div class="feedback-card-body">${data.improvements||'—'}</div>
     </div>
+    ${comparisonHTML}
     <div class="vocab-card">
-      <div class="vocab-card-head"><h3>High-score vocabulary bank</h3><p>Memorise these before your next session</p></div>
+      <div class="vocab-card-head"><h3>High-score vocabulary — ${savedPromptTitle}</h3><p>Words specific to this topic to memorise and apply</p></div>
       ${vocabHTML}
     </div>
     <div class="vocab-card">
-      <div class="vocab-card-head"><h3>Sentence structures that score CLB 9+</h3><p>Use these patterns to signal sophistication to examiners</p></div>
+      <div class="vocab-card-head"><h3>Sentence structures that score CLB 9+</h3><p>Patterns tailored to this task type</p></div>
       ${structHTML}
     </div>
     <div class="results-actions">

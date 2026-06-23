@@ -461,8 +461,17 @@ function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch(e){} }
 function wc(text) { return text&&text.trim()?text.trim().split(/\s+/).length:0; }
 
 function confirmSubmit() {
-  const n = wc(document.getElementById('essay').value);
-  if (n < 50 && !confirm('Only ' + n + ' words written. Submit anyway?')) return;
+  const text = document.getElementById('essay').value.trim();
+  const n = wc(text);
+  if (n === 0) {
+    alert('Please write your response before submitting.');
+    return;
+  }
+  if (n < 100) {
+    if (!confirm(n + ' words is well below the 150–200 word requirement. Your score will be capped at CLB 5. Submit anyway?')) return;
+  } else if (n < 150) {
+    if (!confirm(n + ' words is below the 150-word minimum. Your score will be capped at CLB 7. Submit anyway?')) return;
+  }
   doSubmit();
 }
 function doSubmit() {
@@ -487,48 +496,67 @@ async function runScoring() {
     ? `writing a formal email — topic: "${savedPromptTitle}"`
     : `responding to a survey question — topic: "${savedPromptTitle}"`;
 
-  const prompt = `You are a certified CELPIP examiner. Score this CELPIP writing response and provide a CLB 9+ rewrite.
+  const wordCount = wc(essay);
+  const prompt = `Score this CELPIP writing response strictly using the official CELPIP rubric.
 
 Task type: ${taskDesc}
-Word count: ${wc(essay)}
+Word count: ${wordCount}
 
 STUDENT'S RESPONSE:
 """
 ${essay||'[No response provided]'}
 """
 
-Return ONLY a single JSON object with EXACTLY this structure (no markdown, no backticks):
+STRICT SCORING RULES — you MUST apply these before scoring:
+1. If word count is below 100: maximum CLB = 5, maximum taskFulfillment = 5
+2. If word count is 100-149: maximum CLB = 7, maximum taskFulfillment = 7
+3. If the response is NOT a coherent essay (e.g. it is a vocabulary list, bullet notes, random phrases, or vocabulary bank examples rather than connected prose): maximum CLB = 4
+4. If the response does not address the actual task topic: maximum taskFulfillment = 4
+5. Each missing required bullet point from the task: deduct 1 from taskFulfillment
+6. Wrong or missing formal register in an email: deduct 1-2 from taskFulfillment
+
+SCORING SCALE for each criterion (4–12):
+- 12: Native-like, flawless
+- 10-11: Exceptional, near-native
+- 9: Strong, CLB 9 standard — minor issues only
+- 7-8: Competent — noticeable issues but meaning clear
+- 5-6: Developing — frequent errors or gaps affecting clarity
+- 4: Inadequate — major problems throughout
+
+A real CLB 9 response requires: all bullet points addressed, 150-200 words, formal register, varied vocabulary, accurate grammar, logical structure. If ANY of these are missing, the score CANNOT be CLB 9.
+
+Return ONLY a single JSON object (no markdown, no backticks):
 {
-  "clb": 8,
+  "clb": 6,
   "scores": {
-    "taskFulfillment": 8,
-    "coherenceOrganization": 7,
-    "vocabularyRange": 8,
-    "grammarAccuracy": 7
+    "taskFulfillment": 6,
+    "coherenceOrganization": 6,
+    "vocabularyRange": 6,
+    "grammarAccuracy": 6
   },
-  "strengths": "2-3 sentences about specific strengths in this response",
-  "improvements": "2-3 sentences of specific actionable improvements toward CLB 9+",
-  "rewrite": "A complete CLB 9+ rewrite of the student's response. Keep the same general meaning and ideas but fix all grammar errors, improve vocabulary, and elevate sentence structure to CLB 9+ level. Write as continuous paragraphs.",
+  "strengths": "Be honest — if there are no strengths, say what minimal positive exists. Do not invent praise.",
+  "improvements": "List the most critical specific problems that must be fixed, referencing actual errors in the response.",
+  "rewrite": "A complete CLB 9+ rewrite based on the student's ideas. If the student wrote almost nothing, write a model answer for this task. Fix all grammar, improve vocabulary, elevate structure. Write as continuous paragraphs.",
   "corrections": [
-    {"original": "the exact phrase from student text that was changed", "corrected": "the improved version", "reason": "brief explanation"},
-    {"original": "another phrase", "corrected": "improved version", "reason": "explanation"}
+    {"original": "exact phrase from student text", "corrected": "improved version", "reason": "specific reason"},
+    {"original": "another phrase", "corrected": "improved version", "reason": "reason"}
   ],
   "vocabulary": [
-    {"word": "word specific to this topic", "type": "verb/noun/adjective/adverb", "definition": "clear definition", "example": "example sentence using this word in context of the task topic"},
-    {"word": "another topic-specific word", "type": "noun", "definition": "definition", "example": "example sentence"}
+    {"word": "topic-specific word", "type": "noun", "definition": "definition", "example": "example using this word in context of the task"},
+    {"word": "topic-specific word", "type": "verb", "definition": "definition", "example": "example sentence"}
   ],
   "structures": [
-    {"phrase": "a high-score sentence structure relevant to this task type", "use": "when and how to use this"},
+    {"phrase": "sentence structure for this task type", "use": "when to use this"},
     {"phrase": "another structure", "use": "explanation"}
   ]
 }
 
 Rules:
-- vocabulary must contain exactly 7 words SPECIFIC to the topic of this particular task (not generic words)
-- structures must contain exactly 4 phrases relevant to this specific task type (email or survey)
-- corrections should list the 4-8 most important changes made
-- CLB scale: 12=native-like, 10-11=exceptional, 9=strong CLB9, 7-8=competent minor issues, 5-6=noticeable errors, below 5=significant issues
-- Score each criterion on a 4-12 scale`;
+- vocabulary: exactly 7 words, SPECIFIC to this topic (not generic filler words)
+- structures: exactly 4 phrases, relevant to this specific task type
+- corrections: list the 4-8 most important changes
+- Be strict and honest — an average attempt should score 6-7, not 8-9
+- The clb field must equal the mathematical average of the four scores, rounded, with all penalties applied`;
 
   let lastErr = 'Unknown error';
   for (let attempt = 0; attempt < 3; attempt++) {

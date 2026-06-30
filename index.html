@@ -16,7 +16,7 @@
   --radius: 10px; --radius-sm: 6px;
 }
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
-.shell { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+.shell { max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
 .topbar-brand { font-size: 15px; font-weight: 600; }
 .topbar-brand span { color: var(--accent); }
@@ -24,26 +24,29 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; back
 .phase { display: none; }
 .phase.active { display: block; }
 
-/* Start */
+/* ── Start ── */
 .hero { padding: 48px 0 40px; text-align: center; }
 .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 12px; }
 .hero h1 em { font-style: normal; color: var(--accent); }
-.hero p { font-size: 16px; color: var(--text-secondary); max-width: 440px; margin: 0 auto 36px; line-height: 1.7; }
-.task-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 36px; text-align: left; }
-.task-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
-.task-card-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-hint); margin-bottom: 6px; }
-.task-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-.task-card p { font-size: 13px; color: var(--text-secondary); }
-.task-card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 16px; }
-.icon-blue { background: var(--accent-bg); } .icon-green { background: var(--green-bg); }
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 460px; margin: 0 auto 40px; line-height: 1.7; }
+.mode-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 12px; }
+.mode-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px 20px; text-align: left; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.mode-card:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+.mode-card-icon { font-size: 22px; margin-bottom: 14px; }
+.mode-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.mode-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.mode-card-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.mode-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: var(--surface2); color: var(--text-secondary); }
+.mode-card.full { border-color: var(--accent); }
+.mode-card.full .mode-card-title { color: var(--accent); }
 
-/* Buttons */
+/* ── Buttons ── */
 .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--text); color: #fff; border: none; border-radius: var(--radius-sm); padding: 13px 30px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s, transform .1s; }
 .btn-primary:hover { opacity: .85; } .btn-primary:active { transform: scale(.98); }
 .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: none; color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .15s; }
 .btn-ghost:hover { background: var(--surface2); }
 
-/* Write */
+/* ── Write ── */
 .write-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .step-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
 .step-email { background: var(--accent-bg); color: var(--accent-text); }
@@ -60,35 +63,56 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; back
 .prompt-box h3 { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--text-hint); margin-bottom: 12px; }
 .prompt-body { font-size: 15px; line-height: 1.75; }
 .prompt-body p { margin-bottom: 10px; } .prompt-body p:last-child { margin-bottom: 0; }
-.prompt-body ul { padding-left: 20px; margin-top: 8px; } .prompt-body ul li { margin-bottom: 6px; }
+.prompt-body ul { padding-left: 20px; margin-top: 8px; } .prompt-body li { margin-bottom: 6px; }
+
+/* Essay box with inline corrections overlay */
+.essay-wrap { position: relative; margin-bottom: 6px; }
+.essay-overlay { position: absolute; top: 0; left: 0; width: 100%; min-height: 220px; padding: 16px 18px; font-family: 'Georgia', serif; font-size: 15px; line-height: 1.8; color: transparent; background: transparent; border: 1.5px solid transparent; border-radius: var(--radius); pointer-events: none; white-space: pre-wrap; word-wrap: break-word; overflow: hidden; }
 textarea#essay { width: 100%; min-height: 220px; padding: 16px 18px; font-family: 'Georgia', serif; font-size: 15px; line-height: 1.8; color: var(--text); background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); resize: vertical; outline: none; transition: border-color .15s; }
 textarea#essay:focus { border-color: var(--accent); }
-.writing-footer { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 20px; }
+.err-spell { background: #ffd4d4; border-bottom: 2px solid #cc0000; border-radius: 2px; color: var(--text); }
+.err-grammar { background: #fff0c0; border-bottom: 2px solid #d4a800; border-radius: 2px; color: var(--text); }
+
+.writing-footer { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 14px; }
 .word-pill { font-size: 12px; font-weight: 500; padding: 3px 10px; background: var(--surface2); border-radius: 20px; color: var(--text-hint); transition: background .2s, color .2s; }
 .word-pill.good { background: var(--green-bg); color: var(--green-text); }
 .word-pill.over { background: var(--amber-bg); color: var(--amber-text); }
 .autosave-msg { font-size: 12px; color: var(--text-hint); }
 .autosave-msg.saved { color: var(--green); }
-.action-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* Inline error list below textarea */
+.inline-errors { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; display: none; }
+.inline-errors.show { display: block; }
+.inline-errors-head { padding: 10px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--text-secondary); display: flex; gap: 16px; }
+.inline-err-item { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; display: flex; gap: 12px; align-items: baseline; }
+.inline-err-item:last-child { border-bottom: none; }
+.err-badge-spell { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #ffd4d4; color: #8B1A1A; white-space: nowrap; }
+.err-badge-grammar { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #fff0c0; color: #7A4A00; white-space: nowrap; }
+.err-orig { font-family: 'Georgia', serif; color: var(--red); text-decoration: line-through; }
+.err-arrow { color: var(--text-hint); }
+.err-fix { font-family: 'Georgia', serif; color: var(--green); font-weight: 600; }
+.err-reason { color: var(--text-hint); font-size: 12px; margin-left: auto; }
+
+.action-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
 .action-hint { font-size: 13px; color: var(--text-hint); }
 .draft-banner { display: none; background: var(--amber-bg); border: 1px solid #e6cc8a; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--amber-text); margin-bottom: 16px; }
 .draft-banner.show { display: block; }
 
-/* Scoring */
+/* ── Scoring ── */
 .scoring-center { padding: 80px 0; text-align: center; }
 .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .9s linear infinite; margin: 0 auto 20px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .scoring-msg { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
 .scoring-sub { font-size: 14px; color: var(--text-secondary); }
 
-/* Error */
+/* ── Error ── */
 .error-box { background: var(--red-bg); border: 1px solid #f0b0b0; border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
 .error-box h3 { font-size: 16px; font-weight: 600; color: var(--red-text); margin-bottom: 8px; }
 .error-box p { font-size: 14px; color: var(--red-text); margin-bottom: 14px; line-height: 1.6; }
 .recovered-essay { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; font-family: 'Georgia', serif; font-size: 14px; line-height: 1.75; max-height: 300px; overflow-y: auto; margin-bottom: 14px; white-space: pre-wrap; }
 .copy-confirm { font-size: 13px; color: var(--green); display: none; margin-left: 8px; }
 
-/* Results */
+/* ── Results ── */
 .results-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
 .results-header h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
 .results-header p { font-size: 14px; color: var(--text-secondary); }
@@ -108,27 +132,28 @@ textarea#essay:focus { border-color: var(--accent); }
 .feedback-card-head { padding: 14px 18px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .06em; }
 .feedback-card-body { padding: 18px; font-size: 14px; line-height: 1.75; color: var(--text-secondary); }
 
-/* Comparison */
+/* ── Comparison ── */
 .comparison-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
-.comparison-head { padding: 16px 20px; background: var(--text); color: #fff; display: flex; align-items: center; justify-content: space-between; }
-.comparison-head h3 { font-size: 15px; font-weight: 600; }
+.comparison-head { padding: 16px 20px; background: var(--text); color: #fff; }
+.comparison-head h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
 .comparison-head p { font-size: 13px; opacity: .65; }
-.comparison-legend { display: flex; gap: 16px; padding: 12px 20px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; }
+.comparison-legend { display: flex; gap: 20px; padding: 10px 20px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
-.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-.legend-added { background: #d4f0d4; border: 1px solid #6abf6a; }
-.legend-removed { background: #ffd4d4; border: 1px solid #e08080; }
-.legend-changed { background: #fff0c0; border: 1px solid #d4a800; }
+.legend-dot { width: 14px; height: 10px; border-radius: 3px; }
+.leg-spell { background: #ffd4d4; border: 1px solid #cc6666; }
+.leg-grammar { background: #fff0c0; border: 1px solid #d4a800; }
+.leg-added { background: #d4f0d4; border: 1px solid #6abf6a; }
 .comparison-cols { display: grid; grid-template-columns: 1fr 1fr; }
 .comparison-col { padding: 20px; }
 .comparison-col:first-child { border-right: 1px solid var(--border); }
 .comparison-col-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-hint); margin-bottom: 12px; }
-.comparison-text { font-family: 'Georgia', serif; font-size: 14px; line-height: 1.85; color: var(--text); white-space: pre-wrap; }
-.diff-added { background: #d4f0d4; border-radius: 2px; padding: 0 2px; }
-.diff-removed { background: #ffd4d4; border-radius: 2px; padding: 0 2px; text-decoration: line-through; color: #a00; }
-.diff-changed { background: #fff0c0; border-radius: 2px; padding: 0 2px; }
+.comparison-text { font-family: 'Georgia', serif; font-size: 14px; line-height: 1.9; color: var(--text); white-space: pre-wrap; word-wrap: break-word; }
+.hi-spell { background: #ffd4d4; border-radius: 2px; padding: 0 2px; border-bottom: 2px solid #cc0000; }
+.hi-grammar { background: #fff0c0; border-radius: 2px; padding: 0 2px; border-bottom: 2px solid #d4a800; }
+.hi-added { background: #d4f0d4; border-radius: 2px; padding: 0 2px; }
+.hi-removed { background: #ffd4d4; border-radius: 2px; padding: 0 2px; text-decoration: line-through; color: #a00; }
 
-/* Vocab */
+/* ── Vocab ── */
 .vocab-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
 .vocab-card-head { padding: 16px 20px; background: var(--text); color: #fff; }
 .vocab-card-head h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
@@ -146,8 +171,9 @@ textarea#essay:focus { border-color: var(--accent); }
 .struct-use { font-size: 13px; color: var(--text-secondary); }
 .results-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
 
-@media (max-width: 640px) {
-  .task-cards, .scores-grid, .comparison-cols { grid-template-columns: 1fr; }
+@media (max-width: 680px) {
+  .mode-cards { grid-template-columns: 1fr; }
+  .scores-grid, .comparison-cols { grid-template-columns: 1fr; }
   .comparison-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
   .hero h1 { font-size: 24px; }
   .clb-display { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -162,34 +188,50 @@ textarea#essay:focus { border-color: var(--accent); }
     <div class="topbar-tag">CLB 9+ Target</div>
   </div>
 
-  <!-- START -->
+  <!-- ══ START ══ -->
   <div id="phase-start" class="phase active">
     <div class="hero">
       <h1>Writing practice for<br><em>CLB 9 and above</em></h1>
-      <p>Two timed tasks, AI-scored feedback, a vocabulary bank, and a side-by-side CLB 9+ rewrite of your answer.</p>
-      <div class="task-cards">
-        <div class="task-card">
-          <div class="task-card-icon icon-blue">✉️</div>
-          <div class="task-card-eyebrow">Task 1</div>
-          <h3>Writing an email</h3>
-          <p>27 minutes · 150–200 words · formal register</p>
+      <p>Choose a mode below. Get AI-scored feedback, inline spelling and grammar corrections, and a side-by-side CLB 9+ rewrite after each task.</p>
+      <div class="mode-cards">
+        <div class="mode-card full" onclick="startMode('full')">
+          <div class="mode-card-icon">✉️ + 📋</div>
+          <div class="mode-card-title">Full writing test</div>
+          <div class="mode-card-desc">Both tasks in sequence, just like the real CELPIP exam.</div>
+          <div class="mode-card-tags">
+            <span class="mode-tag">Email — 27 min</span>
+            <span class="mode-tag">Survey — 26 min</span>
+          </div>
         </div>
-        <div class="task-card">
-          <div class="task-card-icon icon-green">📋</div>
-          <div class="task-card-eyebrow">Task 2</div>
-          <h3>Survey response</h3>
-          <p>26 minutes · 150–200 words · structured opinion</p>
+        <div class="mode-card" onclick="startMode('email')">
+          <div class="mode-card-icon">✉️</div>
+          <div class="mode-card-title">Email only</div>
+          <div class="mode-card-desc">Practice Task 1 — writing a formal email in 27 minutes.</div>
+          <div class="mode-card-tags">
+            <span class="mode-tag">Task 1</span>
+            <span class="mode-tag">27 min</span>
+            <span class="mode-tag">150–200 words</span>
+          </div>
+        </div>
+        <div class="mode-card" onclick="startMode('survey')">
+          <div class="mode-card-icon">📋</div>
+          <div class="mode-card-title">Survey only</div>
+          <div class="mode-card-desc">Practice Task 2 — responding to a survey question in 26 minutes.</div>
+          <div class="mode-card-tags">
+            <span class="mode-tag">Task 2</span>
+            <span class="mode-tag">26 min</span>
+            <span class="mode-tag">150–200 words</span>
+          </div>
         </div>
       </div>
-      <button class="btn-primary" onclick="startPractice()">▶ Start practice</button>
     </div>
   </div>
 
-  <!-- WRITE -->
+  <!-- ══ WRITE ══ -->
   <div id="phase-write" class="phase">
     <div class="write-meta">
       <span id="step-badge" class="step-badge step-email">Email — Task 1</span>
-      <span id="step-label" class="step-label">Task 1 of 2</span>
+      <span id="step-label" class="step-label"></span>
     </div>
     <div class="timer-row">
       <span class="timer-title">Time remaining</span>
@@ -201,10 +243,20 @@ textarea#essay:focus { border-color: var(--accent); }
       <h3 id="prompt-eyebrow">Situation &amp; prompts</h3>
       <div id="prompt-body" class="prompt-body"></div>
     </div>
-    <textarea id="essay" placeholder="Start writing here…" oninput="onEssayInput()"></textarea>
+    <div class="essay-wrap">
+      <textarea id="essay" placeholder="Start writing here…" oninput="onEssayInput()" onscroll="syncScroll()"></textarea>
+    </div>
     <div class="writing-footer">
       <span id="word-pill" class="word-pill">0 words</span>
       <span id="autosave-msg" class="autosave-msg">Autosaving…</span>
+    </div>
+    <div id="inline-errors" class="inline-errors">
+      <div class="inline-errors-head">
+        <span id="err-count-spell" style="color:#8B1A1A">● Spelling</span>
+        <span id="err-count-grammar" style="color:#7A4A00">● Grammar</span>
+        <span style="margin-left:auto;font-weight:400;color:var(--text-hint)">Corrections will appear in the full report after submitting</span>
+      </div>
+      <div id="inline-err-list"></div>
     </div>
     <div class="action-row">
       <button class="btn-primary" onclick="confirmSubmit()">Submit &amp; score →</button>
@@ -212,7 +264,7 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- SCORING -->
+  <!-- ══ SCORING ══ -->
   <div id="phase-scoring" class="phase">
     <div class="scoring-center">
       <div class="spinner"></div>
@@ -221,7 +273,7 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- ERROR -->
+  <!-- ══ ERROR ══ -->
   <div id="phase-error" class="phase">
     <div style="padding-top:32px">
       <div class="error-box">
@@ -238,10 +290,10 @@ textarea#essay:focus { border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- RESULTS -->
+  <!-- ══ RESULTS ══ -->
   <div id="phase-results" class="phase">
     <div class="results-header">
-      <h2 id="results-title">Task 1 results</h2>
+      <h2 id="results-title">Results</h2>
       <p id="results-sub"></p>
     </div>
     <div id="results-body"></div>
@@ -249,113 +301,23 @@ textarea#essay:focus { border-color: var(--accent); }
 </div>
 
 <script>
-// ── Question bank ─────────────────────────────────────────────
+// ── Question bank ──────────────────────────────────────────────
 const EMAIL_TASKS = [
-  {
-    title: 'Community park conditions',
-    prompt: `<p>You have recently moved to a new neighbourhood and noticed that the community park nearby is in very poor condition — the playground equipment is broken, there is litter everywhere, and the lights are not working at night.</p>
-<p>Write an email to your city councillor. In your email:</p>
-<ul><li>Describe the problems you have observed in the park</li>
-<li>Explain how these issues affect local residents and children</li>
-<li>Request specific improvements or actions from the city</li></ul>`
-  },
-  {
-    title: 'Noise complaint to landlord',
-    prompt: `<p>You rent an apartment and your upstairs neighbour has been making excessive noise late at night for the past two weeks, which is affecting your sleep and work.</p>
-<p>Write an email to your landlord. In your email:</p>
-<ul><li>Describe the noise problem and how long it has been happening</li>
-<li>Explain how it is affecting your daily life</li>
-<li>Request that the landlord take specific action to resolve the issue</li></ul>`
-  },
-  {
-    title: 'Request for remote work',
-    prompt: `<p>You have been working at your company for three years and would like to request permission to work from home two days per week for personal and professional reasons.</p>
-<p>Write an email to your manager. In your email:</p>
-<ul><li>Explain why you are making this request</li>
-<li>Describe how working from home will not affect your productivity</li>
-<li>Suggest a trial period and propose how you will stay in communication with the team</li></ul>`
-  },
-  {
-    title: 'Library program suggestion',
-    prompt: `<p>You regularly visit your local public library and have noticed that there are very few programs or events available for teenagers and young adults in your community.</p>
-<p>Write an email to the library director. In your email:</p>
-<ul><li>Describe the current lack of programs for young adults</li>
-<li>Explain why this is a problem for the community</li>
-<li>Suggest two or three specific programs the library could offer</li></ul>`
-  },
-  {
-    title: 'Complaint about road construction',
-    prompt: `<p>Road construction near your home has been ongoing for four months. It has caused traffic delays, excessive dust and noise, and has blocked access to your driveway several times.</p>
-<p>Write an email to your local municipal office. In your email:</p>
-<ul><li>Describe the problems the construction has caused</li>
-<li>Explain the impact on you and your neighbours</li>
-<li>Request an update on the timeline and ask for specific measures to reduce disruption</li></ul>`
-  },
-  {
-    title: 'Childcare facility request',
-    prompt: `<p>Many parents in your neighbourhood, including yourself, struggle to find affordable and accessible childcare. You believe a community childcare centre would greatly benefit local families.</p>
-<p>Write an email to your city councillor. In your email:</p>
-<ul><li>Describe the childcare problem faced by families in your area</li>
-<li>Explain the impact this has on working parents</li>
-<li>Request that the city consider establishing an affordable childcare facility</li></ul>`
-  }
+  { title: 'Community park conditions', prompt: `<p>You have recently moved to a new neighbourhood and noticed that the community park nearby is in very poor condition — the playground equipment is broken, there is litter everywhere, and the lights are not working at night.</p><p>Write an email to your city councillor. In your email:</p><ul><li>Describe the problems you have observed in the park</li><li>Explain how these issues affect local residents and children</li><li>Request specific improvements or actions from the city</li></ul>` },
+  { title: 'Noise complaint to landlord', prompt: `<p>You rent an apartment and your upstairs neighbour has been making excessive noise late at night for the past two weeks, affecting your sleep and work performance.</p><p>Write an email to your landlord. In your email:</p><ul><li>Describe the noise problem and how long it has been happening</li><li>Explain how it is affecting your daily life</li><li>Request that the landlord take specific action to resolve the issue</li></ul>` },
+  { title: 'Request for remote work', prompt: `<p>You have been working at your company for three years and would like to request permission to work from home two days per week for personal and professional reasons.</p><p>Write an email to your manager. In your email:</p><ul><li>Explain why you are making this request</li><li>Describe how working from home will not affect your productivity</li><li>Suggest a trial period and propose how you will stay in communication with the team</li></ul>` },
+  { title: 'Library program suggestion', prompt: `<p>You regularly visit your local public library and have noticed that there are very few programs or events available for teenagers and young adults in your community.</p><p>Write an email to the library director. In your email:</p><ul><li>Describe the current lack of programs for young adults</li><li>Explain why this is a problem for the community</li><li>Suggest two or three specific programs the library could offer</li></ul>` },
+  { title: 'Road construction complaint', prompt: `<p>Road construction near your home has been ongoing for four months. It has caused traffic delays, excessive dust and noise, and has blocked access to your driveway several times.</p><p>Write an email to your local municipal office. In your email:</p><ul><li>Describe the problems the construction has caused</li><li>Explain the impact on you and your neighbours</li><li>Request an update on the timeline and ask for specific measures to reduce disruption</li></ul>` },
+  { title: 'Childcare facility request', prompt: `<p>Many parents in your neighbourhood struggle to find affordable and accessible childcare. You believe a community childcare centre would greatly benefit local families.</p><p>Write an email to your city councillor. In your email:</p><ul><li>Describe the childcare problem faced by families in your area</li><li>Explain the impact this has on working parents</li><li>Request that the city consider establishing an affordable childcare facility</li></ul>` }
 ];
 
 const SURVEY_TASKS = [
-  {
-    title: 'Community improvement priority',
-    prompt: `<p><strong>Community Improvement Survey</strong></p>
-<p>Your city is planning a major investment in one community project. Which should be the top priority?</p>
-<ul><li>Expanding and modernising public libraries</li>
-<li>Building new recreational facilities (gym, pool, sports courts)</li>
-<li>Improving public transportation routes and frequency</li></ul>
-<p>Choose one option and write a detailed response explaining your choice. Include specific reasons, examples, and consider the impact on different groups in the community.</p>`
-  },
-  {
-    title: 'Best way to reduce traffic',
-    prompt: `<p><strong>City Transportation Survey</strong></p>
-<p>Your city wants to reduce traffic congestion. Which approach do you think would be most effective?</p>
-<ul><li>Expanding cycling lanes and encouraging cycling to work</li>
-<li>Increasing parking fees in the city centre to discourage driving</li>
-<li>Subsidising public transit passes for all residents</li></ul>
-<p>Choose one option and write a detailed response. Include your reasons, potential benefits and drawbacks, and explain why your choice is better than the alternatives.</p>`
-  },
-  {
-    title: 'How to support new immigrants',
-    prompt: `<p><strong>Newcomer Settlement Survey</strong></p>
-<p>Your city wants to better support immigrants settling in the community. Which initiative would be most valuable?</p>
-<ul><li>Free language and job-skills training programs</li>
-<li>A community mentorship program pairing newcomers with established residents</li>
-<li>Financial assistance for the first six months after arrival</li></ul>
-<p>Choose one option and write a detailed response explaining your choice. Discuss specific benefits, who would be helped most, and why this approach is most effective.</p>`
-  },
-  {
-    title: 'School schedule format',
-    prompt: `<p><strong>School Board Community Survey</strong></p>
-<p>The school board is considering changing the format of the school day. Which option do you prefer?</p>
-<ul><li>A four-day school week with longer daily hours</li>
-<li>Keeping the standard five-day week but starting school one hour later</li>
-<li>Introducing flexible scheduling where students choose morning or afternoon sessions</li></ul>
-<p>Choose one option and write a detailed response. Explain your reasoning, discuss the impact on students, parents, and teachers, and address any potential concerns.</p>`
-  },
-  {
-    title: 'Addressing homelessness',
-    prompt: `<p><strong>Social Services Community Survey</strong></p>
-<p>Your city is developing a new strategy to address homelessness. Which approach should be prioritised?</p>
-<ul><li>Building more emergency shelters and temporary housing</li>
-<li>Investing in mental health and addiction treatment programs</li>
-<li>Creating subsidised permanent housing with on-site support services</li></ul>
-<p>Choose one option and write a detailed response. Support your choice with specific reasons and examples, and consider the short-term and long-term impact of your chosen approach.</p>`
-  },
-  {
-    title: 'Environmental action priority',
-    prompt: `<p><strong>Environmental Action Survey</strong></p>
-<p>Your city wants to take meaningful action on the environment. Which initiative should be the top priority?</p>
-<ul><li>Planting 100,000 trees across the city over five years</li>
-<li>Requiring all new buildings to meet strict green energy standards</li>
-<li>Providing rebates for residents who install solar panels or electric vehicle chargers</li></ul>
-<p>Choose one option and write a detailed response. Explain why this initiative would have the greatest impact, who would benefit, and how it compares to the other options.</p>`
-  }
+  { title: 'Community improvement priority', prompt: `<p><strong>Community Improvement Survey</strong></p><p>Your city is planning a major investment in one community project. Which should be the top priority?</p><ul><li>Expanding and modernising public libraries</li><li>Building new recreational facilities (gym, pool, sports courts)</li><li>Improving public transportation routes and frequency</li></ul><p>Choose one option and write a detailed response explaining your choice. Include specific reasons, examples, and consider the impact on different groups in the community.</p>` },
+  { title: 'Reducing traffic congestion', prompt: `<p><strong>City Transportation Survey</strong></p><p>Your city wants to reduce traffic congestion. Which approach would be most effective?</p><ul><li>Expanding cycling lanes and encouraging cycling to work</li><li>Increasing parking fees in the city centre to discourage driving</li><li>Subsidising public transit passes for all residents</li></ul><p>Choose one option and write a detailed response. Include your reasons, potential benefits and drawbacks, and explain why your choice is better than the alternatives.</p>` },
+  { title: 'Supporting new immigrants', prompt: `<p><strong>Newcomer Settlement Survey</strong></p><p>Your city wants to better support immigrants settling in the community. Which initiative would be most valuable?</p><ul><li>Free language and job-skills training programs</li><li>A community mentorship program pairing newcomers with established residents</li><li>Financial assistance for the first six months after arrival</li></ul><p>Choose one option and write a detailed response. Discuss specific benefits, who would be helped most, and why this approach is most effective.</p>` },
+  { title: 'School schedule format', prompt: `<p><strong>School Board Community Survey</strong></p><p>The school board is considering changing the school day format. Which do you prefer?</p><ul><li>A four-day school week with longer daily hours</li><li>Keeping the standard five-day week but starting one hour later</li><li>Flexible scheduling where students choose morning or afternoon sessions</li></ul><p>Choose one option and write a detailed response. Explain your reasoning and discuss the impact on students, parents, and teachers.</p>` },
+  { title: 'Addressing homelessness', prompt: `<p><strong>Social Services Community Survey</strong></p><p>Your city is developing a new strategy to address homelessness. Which approach should be prioritised?</p><ul><li>Building more emergency shelters and temporary housing</li><li>Investing in mental health and addiction treatment programs</li><li>Creating subsidised permanent housing with on-site support services</li></ul><p>Choose one option. Support your choice with specific reasons and consider both short-term and long-term impact.</p>` },
+  { title: 'Environmental action priority', prompt: `<p><strong>Environmental Action Survey</strong></p><p>Your city wants to take meaningful action on the environment. Which initiative should be the top priority?</p><ul><li>Planting 100,000 trees across the city over five years</li><li>Requiring all new buildings to meet strict green energy standards</li><li>Providing rebates for residents who install solar panels or electric vehicle chargers</li></ul><p>Choose one option and write a detailed response explaining why this initiative would have the greatest impact.</p>` }
 ];
 
 function pickRandom(arr, excludeIdx) {
@@ -365,16 +327,21 @@ function pickRandom(arr, excludeIdx) {
 }
 
 // ── State ─────────────────────────────────────────────────────
-let currentTaskIdx = 0, timerInterval = null, autosaveInterval = null;
-let timeLeft = 0, timerTotal = 0, savedEssay = '', savedTaskType = '';
-let savedPromptTitle = '', lastEmailIdx = -1, lastSurveyIdx = -1;
+let mode = 'full';           // 'full' | 'email' | 'survey'
+let taskQueue = [];          // list of task types to run
+let queuePos = 0;            // current position in queue
 let currentTaskType = 'email';
-const DRAFT_KEY = 'celpip_draft_v3';
+let timerInterval = null, autosaveInterval = null;
+let timeLeft = 0, timerTotal = 0;
+let savedEssay = '', savedTaskType = '', savedPromptTitle = '';
+let lastEmailIdx = -1, lastSurveyIdx = -1;
+let spellErrors = [], grammarErrors = [];
+const DRAFT_KEY = 'celpip_draft_v4';
 
-const TASK_META = [
-  { type: 'email', label: 'Email — Task 1', stepLabel: 'Task 1 of 2', badgeClass: 'step-email', duration: 27*60, eyebrow: 'Situation &amp; prompts', resultsTitle: 'Task 1 results — Email', resultsSub: '27 minutes · Email writing' },
-  { type: 'survey', label: 'Survey — Task 2', stepLabel: 'Task 2 of 2', badgeClass: 'step-survey', duration: 26*60, eyebrow: 'Survey question', resultsTitle: 'Task 2 results — Survey', resultsSub: '26 minutes · Survey response' }
-];
+const TASK_META = {
+  email:  { label: 'Email — Task 1', badgeClass: 'step-email', duration: 27*60, eyebrow: 'Situation &amp; prompts', resultsTitle: 'Email results', resultsSub: '27 min · Email writing' },
+  survey: { label: 'Survey — Task 2', badgeClass: 'step-survey', duration: 26*60, eyebrow: 'Survey question', resultsTitle: 'Survey results', resultsSub: '26 min · Survey response' }
+};
 
 function showPhase(id) {
   document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
@@ -382,52 +349,64 @@ function showPhase(id) {
   window.scrollTo(0, 0);
 }
 
-function startPractice() { currentTaskIdx = 0; clearDraft(); loadTask(0); }
+// ── Mode selection ────────────────────────────────────────────
+function startMode(m) {
+  mode = m;
+  if (m === 'full')   taskQueue = ['email', 'survey'];
+  else if (m === 'email')  taskQueue = ['email'];
+  else                taskQueue = ['survey'];
+  queuePos = 0;
+  clearDraft();
+  spellErrors = []; grammarErrors = [];
+  loadTask(taskQueue[0]);
+}
 
-function loadTask(idx) {
-  const meta = TASK_META[idx];
-  currentTaskType = meta.type;
+function loadTask(type) {
+  currentTaskType = type;
+  const meta = TASK_META[type];
 
-  // Pick random question
   let picked;
-  if (meta.type === 'email') {
-    picked = pickRandom(EMAIL_TASKS, lastEmailIdx);
-    lastEmailIdx = picked.idx;
-  } else {
-    picked = pickRandom(SURVEY_TASKS, lastSurveyIdx);
-    lastSurveyIdx = picked.idx;
-  }
+  if (type === 'email') { picked = pickRandom(EMAIL_TASKS, lastEmailIdx); lastEmailIdx = picked.idx; }
+  else                  { picked = pickRandom(SURVEY_TASKS, lastSurveyIdx); lastSurveyIdx = picked.idx; }
   savedPromptTitle = picked.task.title;
 
   const badge = document.getElementById('step-badge');
   badge.textContent = meta.label;
   badge.className = 'step-badge ' + meta.badgeClass;
-  document.getElementById('step-label').textContent = meta.stepLabel;
+
+  const total = taskQueue.length;
+  const pos = queuePos + 1;
+  document.getElementById('step-label').textContent = total > 1 ? `Task ${pos} of ${total}` : '';
+
   document.getElementById('prompt-eyebrow').innerHTML = meta.eyebrow;
   document.getElementById('prompt-body').innerHTML = picked.task.prompt;
 
   const draft = loadDraft();
   const ea = document.getElementById('essay');
   const banner = document.getElementById('draft-banner');
-  if (draft && draft.taskIdx === idx && draft.text) {
+  if (draft && draft.type === type && draft.text) {
     ea.value = draft.text; banner.classList.add('show'); updateWordCount();
   } else {
     ea.value = ''; banner.classList.remove('show');
     document.getElementById('word-pill').textContent = '0 words';
     document.getElementById('word-pill').className = 'word-pill';
   }
+  document.getElementById('inline-errors').classList.remove('show');
+  document.getElementById('inline-err-list').innerHTML = '';
+  spellErrors = []; grammarErrors = [];
+
   showPhase('write');
   startTimer(meta.duration);
   if (autosaveInterval) clearInterval(autosaveInterval);
   autosaveInterval = setInterval(saveDraft, 8000);
 }
 
+// ── Timer ─────────────────────────────────────────────────────
 function startTimer(s) {
   if (timerInterval) clearInterval(timerInterval);
   timeLeft = s; timerTotal = s; renderTimer();
   timerInterval = setInterval(() => { timeLeft--; renderTimer(); if (timeLeft <= 0) { clearInterval(timerInterval); doSubmit(); } }, 1000);
 }
-
 function renderTimer() {
   const m = Math.floor(timeLeft/60), s = timeLeft%60, pct = Math.max(0,(timeLeft/timerTotal)*100);
   document.getElementById('timer-digits').textContent = m + ':' + String(s).padStart(2,'0');
@@ -438,6 +417,7 @@ function renderTimer() {
   else { d.className='timer-digits'; f.className='timer-fill'; }
 }
 
+// ── Word count & input ────────────────────────────────────────
 function onEssayInput() { updateWordCount(); saveDraft(); }
 function updateWordCount() {
   const t = document.getElementById('essay').value.trim();
@@ -446,11 +426,14 @@ function updateWordCount() {
   p.textContent = n + ' words';
   p.className = 'word-pill' + (n>=150&&n<=210?' good':n>210?' over':'');
 }
+function syncScroll() {}
+
+// ── Draft ─────────────────────────────────────────────────────
 function saveDraft() {
   const text = document.getElementById('essay').value;
   if (!text.trim()) return;
   try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify({taskIdx:currentTaskIdx,text}));
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({type: currentTaskType, text}));
     const m = document.getElementById('autosave-msg');
     m.textContent='✓ Draft saved'; m.className='autosave-msg saved';
     setTimeout(()=>{ m.textContent='Autosaving…'; m.className='autosave-msg'; },2000);
@@ -460,18 +443,13 @@ function loadDraft() { try { const r=localStorage.getItem(DRAFT_KEY); return r?J
 function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch(e){} }
 function wc(text) { return text&&text.trim()?text.trim().split(/\s+/).length:0; }
 
+// ── Submit ────────────────────────────────────────────────────
 function confirmSubmit() {
   const text = document.getElementById('essay').value.trim();
   const n = wc(text);
-  if (n === 0) {
-    alert('Please write your response before submitting.');
-    return;
-  }
-  if (n < 100) {
-    if (!confirm(n + ' words is well below the 150–200 word requirement. Your score will be capped at CLB 5. Submit anyway?')) return;
-  } else if (n < 150) {
-    if (!confirm(n + ' words is below the 150-word minimum. Your score will be capped at CLB 7. Submit anyway?')) return;
-  }
+  if (n === 0) { alert('Please write your response before submitting.'); return; }
+  if (n < 100 && !confirm(n + ' words is well below the 150–200 requirement. Score will be capped at CLB 5. Submit anyway?')) return;
+  if (n >= 100 && n < 150 && !confirm(n + ' words is below the 150-word minimum. Score will be capped at CLB 7. Submit anyway?')) return;
   doSubmit();
 }
 function doSubmit() {
@@ -484,79 +462,81 @@ function doSubmit() {
   runScoring();
 }
 
-const SCORE_MSGS = ['Scoring your response…','Analysing task fulfillment…','Checking vocabulary and grammar…','Generating CLB 9+ rewrite…','Building your word bank…','Almost done…'];
+// ── Scoring ───────────────────────────────────────────────────
+const SCORE_MSGS = ['Scoring your response…','Checking spelling and grammar…','Applying CELPIP rubric…','Generating CLB 9+ rewrite…','Building your word bank…','Almost done…'];
 
 async function runScoring() {
   let mi = 0;
   const msgEl = document.getElementById('scoring-msg');
   const loop = setInterval(()=>{ msgEl.textContent=SCORE_MSGS[++mi%SCORE_MSGS.length]; },2500);
-  const meta = TASK_META[currentTaskIdx];
   const essay = savedEssay;
   const taskDesc = savedTaskType==='email'
     ? `writing a formal email — topic: "${savedPromptTitle}"`
     : `responding to a survey question — topic: "${savedPromptTitle}"`;
 
-  const wordCount = wc(essay);
-  const prompt = `Score this CELPIP writing response strictly using the official CELPIP rubric.
+  const prompt = `You are a strict certified CELPIP examiner. Score this response and provide corrections and a CLB 9+ rewrite.
 
-Task type: ${taskDesc}
-Word count: ${wordCount}
+Task: ${taskDesc}
+Word count: ${wc(essay)}
 
-STUDENT'S RESPONSE:
+STUDENT RESPONSE:
 """
 ${essay||'[No response provided]'}
 """
 
-STRICT SCORING RULES — you MUST apply these before scoring:
-1. If word count is below 100: maximum CLB = 5, maximum taskFulfillment = 5
-2. If word count is 100-149: maximum CLB = 7, maximum taskFulfillment = 7
-3. If the response is NOT a coherent essay (e.g. it is a vocabulary list, bullet notes, random phrases, or vocabulary bank examples rather than connected prose): maximum CLB = 4
-4. If the response does not address the actual task topic: maximum taskFulfillment = 4
-5. Each missing required bullet point from the task: deduct 1 from taskFulfillment
-6. Wrong or missing formal register in an email: deduct 1-2 from taskFulfillment
+STRICT SCORING RULES:
+- Under 100 words → max CLB 5, max taskFulfillment 5
+- 100-149 words → max CLB 7, max taskFulfillment 7
+- Not a real essay (vocab list, notes, random phrases) → max CLB 4
+- Missing required bullet points → deduct 1 per missing point from taskFulfillment
+- Wrong register in formal email → deduct 1-2 from taskFulfillment
+- Average attempt = CLB 6-7, not CLB 8-9
 
-SCORING SCALE for each criterion (4–12):
-- 12: Native-like, flawless
-- 10-11: Exceptional, near-native
-- 9: Strong, CLB 9 standard — minor issues only
-- 7-8: Competent — noticeable issues but meaning clear
-- 5-6: Developing — frequent errors or gaps affecting clarity
-- 4: Inadequate — major problems throughout
+SCORING SCALE (4-12 each criterion):
+12=native-like flawless, 10-11=exceptional, 9=strong CLB9 minor issues only, 7-8=competent some issues, 5-6=frequent errors affecting clarity, 4=major problems
 
-A real CLB 9 response requires: all bullet points addressed, 150-200 words, formal register, varied vocabulary, accurate grammar, logical structure. If ANY of these are missing, the score CANNOT be CLB 9.
+THE REWRITE must be 150-200 words. Count carefully. It must fully address all bullet points from the task.
 
-Return ONLY a single JSON object (no markdown, no backticks):
+Return ONLY valid JSON (no markdown, no backticks):
 {
-  "clb": 6,
+  "clb": 7,
   "scores": {
-    "taskFulfillment": 6,
-    "coherenceOrganization": 6,
-    "vocabularyRange": 6,
-    "grammarAccuracy": 6
+    "taskFulfillment": 7,
+    "coherenceOrganization": 7,
+    "vocabularyRange": 7,
+    "grammarAccuracy": 7
   },
-  "strengths": "Be honest — if there are no strengths, say what minimal positive exists. Do not invent praise.",
-  "improvements": "List the most critical specific problems that must be fixed, referencing actual errors in the response.",
-  "rewrite": "A complete CLB 9+ rewrite based on the student's ideas. If the student wrote almost nothing, write a model answer for this task. Fix all grammar, improve vocabulary, elevate structure. Write as continuous paragraphs.",
+  "strengths": "Honest assessment of what was done well. Do not invent praise.",
+  "improvements": "Specific problems referencing actual errors in the response.",
+  "rewrite": "A CLB 9+ model answer that is EXACTLY 150-200 words. Address ALL bullet points from the task. Use formal register. Write in continuous paragraphs with proper email format (greeting, body, closing) if it is an email task.",
+  "rewrite_word_count": 165,
+  "spelling_errors": [
+    {"original": "misspeled", "corrected": "misspelled", "reason": "spelling error"}
+  ],
+  "grammar_errors": [
+    {"original": "he go to school", "corrected": "he goes to school", "reason": "subject-verb agreement"}
+  ],
   "corrections": [
-    {"original": "exact phrase from student text", "corrected": "improved version", "reason": "specific reason"},
-    {"original": "another phrase", "corrected": "improved version", "reason": "reason"}
+    {"original": "exact phrase from student text", "corrected": "improved version", "reason": "explanation", "type": "spelling|grammar|vocabulary|style"}
   ],
   "vocabulary": [
-    {"word": "topic-specific word", "type": "noun", "definition": "definition", "example": "example using this word in context of the task"},
-    {"word": "topic-specific word", "type": "verb", "definition": "definition", "example": "example sentence"}
+    {"word": "topic-specific word", "type": "noun", "definition": "definition", "example": "example in context of this task"},
+    {"word": "another word", "type": "verb", "definition": "definition", "example": "example sentence"}
   ],
   "structures": [
-    {"phrase": "sentence structure for this task type", "use": "when to use this"},
+    {"phrase": "sentence structure for this task type", "use": "when to use"},
     {"phrase": "another structure", "use": "explanation"}
   ]
 }
 
-Rules:
-- vocabulary: exactly 7 words, SPECIFIC to this topic (not generic filler words)
-- structures: exactly 4 phrases, relevant to this specific task type
-- corrections: list the 4-8 most important changes
-- Be strict and honest — an average attempt should score 6-7, not 8-9
-- The clb field must equal the mathematical average of the four scores, rounded, with all penalties applied`;
+Requirements:
+- spelling_errors: list ALL spelling mistakes found in the student response
+- grammar_errors: list ALL grammar mistakes found
+- corrections: 4-8 most important changes (can overlap with spelling/grammar)
+- vocabulary: exactly 7 words specific to THIS topic
+- structures: exactly 4 phrases for this task type
+- rewrite: must be 150-200 words — count carefully before writing
+- clb = mathematical average of four scores with all penalties applied, rounded to nearest integer`;
 
   let lastErr = 'Unknown error';
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -577,7 +557,7 @@ Rules:
       if (!match) throw new Error('No JSON in response');
       const parsed = JSON.parse(match[0]);
       clearDraft();
-      showResults(meta, parsed, essay);
+      showResults(parsed, essay);
       return;
     } catch(e) {
       lastErr = e.message||String(e);
@@ -598,6 +578,37 @@ function copyEssay() {
 }
 function retryScoring() { document.getElementById('essay').value=savedEssay; showPhase('scoring'); runScoring(); }
 
+// ── Results ───────────────────────────────────────────────────
+function escH(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function highlightErrors(text, spellingErrs, grammarErrs) {
+  // Build a list of all ranges to highlight, prioritize spelling over grammar
+  let result = escH(text);
+  const allErrs = [
+    ...(spellingErrs||[]).map(e=>({...e, cls:'hi-spell'})),
+    ...(grammarErrs||[]).map(e=>({...e, cls:'hi-grammar'}))
+  ];
+  allErrs.forEach(e => {
+    if (!e.original) return;
+    const escaped = escH(e.original);
+    const tooltip = escH(e.reason||'');
+    result = result.replace(escaped, `<span class="${e.cls}" title="${tooltip}">${escaped}</span>`);
+  });
+  return result;
+}
+
+function buildRewriteHighlights(rewrite, corrections) {
+  let result = escH(rewrite);
+  (corrections||[]).forEach(c => {
+    if (!c.corrected) return;
+    const escaped = escH(c.corrected);
+    result = result.replace(escaped, `<span class="hi-added" title="${escH(c.reason||'')}">${escaped}</span>`);
+  });
+  return result;
+}
+
 function clbColor(c) { return c>=9?'clb-high':c>=7?'clb-mid':'clb-low'; }
 function clbLabel(c) {
   if(c>=10) return 'Exceptional — above CLB 9 target';
@@ -607,41 +618,17 @@ function clbLabel(c) {
   return 'Needs improvement — keep practising';
 }
 
-// Build comparison view with highlighted changes
-function buildComparison(original, rewrite, corrections) {
-  // Highlight original text with removals/changes marked
-  let origHTML = escapeHtml(original);
-  let rewriteHTML = escapeHtml(rewrite);
-
-  if (corrections && corrections.length) {
-    corrections.forEach(c => {
-      if (!c.original || !c.corrected) return;
-      const escapedOrig = escapeHtml(c.original);
-      const escapedCorr = escapeHtml(c.corrected);
-      // Mark in original
-      origHTML = origHTML.replace(escapedOrig,
-        `<span class="diff-removed" title="${escapeHtml(c.reason)}">${escapedOrig}</span>`);
-      // Mark in rewrite
-      rewriteHTML = rewriteHTML.replace(escapedCorr,
-        `<span class="diff-added" title="${escapeHtml(c.reason)}">${escapedCorr}</span>`);
-    });
-  }
-  return { origHTML, rewriteHTML };
-}
-
-function escapeHtml(str) {
-  return String(str||'')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-}
-
-function showResults(meta, data, essay) {
+function showResults(data, essay) {
+  const meta = TASK_META[savedTaskType];
   document.getElementById('results-title').textContent = meta.resultsTitle;
-  document.getElementById('results-sub').textContent = meta.resultsSub + (savedPromptTitle ? ' · ' + savedPromptTitle : '');
-  const s = data.scores||{}, clb = data.clb||6;
+  document.getElementById('results-sub').textContent = meta.resultsSub + ' · ' + savedPromptTitle;
 
+  const s = data.scores||{}, clb = data.clb||6;
+  const spellingErrs = data.spelling_errors||[];
+  const grammarErrs  = data.grammar_errors||[];
+  const corrections  = data.corrections||[];
+
+  // Scores
   const scoresHTML = [
     {label:'Task fulfillment',val:s.taskFulfillment},
     {label:'Coherence & organization',val:s.coherenceOrganization},
@@ -656,29 +643,54 @@ function showResults(meta, data, essay) {
     </div>`;
   }).join('');
 
+  // Inline error list (shown below comparison)
+  const allErrItems = [
+    ...spellingErrs.map(e=>`<div class="inline-err-item"><span class="err-badge-spell">SPELL</span><span class="err-orig">${escH(e.original)}</span><span class="err-arrow">→</span><span class="err-fix">${escH(e.corrected)}</span><span class="err-reason">${escH(e.reason)}</span></div>`),
+    ...grammarErrs.map(e=>`<div class="inline-err-item"><span class="err-badge-grammar">GRAMMAR</span><span class="err-orig">${escH(e.original)}</span><span class="err-arrow">→</span><span class="err-fix">${escH(e.corrected)}</span><span class="err-reason">${escH(e.reason)}</span></div>`)
+  ].join('');
+
+  const errListHTML = (spellingErrs.length + grammarErrs.length) > 0 ? `
+    <div class="vocab-card" style="margin-bottom:20px">
+      <div class="vocab-card-head">
+        <h3>Spelling &amp; grammar corrections</h3>
+        <p>${spellingErrs.length} spelling · ${grammarErrs.length} grammar issues found</p>
+      </div>
+      <div>${allErrItems}</div>
+    </div>` : `
+    <div class="feedback-card" style="margin-bottom:20px">
+      <div class="feedback-card-head">Spelling &amp; Grammar</div>
+      <div class="feedback-card-body" style="color:var(--green)">✓ No spelling or grammar errors detected.</div>
+    </div>`;
+
   // Comparison
-  const { origHTML, rewriteHTML } = buildComparison(essay, data.rewrite||'', data.corrections||[]);
+  const origHighlighted = highlightErrors(essay, spellingErrs, grammarErrs);
+  const rewriteHighlighted = buildRewriteHighlights(data.rewrite||'', corrections);
+  const rwc = wc(data.rewrite||'');
+
   const comparisonHTML = `
     <div class="comparison-card">
       <div class="comparison-head">
-        <div><h3>Side-by-side comparison</h3><p>Your answer vs CLB 9+ rewrite</p></div>
+        <h3>Side-by-side comparison</h3>
+        <p>Your answer vs CLB 9+ rewrite (${rwc} words)</p>
       </div>
       <div class="comparison-legend">
-        <div class="legend-item"><div class="legend-dot legend-removed"></div><span>Removed / changed in original</span></div>
-        <div class="legend-item"><div class="legend-dot legend-added"></div><span>Improved in CLB 9+ version</span></div>
+        <div class="legend-item"><div class="legend-dot leg-spell"></div>Spelling error</div>
+        <div class="legend-item"><div class="legend-dot leg-grammar"></div>Grammar error</div>
+        <div class="legend-item"><div class="legend-dot leg-added"></div>Improved in rewrite</div>
       </div>
       <div class="comparison-cols">
         <div class="comparison-col">
-          <div class="comparison-col-label">Your answer</div>
-          <div class="comparison-text">${origHTML}</div>
+          <div class="comparison-col-label">Your answer — ${wc(essay)} words</div>
+          <div class="comparison-text">${origHighlighted}</div>
         </div>
         <div class="comparison-col">
-          <div class="comparison-col-label">CLB 9+ rewrite</div>
-          <div class="comparison-text">${rewriteHTML}</div>
+          <div class="comparison-col-label">CLB 9+ rewrite — ${rwc} words</div>
+          <div class="comparison-text">${rewriteHighlighted}</div>
         </div>
       </div>
     </div>`;
 
+  // Vocab
   const vocabHTML = (data.vocabulary||[]).map(v=>`
     <div class="vocab-item">
       <div class="vocab-word-row"><span class="vocab-word">${v.word}</span><span class="vocab-type-badge">${v.type}</span></div>
@@ -692,7 +704,12 @@ function showResults(meta, data, essay) {
       <div class="struct-use">${st.use}</div>
     </div>`).join('');
 
-  const hasNext = currentTaskIdx < TASK_META.length - 1;
+  // Next button logic
+  const hasNext = queuePos < taskQueue.length - 1;
+  const nextBtn = hasNext
+    ? `<button class="btn-primary" onclick="nextTask()">Continue to ${taskQueue[queuePos+1] === 'survey' ? 'Task 2: Survey' : 'Task 1: Email'} →</button>`
+    : `<button class="btn-primary" onclick="showPhase('start')">Practice again ↺</button>`;
+
   document.getElementById('results-body').innerHTML = `
     <div class="clb-display">
       <div class="clb-number ${clbColor(clb)}">CLB ${clb}</div>
@@ -707,25 +724,30 @@ function showResults(meta, data, essay) {
       <div class="feedback-card-head">To reach CLB 9+</div>
       <div class="feedback-card-body">${data.improvements||'—'}</div>
     </div>
+    ${errListHTML}
     ${comparisonHTML}
     <div class="vocab-card">
-      <div class="vocab-card-head"><h3>High-score vocabulary — ${savedPromptTitle}</h3><p>Words specific to this topic to memorise and apply</p></div>
+      <div class="vocab-card-head"><h3>High-score vocabulary — ${escH(savedPromptTitle)}</h3><p>7 words specific to this topic</p></div>
       ${vocabHTML}
     </div>
     <div class="vocab-card">
-      <div class="vocab-card-head"><h3>Sentence structures that score CLB 9+</h3><p>Patterns tailored to this task type</p></div>
+      <div class="vocab-card-head"><h3>CLB 9+ sentence structures</h3><p>Patterns tailored to this task type</p></div>
       ${structHTML}
     </div>
     <div class="results-actions">
-      ${hasNext
-        ? `<button class="btn-primary" onclick="nextTask()">Continue to Task 2 →</button>`
-        : `<button class="btn-primary" onclick="startPractice()">Practice again ↺</button>`}
+      ${nextBtn}
       <button class="btn-ghost" onclick="showPhase('start')">← Home</button>
     </div>`;
+
   showPhase('results');
 }
 
-function nextTask() { currentTaskIdx++; clearDraft(); loadTask(currentTaskIdx); }
+function nextTask() {
+  queuePos++;
+  clearDraft();
+  spellErrors = []; grammarErrors = [];
+  loadTask(taskQueue[queuePos]);
+}
 </script>
 </body>
 </html>

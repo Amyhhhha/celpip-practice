@@ -499,21 +499,942 @@ const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 // ── Question bank ─────────────────────────────────────────────
 const EMAIL_TASKS = [
-  {title:'Community park conditions',prompt:`<p>You recently moved to a new neighbourhood and noticed the community park is in very poor condition — playground equipment is broken, there is litter everywhere, and lights are not working at night.</p><p>Write an email to your city councillor:</p><ul><li>Describe the problems you observed</li><li>Explain how these issues affect residents and children</li><li>Request specific improvements from the city</li></ul>`},
-  {title:'Noise complaint to landlord',prompt:`<p>Your upstairs neighbour has been making excessive noise late at night for two weeks, affecting your sleep and work.</p><p>Write an email to your landlord:</p><ul><li>Describe the noise problem and how long it has been happening</li><li>Explain how it is affecting your daily life</li><li>Request specific action to resolve the issue</li></ul>`},
-  {title:'Request for remote work',prompt:`<p>You have worked at your company for three years and want to request permission to work from home two days per week.</p><p>Write an email to your manager:</p><ul><li>Explain why you are making this request</li><li>Describe how your productivity will not be affected</li><li>Suggest a trial period and communication plan</li></ul>`},
-  {title:'Library program suggestion',prompt:`<p>Your local library has very few programs for teenagers and young adults.</p><p>Write an email to the library director:</p><ul><li>Describe the lack of programs for young adults</li><li>Explain why this is a community problem</li><li>Suggest two or three specific programs the library could offer</li></ul>`},
-  {title:'Road construction complaint',prompt:`<p>Road construction near your home has caused traffic delays, dust, noise, and blocked driveway access for four months.</p><p>Write an email to the municipal office:</p><ul><li>Describe the problems the construction has caused</li><li>Explain the impact on you and your neighbours</li><li>Request a timeline update and measures to reduce disruption</li></ul>`},
-  {title:'Childcare facility request',prompt:`<p>Many parents in your neighbourhood struggle to find affordable childcare. You believe a community centre would help.</p><p>Write an email to your city councillor:</p><ul><li>Describe the childcare problem in your area</li><li>Explain the impact on working parents</li><li>Request the city consider establishing an affordable childcare facility</li></ul>`}
-];
+
+  // ── COMPLAINTS ──────────────────────────────────────────────
+  {
+    title: 'Broken playground equipment in park',
+    prompt: `<p>You recently moved to a new neighbourhood and noticed that the community park is in very poor condition — the playground equipment is broken, there is litter everywhere, and the lights do not work at night.</p>
+<p>Write an email to your city councillor. In your email:</p>
+<ul><li>Describe the problems you have observed</li>
+<li>Explain how these issues affect residents and children</li>
+<li>Request specific improvements from the city</li></ul>`
+  },
+  {
+    title: 'Noisy upstairs neighbour',
+    prompt: `<p>Your upstairs neighbour has been making excessive noise late at night for the past two weeks, which is affecting your sleep and your ability to work the next day.</p>
+<p>Write an email to your landlord. In your email:</p>
+<ul><li>Describe the noise problem and how long it has been happening</li>
+<li>Explain the impact on your daily life and health</li>
+<li>Request that the landlord take specific action to resolve the issue</li></ul>`
+  },
+  {
+    title: 'Poor service at a restaurant',
+    prompt: `<p>You recently visited a restaurant for a special occasion, but the experience was very disappointing — the food was cold, the service was slow, and the staff were rude.</p>
+<p>Write an email to the restaurant manager. In your email:</p>
+<ul><li>Describe what happened during your visit</li>
+<li>Explain how the experience affected your special occasion</li>
+<li>State what you would like the manager to do in response</li></ul>`
+  },
+  {
+    title: 'Delayed online order',
+    prompt: `<p>You ordered a gift online two weeks ago and it has still not arrived, despite the company promising delivery within five business days. The tracking information has not been updated in over a week.</p>
+<p>Write an email to the company's customer service. In your email:</p>
+<ul><li>Describe the order and the delivery problem</li>
+<li>Explain why the delay is a problem for you</li>
+<li>Request a specific resolution — refund, replacement, or urgent delivery</li></ul>`
+  },
+  {
+    title: 'Road construction disruption',
+    prompt: `<p>Road construction near your home has been ongoing for four months. It has caused severe traffic delays, excessive dust and noise, and has blocked access to your driveway on several occasions.</p>
+<p>Write an email to the municipal works department. In your email:</p>
+<ul><li>Describe the problems the construction has caused</li>
+<li>Explain the impact on you and your neighbours</li>
+<li>Request a project timeline update and specific measures to reduce disruption</li></ul>`
+  },
+  {
+    title: 'Damaged item delivered by a moving company',
+    prompt: `<p>You recently hired a moving company to relocate your belongings. When you unpacked, you discovered that several valuable items were broken, and one piece of furniture was missing entirely.</p>
+<p>Write an email to the moving company manager. In your email:</p>
+<ul><li>Describe the damaged and missing items</li>
+<li>Explain the value and sentimental importance of the items</li>
+<li>Request compensation or replacement</li></ul>`
+  },
+  {
+    title: 'Faulty product from a store',
+    prompt: `<p>You bought a new appliance from an electronics store three weeks ago and it stopped working after one week. When you went back to the store, the staff refused to help you.</p>
+<p>Write an email to the store manager. In your email:</p>
+<ul><li>Describe the product and the problem you experienced</li>
+<li>Explain what happened when you tried to get help in the store</li>
+<li>Request a refund or replacement, and explain what action you will take if nothing is done</li></ul>`
+  },
+  {
+    title: 'Incorrect billing from a utility company',
+    prompt: `<p>You received an electricity bill that is three times higher than your usual amount. You have not changed your usage habits, and you believe there is an error in the billing.</p>
+<p>Write an email to the utility company. In your email:</p>
+<ul><li>Explain the billing discrepancy and provide relevant account details</li>
+<li>Describe why you believe the bill is incorrect</li>
+<li>Request an investigation and a corrected bill</li></ul>`
+  },
+  {
+    title: 'Unsafe condition in an apartment building',
+    prompt: `<p>The fire escape in your apartment building has been broken for six weeks. You have reported it to your landlord twice but nothing has been done.</p>
+<p>Write an email to the local fire safety authority. In your email:</p>
+<ul><li>Describe the unsafe condition and its location</li>
+<li>Explain how long this has been a problem and what steps you have already taken</li>
+<li>Request an official inspection and enforcement action</li></ul>`
+  },
+  {
+    title: 'Overcrowded public bus route',
+    prompt: `<p>The bus route you take to work every day has become extremely overcrowded since a nearby school reopened. Buses frequently pass your stop without picking up passengers, making you late for work.</p>
+<p>Write an email to the city transit authority. In your email:</p>
+<ul><li>Describe the overcrowding problem and which route it affects</li>
+<li>Explain how this is affecting you and other commuters</li>
+<li>Suggest specific solutions such as additional buses or adjusted scheduling</li></ul>`
+  },
+
+  // ── REQUESTS ────────────────────────────────────────────────
+  {
+    title: 'Request to work from home',
+    prompt: `<p>You have been working at your company for three years and would like to request permission to work from home two days per week for personal and professional reasons.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Explain your reasons for making this request</li>
+<li>Describe how working from home will not affect your productivity</li>
+<li>Suggest a trial period and a communication plan with the team</li></ul>`
+  },
+  {
+    title: 'Request for a salary review',
+    prompt: `<p>You have been in your current position for two years, have taken on significant additional responsibilities, and have received excellent performance reviews. You believe your salary no longer reflects your contributions.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Describe your achievements and additional responsibilities since your last salary review</li>
+<li>Explain why you believe a salary increase is appropriate</li>
+<li>Request a meeting to discuss compensation</li></ul>`
+  },
+  {
+    title: 'Request for a reference letter',
+    prompt: `<p>You are applying for a graduate program and need a reference letter from a professor you worked closely with two years ago.</p>
+<p>Write an email to the professor. In your email:</p>
+<ul><li>Remind the professor of who you are and the work you did together</li>
+<li>Explain what you are applying for and why you chose this program</li>
+<li>Request a reference letter and provide the deadline and submission details</li></ul>`
+  },
+  {
+    title: 'Request to extend a library book loan',
+    prompt: `<p>You borrowed several books from your university library for a research project. You need more time to finish using them but are unable to visit the library in person before the due date.</p>
+<p>Write an email to the library. In your email:</p>
+<ul><li>Identify the books you borrowed and their due date</li>
+<li>Explain why you need an extension</li>
+<li>Request a specific extension period and ask about the process</li></ul>`
+  },
+  {
+    title: 'Request for a parking permit',
+    prompt: `<p>You recently moved to a new apartment and discovered that street parking in your area requires a resident permit. You need one urgently as you use your car daily for work.</p>
+<p>Write an email to the city parking authority. In your email:</p>
+<ul><li>Explain your situation and why you need the permit urgently</li>
+<li>Provide relevant information about your address and vehicle</li>
+<li>Request information about how to obtain the permit quickly</li></ul>`
+  },
+  {
+    title: 'Request for a flexible work schedule',
+    prompt: `<p>You have recently enrolled in a part-time evening course that requires you to leave work one hour early on Tuesdays and Thursdays for the next six months.</p>
+<p>Write an email to your supervisor. In your email:</p>
+<ul><li>Explain why you need to adjust your schedule</li>
+<li>Describe how you plan to make up the missed time</li>
+<li>Request approval and offer to discuss the arrangement</li></ul>`
+  },
+  {
+    title: 'Request to borrow a neighbour's equipment',
+    prompt: `<p>You are renovating your backyard and need to borrow a power drill and ladder from your neighbour, whom you know well. You will only need them for one weekend.</p>
+<p>Write an email to your neighbour. In your email:</p>
+<ul><li>Explain what you are working on and why you need the equipment</li>
+<li>Specify when you would need to borrow the items and for how long</li>
+<li>Offer something in return and assure them you will take good care of the items</li></ul>`
+  },
+  {
+    title: 'Request for a transfer to another branch',
+    prompt: `<p>Your company has an office in a city closer to where your family lives. You would like to request an internal transfer for personal reasons while continuing your current role.</p>
+<p>Write an email to your HR manager. In your email:</p>
+<ul><li>Explain your reasons for requesting the transfer</li>
+<li>Describe how your skills and experience will continue to benefit the company</li>
+<li>Ask about the process for applying for an internal transfer</li></ul>`
+  },
+  {
+    title: 'Request for medical leave',
+    prompt: `<p>You have been advised by your doctor to take two weeks off work to recover from a medical procedure. You need to formally notify your employer and arrange coverage for your responsibilities.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Inform your manager of the situation and the dates you will be absent</li>
+<li>Suggest how your responsibilities can be covered while you are away</li>
+<li>Ask about the process for submitting your medical leave documentation</li></ul>`
+  },
+  {
+    title: 'Request for information about a course',
+    prompt: `<p>You are interested in enrolling in a professional development course at a local college but need more information before making a decision.</p>
+<p>Write an email to the admissions office. In your email:</p>
+<ul><li>Explain your background and why you are interested in the course</li>
+<li>Ask specific questions about course content, schedule, and fees</li>
+<li>Inquire about the application process and any prerequisites</li></ul>`
+  },
+
+  // ── SUGGESTIONS / RECOMMENDATIONS ───────────────────────────
+  {
+    title: 'Suggesting programs for a public library',
+    prompt: `<p>You regularly visit your local public library and have noticed that there are very few programs or events for teenagers and young adults in your community.</p>
+<p>Write an email to the library director. In your email:</p>
+<ul><li>Describe the current lack of programs for young adults</li>
+<li>Explain why addressing this gap would benefit the community</li>
+<li>Suggest two or three specific programs the library could offer</li></ul>`
+  },
+  {
+    title: 'Recommending a friend for a job',
+    prompt: `<p>Your company has posted a job opening and you know someone who would be an excellent candidate. You want to recommend this person to the hiring manager before the formal application process.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Introduce the person you are recommending and your relationship to them</li>
+<li>Describe their relevant skills and experience</li>
+<li>Explain why you believe they would be a strong fit for the role</li></ul>`
+  },
+  {
+    title: 'Suggesting workplace improvements',
+    prompt: `<p>You have noticed that employee morale in your office has declined recently. You have some ideas for low-cost improvements that you believe could make a significant difference.</p>
+<p>Write an email to your HR manager. In your email:</p>
+<ul><li>Describe the morale problem you have observed</li>
+<li>Explain why you believe it is important to address this now</li>
+<li>Suggest two or three specific improvements the company could implement</li></ul>`
+  },
+  {
+    title: 'Suggesting a new recycling program',
+    prompt: `<p>You have noticed that your apartment building does not have an adequate recycling system, and most recyclable waste ends up in the general garbage.</p>
+<p>Write an email to your building manager. In your email:</p>
+<ul><li>Describe the current recycling situation in the building</li>
+<li>Explain the environmental and community benefits of a better system</li>
+<li>Suggest specific steps the building management could take</li></ul>`
+  },
+  {
+    title: 'Recommending a local business to a friend',
+    prompt: `<p>Your friend has just moved to your city and has asked for recommendations for a reliable auto repair shop. You have had excellent experiences with a local mechanic.</p>
+<p>Write an email to your friend. In your email:</p>
+<ul><li>Recommend the business and explain how you know it</li>
+<li>Describe the specific qualities that make this business worth visiting</li>
+<li>Provide any useful practical information such as location, hours, or tips</li></ul>`
+  },
+  {
+    title: 'Suggesting a team-building activity',
+    prompt: `<p>Your department has been under a lot of pressure recently and team relationships have become strained. Your manager has asked for suggestions for a team-building activity.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Acknowledge the current team dynamic and why an activity would help</li>
+<li>Suggest a specific team-building activity and explain why it is suitable</li>
+<li>Provide practical details such as cost, duration, and logistics</li></ul>`
+  },
+
+  // ── INVITATIONS / ANNOUNCEMENTS ─────────────────────────────
+  {
+    title: 'Inviting a colleague to a farewell party',
+    prompt: `<p>A well-liked colleague is leaving the company after ten years. You are organising a farewell gathering and want to invite your team.</p>
+<p>Write an email to your colleagues. In your email:</p>
+<ul><li>Announce the event and explain the reason for the gathering</li>
+<li>Provide the key details — date, time, location, and any costs</li>
+<li>Ask people to confirm their attendance and suggest they bring a small contribution</li></ul>`
+  },
+  {
+    title: 'Inviting a friend to a community event',
+    prompt: `<p>Your neighbourhood association is hosting a cultural festival next weekend. You think your friend, who recently moved to the area, would enjoy attending.</p>
+<p>Write an email to your friend. In your email:</p>
+<ul><li>Describe the event and what it involves</li>
+<li>Explain why you think your friend would enjoy it</li>
+<li>Suggest meeting up and provide the key details about the event</li></ul>`
+  },
+  {
+    title: 'Announcing a change of address',
+    prompt: `<p>You have recently moved to a new home and want to inform your contacts — friends, family, and professional contacts — of your new address and phone number.</p>
+<p>Write an email to a close friend who lives in another city. In your email:</p>
+<ul><li>Share your new contact information</li>
+<li>Briefly explain the reason for the move</li>
+<li>Invite your friend to visit and describe something appealing about the new place</li></ul>`
+  },
+  {
+    title: 'Inviting a speaker to a community event',
+    prompt: `<p>You are organising a community career night and would like to invite a local business owner you know to speak about entrepreneurship.</p>
+<p>Write an email to the business owner. In your email:</p>
+<ul><li>Introduce yourself and describe the event and its purpose</li>
+<li>Explain why you would like this person specifically to speak</li>
+<li>Provide the event details and ask if they are available and interested</li></ul>`
+  },
+
+  // ── APOLOGIES ───────────────────────────────────────────────
+  {
+    title: 'Apologising for missing a meeting',
+    prompt: `<p>You were supposed to attend an important client meeting yesterday but had a family emergency and could not make it. You did not have time to notify anyone in advance.</p>
+<p>Write an email to the client. In your email:</p>
+<ul><li>Apologise sincerely for your absence and explain briefly what happened</li>
+<li>Acknowledge any inconvenience your absence may have caused</li>
+<li>Propose rescheduling the meeting and suggest two or three available times</li></ul>`
+  },
+  {
+    title: 'Apologising for a late project submission',
+    prompt: `<p>You are a student and you submitted an assignment three days after the deadline due to a combination of illness and technical problems. You want to explain the situation to your professor.</p>
+<p>Write an email to your professor. In your email:</p>
+<ul><li>Apologise for the late submission and take responsibility</li>
+<li>Briefly explain the circumstances that led to the delay</li>
+<li>Ask whether the assignment will be accepted and if any grade penalty will apply</li></ul>`
+  },
+  {
+    title: 'Apologising to a neighbour',
+    prompt: `<p>You hosted a party last weekend that went later than planned. The noise disturbed your neighbour, who mentioned it to you the next morning.</p>
+<p>Write an email to your neighbour. In your email:</p>
+<ul><li>Sincerely apologise for the disruption</li>
+<li>Acknowledge the impact your party had on your neighbour's evening</li>
+<li>Assure them this will not happen again and offer to make it up to them</li></ul>`
+  },
+  {
+    title: 'Apologising for cancelling plans',
+    prompt: `<p>You had arranged to visit a friend in another city this weekend but an urgent work commitment means you have to cancel at the last minute. Your friend had already made plans based on your visit.</p>
+<p>Write an email to your friend. In your email:</p>
+<ul><li>Apologise sincerely for cancelling at short notice</li>
+<li>Explain the reason for the cancellation</li>
+<li>Suggest a specific alternative date and propose something to make up for the inconvenience</li></ul>`
+  },
+
+  // ── THANK YOU ────────────────────────────────────────────────
+  {
+    title: 'Thanking a mentor for career advice',
+    prompt: `<p>A senior colleague took time out of their schedule to mentor you over the past year. Their advice helped you secure a promotion. You want to express your gratitude.</p>
+<p>Write an email to your mentor. In your email:</p>
+<ul><li>Thank them sincerely and explain what their mentorship meant to you</li>
+<li>Describe a specific piece of advice that made a real difference</li>
+<li>Let them know about your recent achievement and offer to return the favour in the future</li></ul>`
+  },
+  {
+    title: 'Thanking a host after a stay',
+    prompt: `<p>You recently stayed at a friend's home for a week while attending a conference in their city. They went out of their way to make you comfortable.</p>
+<p>Write an email to your friend. In your email:</p>
+<ul><li>Thank them warmly for their hospitality</li>
+<li>Mention one or two specific things they did that you particularly appreciated</li>
+<li>Invite them to visit you and mention how you would return the favour</li></ul>`
+  },
+  {
+    title: 'Thank you letter after a job interview',
+    prompt: `<p>You had a job interview yesterday with a company you are very excited about. You want to follow up with a thank-you email that also reinforces your interest in the position.</p>
+<p>Write an email to the hiring manager. In your email:</p>
+<ul><li>Thank them for the opportunity to interview</li>
+<li>Reference a specific topic from the interview and connect it to your skills</li>
+<li>Reaffirm your enthusiasm for the role and the company</li></ul>`
+  },
+  {
+    title: 'Thanking a teacher for their support',
+    prompt: `<p>A teacher went above and beyond to help you pass a difficult exam that was critical for your career. You have now received your results and passed.</p>
+<p>Write an email to the teacher. In your email:</p>
+<ul><li>Share your good news and thank the teacher for their role in your success</li>
+<li>Describe specifically how their support made a difference</li>
+<li>Let them know what you plan to do next with this achievement</li></ul>`
+  },
+
+  // ── INFORMATION / FOLLOW-UP ──────────────────────────────────
+  {
+    title: 'Following up on a job application',
+    prompt: `<p>You submitted a job application three weeks ago and have not heard back. The job posting said applicants would be contacted within two weeks.</p>
+<p>Write an email to the HR department. In your email:</p>
+<ul><li>Remind them of the position you applied for and the date of your application</li>
+<li>Express your continued interest in the role</li>
+<li>Politely ask for an update on the status of your application</li></ul>`
+  },
+  {
+    title: 'Requesting information about a rental property',
+    prompt: `<p>You saw an advertisement for an apartment rental that seems ideal for your needs, but the listing lacks key details you need before deciding whether to view it.</p>
+<p>Write an email to the property manager. In your email:</p>
+<ul><li>Express your interest in the property</li>
+<li>Ask specific questions about rent, utilities, lease terms, and pet policy</li>
+<li>Request to schedule a viewing at a time that is convenient</li></ul>`
+  },
+  {
+    title: 'Asking about childcare availability',
+    prompt: `<p>You are returning to work after parental leave and are looking for a licensed childcare centre near your workplace for your 18-month-old child.</p>
+<p>Write an email to a childcare centre. In your email:</p>
+<ul><li>Describe your child and your childcare needs</li>
+<li>Ask specific questions about availability, hours, fees, and the program</li>
+<li>Request a visit to tour the facility</li></ul>`
+  },
+  {
+    title: 'Inquiring about a community program',
+    prompt: `<p>You read about a free settlement support program for newcomers in your community. You are interested in joining but need more details before signing up.</p>
+<p>Write an email to the program coordinator. In your email:</p>
+<ul><li>Introduce yourself and explain your background briefly</li>
+<li>Ask specific questions about the program content, schedule, and eligibility</li>
+<li>Ask how to register and whether there is a waitlist</li></ul>`
+  },
+
+  // ── NEIGHBOURHOOD / COMMUNITY ────────────────────────────────
+  {
+    title: 'Requesting a childcare facility in the neighbourhood',
+    prompt: `<p>Many parents in your neighbourhood, including yourself, struggle to find affordable and accessible childcare. You believe a community childcare centre would greatly benefit local families.</p>
+<p>Write an email to your city councillor. In your email:</p>
+<ul><li>Describe the childcare problem faced by families in your area</li>
+<li>Explain the impact on working parents and the broader community</li>
+<li>Request that the city consider establishing an affordable childcare facility</li></ul>`
+  },
+  {
+    title: 'Reporting an abandoned vehicle',
+    prompt: `<p>An abandoned car has been parked on your street for over three weeks. It is taking up a valuable parking space, appears to have no licence plates, and is beginning to look like a safety hazard.</p>
+<p>Write an email to your local bylaw enforcement office. In your email:</p>
+<ul><li>Describe the vehicle and its location</li>
+<li>Explain how long it has been there and why it is a problem</li>
+<li>Request that the city investigate and have the vehicle removed</li></ul>`
+  },
+  {
+    title: 'Requesting better street lighting',
+    prompt: `<p>Several streetlights on your block have been out for weeks. Residents feel unsafe walking at night, and there have been two minor accidents at an intersection.</p>
+<p>Write an email to your city councillor. In your email:</p>
+<ul><li>Describe the lighting problem and the specific locations affected</li>
+<li>Explain the safety concerns for pedestrians and drivers</li>
+<li>Request urgent repair and ask for a timeline</li></ul>`
+  },
+  {
+    title: 'Complaining about a neighbour's dog',
+    prompt: `<p>Your neighbour's dog barks constantly throughout the day and sometimes late at night. You have tried speaking to the neighbour directly but nothing has changed.</p>
+<p>Write an email to your building manager or strata council. In your email:</p>
+<ul><li>Describe the problem and how long it has been occurring</li>
+<li>Explain the impact on you and other residents</li>
+<li>Request that the building management enforce the pet noise bylaws</li></ul>`
+  },
+  {
+    title: 'Requesting a crosswalk near a school',
+    prompt: `<p>There is no crosswalk on a busy road near your children's school, making it dangerous for students to cross in the morning and afternoon. Several near-accidents have already occurred.</p>
+<p>Write an email to your city's traffic safety department. In your email:</p>
+<ul><li>Describe the location and the safety hazard</li>
+<li>Provide evidence of why action is needed urgently</li>
+<li>Request the installation of a crosswalk or pedestrian signal</li></ul>`
+  },
+
+  // ── WORK / PROFESSIONAL ──────────────────────────────────────
+  {
+    title: 'Reporting a workplace safety concern',
+    prompt: `<p>You have noticed that a piece of equipment in your workplace is malfunctioning and poses a potential safety risk to employees. You have mentioned it verbally to your supervisor twice but nothing has been done.</p>
+<p>Write an email to the workplace health and safety officer. In your email:</p>
+<ul><li>Describe the equipment and the specific safety concern</li>
+<li>Explain what steps you have already taken to report this</li>
+<li>Request an urgent inspection and repair</li></ul>`
+  },
+  {
+    title: 'Requesting training opportunities',
+    prompt: `<p>Your job role has evolved significantly and now requires skills in software that you have not been formally trained on. You are managing with self-teaching but believe proper training would make you more effective.</p>
+<p>Write an email to your manager. In your email:</p>
+<ul><li>Describe the skills gap and how it is affecting your work</li>
+<li>Identify a specific training course or program that would help</li>
+<li>Request approval and support to attend the training</li></ul>`
+  },
+  {
+    title: 'Introducing yourself to a new team',
+    prompt: `<p>You are starting a new job next week and will be joining a team you have never met. Your manager has asked you to send an introductory email to the team before your first day.</p>
+<p>Write an email to your new team. In your email:</p>
+<ul><li>Introduce yourself and share some relevant professional background</li>
+<li>Express your enthusiasm for joining the team and the company</li>
+<li>Mention a personal interest or something you are looking forward to learning from the team</li></ul>`
+  },
+  {
+    title: 'Notifying about a project delay',
+    prompt: `<p>You are managing a project that has hit unexpected delays due to supplier issues. The project will be completed two weeks later than planned. You need to inform your client.</p>
+<p>Write an email to the client. In your email:</p>
+<ul><li>Inform the client of the delay and the new estimated completion date</li>
+<li>Explain the reason for the delay honestly</li>
+<li>Describe the steps you are taking to minimise further delays and propose a solution</li></ul>`
+  },
+  {
+    title: 'Asking for feedback on your work',
+    prompt: `<p>You completed a major project three weeks ago and submitted it to your supervisor. You have received no feedback yet and would like to understand how it was received before your performance review.</p>
+<p>Write an email to your supervisor. In your email:</p>
+<ul><li>Reference the project and when you submitted it</li>
+<li>Explain why you are seeking feedback at this stage</li>
+<li>Request a meeting or written feedback within a specific timeframe</li></ul>`
+  },
+
+  // ── SCHOOL / ACADEMIC ────────────────────────────────────────
+  {
+    title: 'Requesting an extension on an assignment',
+    prompt: `<p>You are a student and have been dealing with a serious family situation that has made it impossible to complete your assignment by the original deadline. This is your first time requesting an extension.</p>
+<p>Write an email to your professor. In your email:</p>
+<ul><li>Explain your situation honestly without oversharing personal details</li>
+<li>Describe how this has affected your ability to complete the work</li>
+<li>Request a specific extension and state when you will be able to submit</li></ul>`
+  },
+  {
+    title: 'Disputing a grade',
+    prompt: `<p>You received a grade on your essay that you believe does not reflect the quality of your work. After re-reading the marking rubric, you think there may have been an error in the evaluation.</p>
+<p>Write an email to your professor. In your email:</p>
+<ul><li>Refer to the specific assignment and the grade you received</li>
+<li>Respectfully explain which aspects of the rubric you believe were not applied correctly</li>
+<li>Request a review or a meeting to discuss the evaluation</li></ul>`
+  },
+  {
+    title: 'Asking about scholarship opportunities',
+    prompt: `<p>You are an international student who has been accepted to a program but is concerned about the financial burden. You want to find out about available scholarships or bursaries.</p>
+<p>Write an email to the financial aid office. In your email:</p>
+<ul><li>Introduce yourself and your program</li>
+<li>Describe your financial situation briefly and professionally</li>
+<li>Ask about available scholarships, eligibility criteria, and application deadlines</li></ul>`
+  },
+  {
+    title: 'Reporting a problem with online learning platform',
+    prompt: `<p>Your school's online learning platform has been experiencing repeated technical issues that have prevented you from accessing course materials and submitting assignments on time for the past week.</p>
+<p>Write an email to the IT support department. In your email:</p>
+<ul><li>Describe the technical problems you are experiencing in detail</li>
+<li>Explain the impact on your coursework and any deadlines affected</li>
+<li>Request urgent technical support and ask whether deadline extensions will be granted</li></ul>`
+  },
+
+  // ── HEALTH / SERVICES ────────────────────────────────────────
+  {
+    title: 'Requesting accessible facilities',
+    prompt: `<p>You use a wheelchair and have noticed that the community recreation centre where you are a member has several accessibility barriers — broken elevator, no accessible change room, and narrow doorways.</p>
+<p>Write an email to the recreation centre director. In your email:</p>
+<ul><li>Describe the specific accessibility barriers you have encountered</li>
+<li>Explain how these barriers affect your ability to use the facility</li>
+<li>Request specific improvements and mention your rights under accessibility legislation</li></ul>`
+  },
+  {
+    title: 'Complaining about a medical clinic',
+    prompt: `<p>You have been a patient at a walk-in clinic for two years. Recently, you waited over three hours for a scheduled appointment, were seen for less than five minutes, and felt your concerns were dismissed.</p>
+<p>Write an email to the clinic administrator. In your email:</p>
+<ul><li>Describe what happened during your recent visit</li>
+<li>Explain how this experience affected your trust in the clinic</li>
+<li>Request a response and suggest improvements to the patient experience</li></ul>`
+  },
+  {
+    title: 'Requesting a home care assessment',
+    prompt: `<p>Your elderly parent recently returned home from hospital after a fall. They live alone and you are concerned about their safety. You would like to arrange a home care assessment.</p>
+<p>Write an email to the local health authority. In your email:</p>
+<ul><li>Describe your parent's situation and your concerns</li>
+<li>Explain what kind of support you believe they need</li>
+<li>Request an assessment visit and ask about the services available</li></ul>`
+  },
+
+  // ── TRAVEL / TOURISM ─────────────────────────────────────────
+  {
+    title: 'Complaining about a hotel stay',
+    prompt: `<p>You recently stayed at a hotel that was significantly different from what was advertised online. The room was dirty, the air conditioning was broken, and the promised pool was closed for the entire duration of your stay.</p>
+<p>Write an email to the hotel manager. In your email:</p>
+<ul><li>Describe the problems you experienced</li>
+<li>Explain how these issues affected your stay and the reason for your trip</li>
+<li>Request compensation — a partial refund or a complimentary future stay</li></ul>`
+  },
+  {
+    title: 'Requesting a flight refund',
+    prompt: `<p>Your flight was cancelled by the airline with less than 12 hours' notice due to a scheduling issue on the airline's part. You were offered a rebooking but it did not meet your needs, so you declined. You are entitled to a refund.</p>
+<p>Write an email to the airline's customer service. In your email:</p>
+<ul><li>Describe the cancellation and provide your booking details</li>
+<li>Explain why the alternative offered did not work for you</li>
+<li>Request a full refund and ask about the timeline for processing</li></ul>`
+  },
+  {
+    title: 'Asking a friend for travel advice',
+    prompt: `<p>Your friend recently visited Japan for two weeks and had an amazing trip. You are planning a similar trip for next summer and want their advice on itinerary, budget, and practical tips.</p>
+<p>Write an email to your friend. In your email:</p>
+<ul><li>Express your excitement about planning the trip</li>
+<li>Ask specific questions about their experience — highlights, costs, and recommendations</li>
+<li>Ask for advice on the best time to go and any things to avoid</li></ul>`
+  }
+
+]; // END EMAIL_TASKS (50 questions)
+
+
 const SURVEY_TASKS = [
-  {title:'Community improvement priority',prompt:`<p><strong>Community Improvement Survey</strong></p><p>Your city is investing in one community project. Which should be the top priority?</p><ul><li>Expanding and modernising public libraries</li><li>Building new recreational facilities (gym, pool, sports courts)</li><li>Improving public transportation routes and frequency</li></ul><p>Choose one and write a detailed response with reasons, examples, and impact on different groups.</p>`},
-  {title:'Reducing traffic congestion',prompt:`<p><strong>City Transportation Survey</strong></p><p>Your city wants to reduce traffic congestion. Which approach is most effective?</p><ul><li>Expanding cycling lanes and encouraging cycling to work</li><li>Increasing parking fees in the city centre</li><li>Subsidising public transit passes for all residents</li></ul><p>Choose one and explain your reasoning, benefits, drawbacks, and why it is better than the alternatives.</p>`},
-  {title:'Supporting new immigrants',prompt:`<p><strong>Newcomer Settlement Survey</strong></p><p>Which initiative would best support immigrants settling in your city?</p><ul><li>Free language and job-skills training programs</li><li>A mentorship program pairing newcomers with established residents</li><li>Financial assistance for the first six months</li></ul><p>Choose one, discuss specific benefits, who benefits most, and why this approach is most effective.</p>`},
-  {title:'School schedule format',prompt:`<p><strong>School Board Survey</strong></p><p>The school board is changing the school day format. Which do you prefer?</p><ul><li>A four-day school week with longer daily hours</li><li>Five-day week starting one hour later</li><li>Flexible scheduling — morning or afternoon sessions</li></ul><p>Choose one and explain the impact on students, parents, and teachers.</p>`},
-  {title:'Addressing homelessness',prompt:`<p><strong>Social Services Survey</strong></p><p>Which approach to addressing homelessness should be prioritised?</p><ul><li>Building more emergency shelters and temporary housing</li><li>Investing in mental health and addiction treatment</li><li>Subsidised permanent housing with on-site support services</li></ul><p>Choose one with specific reasons and consider short-term and long-term impact.</p>`},
-  {title:'Environmental action priority',prompt:`<p><strong>Environmental Action Survey</strong></p><p>Which environmental initiative should be the top priority?</p><ul><li>Planting 100,000 trees over five years</li><li>Requiring new buildings to meet green energy standards</li><li>Providing rebates for solar panels or EV chargers</li></ul><p>Explain why your choice has the greatest impact and compare to the other options.</p>`}
-];
+
+  // ── COMMUNITY & GOVERNMENT ───────────────────────────────────
+  {
+    title: 'Top priority for community investment',
+    prompt: `<p><strong>Community Improvement Survey</strong></p>
+<p>Your city is planning a major investment in one community project. Which should be the top priority?</p>
+<ul><li>Expanding and modernising public libraries</li>
+<li>Building new recreational facilities (gym, pool, sports courts)</li>
+<li>Improving public transportation routes and frequency</li></ul>
+<p>Choose one option. Explain your choice with specific reasons, examples, and consider the impact on different groups in the community.</p>`
+  },
+  {
+    title: 'Best way to reduce traffic congestion',
+    prompt: `<p><strong>City Transportation Survey</strong></p>
+<p>Your city wants to reduce traffic congestion. Which approach would be most effective?</p>
+<ul><li>Expanding dedicated cycling lanes and encouraging cycling to work</li>
+<li>Increasing downtown parking fees significantly to discourage driving</li>
+<li>Fully subsidising public transit passes for all residents</li></ul>
+<p>Choose one option. Explain your reasoning, potential benefits and drawbacks, and why your choice is better than the alternatives.</p>`
+  },
+  {
+    title: 'How to address housing affordability',
+    prompt: `<p><strong>Housing Policy Survey</strong></p>
+<p>Your city is facing a housing affordability crisis. Which approach should the government prioritise?</p>
+<ul><li>Building more social housing funded by public money</li>
+<li>Offering tax incentives to developers who build affordable units</li>
+<li>Introducing rent control policies to limit annual rent increases</li></ul>
+<p>Choose one option. Justify your choice with specific reasoning and address the strengths and weaknesses of your approach.</p>`
+  },
+  {
+    title: 'Improving public safety in the neighbourhood',
+    prompt: `<p><strong>Community Safety Survey</strong></p>
+<p>Residents are concerned about public safety in your neighbourhood. Which solution would be most effective?</p>
+<ul><li>Hiring more police officers to increase patrols</li>
+<li>Investing in community programs for at-risk youth</li>
+<li>Installing more surveillance cameras in public spaces</li></ul>
+<p>Choose one option. Explain your reasoning and discuss both the short-term and long-term impact of your choice.</p>`
+  },
+  {
+    title: 'Best use of an empty city lot',
+    prompt: `<p><strong>City Planning Survey</strong></p>
+<p>The city owns a large empty lot in a central neighbourhood. What should it be used for?</p>
+<ul><li>A new public park and green space</li>
+<li>Affordable housing units</li>
+<li>A community hub with social services, childcare, and a library branch</li></ul>
+<p>Choose one option and write a detailed response. Consider the needs of different community members and explain why your choice provides the greatest overall benefit.</p>`
+  },
+  {
+    title: 'How to fund a new community centre',
+    prompt: `<p><strong>Community Centre Funding Survey</strong></p>
+<p>The city wants to build a new community centre but needs to decide how to fund it. Which approach do you support?</p>
+<ul><li>Increasing property taxes slightly for all homeowners</li>
+<li>Seeking private sponsorships and naming rights from local businesses</li>
+<li>Charging user fees for most programs and services at the centre</li></ul>
+<p>Choose one option. Discuss the fairness, effectiveness, and potential drawbacks of your chosen approach.</p>`
+  },
+
+  // ── ENVIRONMENT ──────────────────────────────────────────────
+  {
+    title: 'Top environmental initiative for the city',
+    prompt: `<p><strong>Environmental Action Survey</strong></p>
+<p>Your city wants to take meaningful action on the environment. Which initiative should be the top priority?</p>
+<ul><li>Planting 100,000 trees across the city over five years</li>
+<li>Requiring all new buildings to meet strict green energy standards</li>
+<li>Providing rebates for residents who install solar panels or electric vehicle chargers</li></ul>
+<p>Choose one option. Explain why your choice would have the greatest impact and compare it to the other options.</p>`
+  },
+  {
+    title: 'Reducing single-use plastic waste',
+    prompt: `<p><strong>Waste Reduction Survey</strong></p>
+<p>Your city wants to significantly reduce single-use plastic waste. Which policy should be implemented?</p>
+<ul><li>Banning single-use plastics in all restaurants and retail stores</li>
+<li>Charging a fee for every plastic bag or container used at checkout</li>
+<li>Investing in public education campaigns about plastic waste reduction</li></ul>
+<p>Choose one option. Explain your reasoning, consider potential resistance from businesses or the public, and discuss how effective your chosen approach would be.</p>`
+  },
+  {
+    title: 'Best approach to encouraging public transit use',
+    prompt: `<p><strong>Green Transportation Survey</strong></p>
+<p>The city wants to encourage more residents to use public transit instead of driving. Which approach is most likely to succeed?</p>
+<ul><li>Making public transit completely free for all residents</li>
+<li>Improving the reliability, frequency, and coverage of transit routes</li>
+<li>Introducing congestion pricing — charging drivers a fee to enter the city centre</li></ul>
+<p>Choose one option. Justify your choice with specific examples and address possible challenges.</p>`
+  },
+  {
+    title: 'Managing urban green spaces',
+    prompt: `<p><strong>Parks and Environment Survey</strong></p>
+<p>Your city is deciding how to best manage its existing green spaces and parks. Which approach do you support?</p>
+<ul><li>Allowing food vendors and commercial activities in parks to generate revenue for maintenance</li>
+<li>Keeping parks entirely free of commercial activity to preserve natural and community character</li>
+<li>Converting some underused parks into community gardens managed by local residents</li></ul>
+<p>Choose one option and write a detailed response explaining your preference and addressing the tradeoffs.</p>`
+  },
+
+  // ── EDUCATION ────────────────────────────────────────────────
+  {
+    title: 'Best school schedule format',
+    prompt: `<p><strong>School Board Community Survey</strong></p>
+<p>The school board is considering changing the school day format. Which do you prefer?</p>
+<ul><li>A four-day school week with longer daily hours</li>
+<li>Keeping the standard five-day week but starting school one hour later each day</li>
+<li>Flexible scheduling where students choose morning or afternoon sessions</li></ul>
+<p>Choose one option. Explain your reasoning and consider the impact on students, parents, and teachers.</p>`
+  },
+  {
+    title: 'How to improve student performance in schools',
+    prompt: `<p><strong>Education Quality Survey</strong></p>
+<p>Student performance in your city's public schools has been declining. Which intervention should be prioritised?</p>
+<ul><li>Reducing class sizes so teachers can give more individual attention</li>
+<li>Increasing teacher salaries to attract and retain top educators</li>
+<li>Introducing mandatory after-school tutoring programs for struggling students</li></ul>
+<p>Choose one option. Provide specific reasoning for your choice and consider both the short and long-term outcomes.</p>`
+  },
+  {
+    title: 'Technology in the classroom',
+    prompt: `<p><strong>Education Technology Survey</strong></p>
+<p>Your school board is deciding on the role of technology in classrooms. Which policy do you support?</p>
+<ul><li>Providing every student with a personal tablet or laptop for use in all classes</li>
+<li>Banning personal devices and using technology only through school-managed equipment</li>
+<li>Using technology only in subjects where it provides a clear educational benefit</li></ul>
+<p>Choose one option. Discuss the benefits and risks of your chosen approach and explain why it is best for students.</p>`
+  },
+  {
+    title: 'Should post-secondary education be free?',
+    prompt: `<p><strong>Higher Education Policy Survey</strong></p>
+<p>The government is debating changes to post-secondary education funding. Which approach do you support?</p>
+<ul><li>Making university and college education free for all qualified students</li>
+<li>Providing needs-based grants so lower-income students pay nothing while others pay tuition</li>
+<li>Keeping the current system but expanding student loan forgiveness programs</li></ul>
+<p>Choose one option. Explain your reasoning, consider the cost implications, and discuss who benefits most from your chosen approach.</p>`
+  },
+  {
+    title: 'Best way to teach financial literacy',
+    prompt: `<p><strong>Youth Financial Education Survey</strong></p>
+<p>Financial literacy among young Canadians is low. Which approach to address this is most effective?</p>
+<ul><li>Making personal finance a mandatory subject in high school</li>
+<li>Offering free community workshops for young adults aged 18–25</li>
+<li>Creating a government-funded online platform with interactive financial tools and courses</li></ul>
+<p>Choose one option. Justify your choice and explain how it would reach and benefit the most young people.</p>`
+  },
+
+  // ── WORK & ECONOMY ───────────────────────────────────────────
+  {
+    title: 'Future of remote work',
+    prompt: `<p><strong>Workplace Policy Survey</strong></p>
+<p>Companies are deciding on permanent post-pandemic work policies. Which arrangement do you think is best for employees and employers?</p>
+<ul><li>Fully remote — employees work from home all the time</li>
+<li>Fully in-office — employees work at the office every day</li>
+<li>Hybrid — employees split their time between home and office</li></ul>
+<p>Choose one option. Explain your choice, consider the impact on productivity, collaboration, and employee wellbeing, and address potential drawbacks.</p>`
+  },
+  {
+    title: 'Addressing the shortage of skilled workers',
+    prompt: `<p><strong>Workforce Development Survey</strong></p>
+<p>Many industries in Canada are facing critical skilled worker shortages. Which approach should be prioritised?</p>
+<ul><li>Increasing immigration targets for skilled workers in shortage occupations</li>
+<li>Government-funded retraining programs for workers in declining industries</li>
+<li>Incentivising young people to enter skilled trades through free apprenticeship programs</li></ul>
+<p>Choose one option. Discuss the effectiveness, timeline, and potential challenges of your approach.</p>`
+  },
+  {
+    title: 'Should the minimum wage be increased?',
+    prompt: `<p><strong>Economic Policy Survey</strong></p>
+<p>The government is considering a significant increase to the minimum wage. Which position do you support?</p>
+<ul><li>A large, immediate increase to provide a living wage to all workers</li>
+<li>A gradual phased increase over three years to give businesses time to adjust</li>
+<li>Keeping the minimum wage at its current level and focusing on other worker supports</li></ul>
+<p>Choose one option. Justify your position with economic reasoning and consider the impact on workers, businesses, and consumers.</p>`
+  },
+  {
+    title: 'Best way to support small businesses',
+    prompt: `<p><strong>Small Business Support Survey</strong></p>
+<p>Many small businesses in your community are struggling. Which type of support should the government prioritise?</p>
+<ul><li>Direct financial grants that do not need to be repaid</li>
+<li>Low-interest loans with flexible repayment terms</li>
+<li>Free business coaching, mentorship, and training programs</li></ul>
+<p>Choose one option. Explain your reasoning and consider which types of businesses would benefit most and least from your chosen approach.</p>`
+  },
+
+  // ── HEALTH & SOCIAL SERVICES ─────────────────────────────────
+  {
+    title: 'How to address homelessness',
+    prompt: `<p><strong>Social Services Community Survey</strong></p>
+<p>Your city is developing a new strategy to address homelessness. Which approach should be prioritised?</p>
+<ul><li>Building more emergency shelters and temporary housing</li>
+<li>Investing in mental health and addiction treatment programs</li>
+<li>Creating subsidised permanent housing with on-site support services</li></ul>
+<p>Choose one option. Support your choice with specific reasons and consider both short-term and long-term impact.</p>`
+  },
+  {
+    title: 'How to reduce wait times in healthcare',
+    prompt: `<p><strong>Healthcare System Survey</strong></p>
+<p>Long wait times in the public healthcare system are a serious concern. Which solution should the government prioritise?</p>
+<ul><li>Training and hiring more doctors, nurses, and healthcare workers</li>
+<li>Expanding the use of nurse practitioners and pharmacists to handle routine care</li>
+<li>Investing in digital health tools like telemedicine and online appointment systems</li></ul>
+<p>Choose one option. Discuss how your chosen approach would reduce wait times and what challenges might arise in implementing it.</p>`
+  },
+  {
+    title: 'Addressing the mental health crisis',
+    prompt: `<p><strong>Mental Health Policy Survey</strong></p>
+<p>Mental health issues are affecting a growing number of Canadians. Which approach should the government prioritise?</p>
+<ul><li>Fully funding mental health services so they are as accessible as physical healthcare</li>
+<li>Embedding mental health support workers in schools, workplaces, and community centres</li>
+<li>Launching a major national public awareness campaign to reduce stigma</li></ul>
+<p>Choose one option. Justify your choice and explain who would benefit most from this approach.</p>`
+  },
+  {
+    title: 'Supporting new immigrants',
+    prompt: `<p><strong>Newcomer Settlement Survey</strong></p>
+<p>Your city wants to better support immigrants settling in the community. Which initiative would be most valuable?</p>
+<ul><li>Free language and job-skills training programs</li>
+<li>A community mentorship program pairing newcomers with established residents</li>
+<li>Financial assistance for the first six months after arrival</li></ul>
+<p>Choose one option. Discuss specific benefits, who would be helped most, and why this approach is most effective.</p>`
+  },
+  {
+    title: 'Improving senior care',
+    prompt: `<p><strong>Senior Services Survey</strong></p>
+<p>An aging population is placing pressure on senior care services. Which approach should be prioritised?</p>
+<ul><li>Building more publicly funded long-term care homes with higher staffing standards</li>
+<li>Providing home care supports so seniors can remain in their own homes longer</li>
+<li>Financial support for family members who take time off work to care for elderly relatives</li></ul>
+<p>Choose one option. Consider the preferences of seniors, the needs of families, and the costs involved.</p>`
+  },
+
+  // ── TECHNOLOGY & MEDIA ───────────────────────────────────────
+  {
+    title: 'Regulating social media platforms',
+    prompt: `<p><strong>Digital Policy Survey</strong></p>
+<p>Governments around the world are debating how to regulate social media. Which approach do you support?</p>
+<ul><li>Requiring platforms to quickly remove harmful content or face heavy fines</li>
+<li>Breaking up large social media companies to increase competition and reduce monopoly power</li>
+<li>Educating users — especially children — about responsible social media use</li></ul>
+<p>Choose one option. Explain your position and address the tradeoffs between safety, free speech, and practicality.</p>`
+  },
+  {
+    title: 'Artificial intelligence in the workplace',
+    prompt: `<p><strong>Technology and Employment Survey</strong></p>
+<p>Artificial intelligence is rapidly changing the workplace. Which policy response do you support?</p>
+<ul><li>Slowing the adoption of AI in industries where it causes significant job losses</li>
+<li>Investing heavily in retraining programs for workers whose jobs are replaced by AI</li>
+<li>Introducing a tax on companies that replace human workers with AI to fund social supports</li></ul>
+<p>Choose one option. Justify your choice and consider the economic and social implications.</p>`
+  },
+  {
+    title: 'Online privacy and data protection',
+    prompt: `<p><strong>Digital Rights Survey</strong></p>
+<p>Many Canadians are concerned about how companies collect and use their personal data. Which approach should the government take?</p>
+<ul><li>Passing strict laws limiting what data companies can collect and requiring explicit consent</li>
+<li>Requiring companies to be fully transparent about data use but allowing individuals to opt out</li>
+<li>Creating an independent privacy watchdog with strong enforcement powers</li></ul>
+<p>Choose one option. Explain your reasoning and consider the balance between privacy, innovation, and economic activity.</p>`
+  },
+
+  // ── CULTURE & LIFESTYLE ──────────────────────────────────────
+  {
+    title: 'How cities should support arts and culture',
+    prompt: `<p><strong>Arts Funding Survey</strong></p>
+<p>The city is reviewing its arts and culture budget. Which funding approach do you support?</p>
+<ul><li>Prioritising large cultural institutions like museums, theatres, and concert halls</li>
+<li>Funding grassroots local artists and small community arts organisations</li>
+<li>Using arts funding only for programs that increase tourism and economic activity</li></ul>
+<p>Choose one option. Discuss the cultural, social, and economic value of your chosen approach.</p>`
+  },
+  {
+    title: 'Promoting physical activity in the community',
+    prompt: `<p><strong>Community Health Survey</strong></p>
+<p>Physical inactivity is a growing public health concern. Which approach is most effective for encouraging exercise?</p>
+<ul><li>Building more free public gyms, pools, and outdoor fitness stations</li>
+<li>Subsidising gym memberships and sports programs for low-income residents</li>
+<li>Designing new neighbourhoods to encourage walking and cycling as part of daily life</li></ul>
+<p>Choose one option. Explain how your approach would reach the most people and what challenges might arise.</p>`
+  },
+  {
+    title: 'Preserving cultural heritage in a growing city',
+    prompt: `<p><strong>Heritage and Development Survey</strong></p>
+<p>As your city grows, historic buildings and culturally significant sites are being demolished. What should the city do?</p>
+<ul><li>Pass stronger heritage protection laws to prevent demolition of historic buildings</li>
+<li>Offer developers financial incentives to incorporate heritage buildings into new projects</li>
+<li>Focus preservation efforts on the most significant sites and allow others to be redeveloped</li></ul>
+<p>Choose one option. Discuss the balance between preserving history and allowing urban growth.</p>`
+  },
+  {
+    title: 'Addressing food insecurity in the community',
+    prompt: `<p><strong>Food Security Survey</strong></p>
+<p>Food insecurity is increasing in your community. Which solution should the city prioritise?</p>
+<ul><li>Expanding and better funding local food banks and community kitchens</li>
+<li>Creating urban community gardens on public land to increase local food production</li>
+<li>Providing low-income families with monthly grocery vouchers</li></ul>
+<p>Choose one option. Justify your choice by considering both the immediate impact and long-term sustainability of your approach.</p>`
+  },
+  {
+    title: 'Best approach to promoting volunteerism',
+    prompt: `<p><strong>Community Engagement Survey</strong></p>
+<p>Volunteerism rates in your community have declined. Which approach is most likely to reverse this trend?</p>
+<ul><li>Partnering with schools to make community service a graduation requirement</li>
+<li>Offering tax credits or other incentives to adults who volunteer regularly</li>
+<li>Running a city-wide campaign to match volunteers with organisations that suit their interests and skills</li></ul>
+<p>Choose one option. Explain your reasoning and discuss potential unintended consequences of your approach.</p>`
+  },
+
+  // ── IMMIGRATION & DIVERSITY ──────────────────────────────────
+  {
+    title: 'Managing immigration levels',
+    prompt: `<p><strong>Immigration Policy Survey</strong></p>
+<p>Canada is debating how to manage immigration levels in the coming years. Which approach do you support?</p>
+<ul><li>Maintaining or increasing current immigration targets to address labour shortages</li>
+<li>Reducing overall numbers while focusing on immigrants with in-demand skills</li>
+<li>Shifting to more regional immigration programs to distribute newcomers to smaller cities and rural areas</li></ul>
+<p>Choose one option. Provide your reasoning and consider economic, social, and infrastructure factors.</p>`
+  },
+  {
+    title: 'How to celebrate diversity in schools',
+    prompt: `<p><strong>Multicultural Education Survey</strong></p>
+<p>Schools are looking for ways to celebrate cultural diversity and promote inclusion. Which approach is most effective?</p>
+<ul><li>Integrating diverse cultural perspectives into all subject areas throughout the year</li>
+<li>Hosting dedicated multicultural events and festivals each year</li>
+<li>Offering optional language courses in community heritage languages</li></ul>
+<p>Choose one option. Discuss how your approach benefits students from both majority and minority cultural backgrounds.</p>`
+  },
+
+  // ── PERSONAL VALUES ──────────────────────────────────────────
+  {
+    title: 'Living in a big city vs. a small town',
+    prompt: `<p><strong>Lifestyle Preference Survey</strong></p>
+<p>Where would you prefer to live, and why?</p>
+<ul><li>A large city with more career opportunities, cultural amenities, and diversity</li>
+<li>A small town with a close-knit community, lower cost of living, and natural surroundings</li>
+<li>A mid-size city that balances urban amenities with a more relaxed pace of life</li></ul>
+<p>Choose one option. Explain your choice by discussing lifestyle, career, family, and community factors.</p>`
+  },
+  {
+    title: 'Most important quality in a job',
+    prompt: `<p><strong>Work Values Survey</strong></p>
+<p>When choosing a job, which factor is most important to you?</p>
+<ul><li>High salary and financial security</li>
+<li>Work-life balance and flexible hours</li>
+<li>Meaningful work that has a positive impact on society</li></ul>
+<p>Choose one option. Explain your choice and discuss what this reveals about your values and priorities.</p>`
+  },
+  {
+    title: 'How to spend unexpected free time',
+    prompt: `<p><strong>Lifestyle Survey</strong></p>
+<p>If you were given an unexpected week off work with no obligations, how would you prefer to spend it?</p>
+<ul><li>Travelling somewhere new and exploring a different culture</li>
+<li>Staying home, relaxing, and pursuing personal hobbies and interests</li>
+<li>Using the time productively — learning a new skill or working on a personal project</li></ul>
+<p>Choose one option. Explain your reasoning and what this choice says about your priorities and values.</p>`
+  },
+  {
+    title: 'Best way to keep in touch with family and friends',
+    prompt: `<p><strong>Relationships Survey</strong></p>
+<p>For people who live far from family and close friends, which method of staying connected is most valuable?</p>
+<ul><li>Regular video calls to maintain face-to-face connection</li>
+<li>Visiting in person at least once or twice a year</li>
+<li>Staying connected through messaging, social media, and sharing daily moments online</li></ul>
+<p>Choose one option. Explain why this method is most effective for maintaining meaningful relationships over distance.</p>`
+  },
+  {
+    title: 'Balancing work and family life',
+    prompt: `<p><strong>Work-Life Balance Survey</strong></p>
+<p>Many people struggle to balance career ambitions with family responsibilities. Which approach do you believe is most effective?</p>
+<ul><li>Prioritising career advancement in the early years, then scaling back when starting a family</li>
+<li>Always maintaining clear boundaries between work and personal time, regardless of career stage</li>
+<li>Making flexible arrangements that evolve depending on the needs of the family at each stage of life</li></ul>
+<p>Choose one option. Explain your reasoning and consider the impact on personal wellbeing, relationships, and career.</p>`
+  },
+
+  // ── MEDIA & COMMUNICATION ────────────────────────────────────
+  {
+    title: 'Getting news — traditional vs. digital media',
+    prompt: `<p><strong>Media Habits Survey</strong></p>
+<p>How do you think people should primarily get their news?</p>
+<ul><li>Traditional media — newspapers, radio, and television journalism</li>
+<li>Digital news platforms and reputable online journalism</li>
+<li>Social media and independent content creators</li></ul>
+<p>Choose one option. Discuss the reliability, accessibility, and impact of your chosen media type on how people understand current events.</p>`
+  },
+  {
+    title: 'Should violent video games be restricted?',
+    prompt: `<p><strong>Media and Youth Survey</strong></p>
+<p>There is ongoing debate about whether violent video games should be restricted for young people. Which position do you support?</p>
+<ul><li>A strict ban on the sale of violent video games to anyone under 18</li>
+<li>Keeping the current rating system and placing responsibility on parents to monitor their children's gaming</li>
+<li>No restrictions — research does not show a clear link between video games and real-world violence</li></ul>
+<p>Choose one option. Support your position with reasoning and consider both sides of the debate.</p>`
+  },
+
+  // ── ANIMALS & NATURE ─────────────────────────────────────────
+  {
+    title: 'Should zoos be banned?',
+    prompt: `<p><strong>Animal Welfare Survey</strong></p>
+<p>There is increasing debate about whether zoos should continue to operate. What is your view?</p>
+<ul><li>Zoos should be phased out — keeping animals in captivity is unethical regardless of the purpose</li>
+<li>Zoos should continue but only if they meet high animal welfare standards and prioritise conservation</li>
+<li>Zoos should be transformed into wildlife sanctuaries that rescue and rehabilitate injured animals only</li></ul>
+<p>Choose one option. Discuss the ethical, educational, and conservation arguments for your position.</p>`
+  },
+  {
+    title: 'How to protect urban wildlife',
+    prompt: `<p><strong>Urban Nature Survey</strong></p>
+<p>As cities expand, wildlife habitats are being destroyed. Which approach should cities take to protect urban wildlife?</p>
+<ul><li>Creating wildlife corridors — green pathways connecting parks and natural areas through the city</li>
+<li>Banning development on the remaining natural land on the edges of the city</li>
+<li>Educating residents about coexisting with wildlife and managing human-wildlife conflict</li></ul>
+<p>Choose one option. Explain the environmental and community benefits of your approach.</p>`
+  }
+
+]; // END SURVEY_TASKS (50 questions)
 
 function pickRandom(arr, excl) {
   let i; do { i=Math.floor(Math.random()*arr.length); } while(arr.length>1&&i===excl);

@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELPIP Writing Practice</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F6F2;--surface:#fff;--surface2:#F0EFE9;--border:#E2E0D8;
+  --text:#1A1917;--text-s:#6B6860;--text-h:#9D9B93;
+  --accent:#1A5C8A;--accent-bg:#EAF2F8;--accent-t:#0E3D5F;
+  --green:#1A6644;--green-bg:#E8F5EE;--green-t:#0F4028;
+  --amber:#7A4A00;--amber-bg:#FEF3DC;--amber-t:#4D2E00;
+  --red:#8B1A1A;--red-bg:#FDEAEA;--red-t:#5C1010;
+  --r:10px;--rs:6px
+}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.shell{max-width:960px;margin:0 auto;padding:0 20px 80px}
+
+/* topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.topbar-brand{font-size:15px;font-weight:700}
+.topbar-brand span{color:var(--accent)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 5px;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s}
+.user-chip:hover{background:var(--surface2)}
+.user-avatar{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.user-menu{position:absolute;top:60px;right:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;z-index:100;display:none}
+.user-menu.open{display:block}
+.user-menu-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:14px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border)}
+.user-menu-item:last-child{border-bottom:none}
+.user-menu-item:hover{background:var(--surface2)}
+.user-menu-item.danger{color:var(--red)}
+
+/* phases */
+.phase{display:none}.phase.active{display:block}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:var(--rs);padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-dark{background:var(--text);color:#fff}.btn-dark:hover{opacity:.85}
+.btn-ghost{background:none;color:var(--text-s);border:1px solid var(--border)}.btn-ghost:hover{background:var(--surface2)}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{opacity:.88}
+.btn-sm{padding:7px 16px;font-size:13px}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* ── AUTH ── */
+.auth-wrap{max-width:400px;margin:80px auto;text-align:center}
+.auth-wrap h2{font-size:22px;font-weight:700;margin-bottom:8px}
+.auth-wrap p{font-size:14px;color:var(--text-s);margin-bottom:28px}
+.auth-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px}
+.field{margin-bottom:16px;text-align:left}
+.field label{font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px}
+.field input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;outline:none;transition:border-color .15s;background:var(--surface)}
+.field input:focus{border-color:var(--accent)}
+.auth-err{color:var(--red);font-size:13px;margin-bottom:12px;display:none}
+.auth-err.show{display:block}
+.welcome-wrap{max-width:420px;margin:70px auto;text-align:center}
+.welcome-wrap h2{font-size:26px;font-weight:700;margin:6px 0 8px}
+.welcome-wrap p{font-size:15px;color:var(--text-s)}
+.welcome-bear{width:210px;height:230px;margin:0 auto}
+.welcome-bear img{width:100%;height:100%;object-fit:contain}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:18px}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:dotPulse 1s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes dotPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.bear-dance{transform-box:fill-box;transform-origin:50% 100%;animation:bearBounce .55s ease-in-out infinite alternate}
+@keyframes bearBounce{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-12px) rotate(3deg)}}
+.bear-head{transform-box:fill-box;transform-origin:50% 100%;animation:headTilt 1.1s ease-in-out infinite alternate}
+@keyframes headTilt{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+.bear-arm-l{transform-box:fill-box;transform-origin:80% 10%;animation:armL .55s ease-in-out infinite alternate}
+.bear-arm-r{transform-box:fill-box;transform-origin:20% 10%;animation:armR .55s ease-in-out infinite alternate}
+@keyframes armL{from{transform:rotate(25deg)}to{transform:rotate(-70deg)}}
+@keyframes armR{from{transform:rotate(70deg)}to{transform:rotate(-25deg)}}
+.bear-shadow{transform-box:fill-box;transform-origin:center;animation:shadowPulse .55s ease-in-out infinite alternate}
+@keyframes shadowPulse{from{transform:scale(1);opacity:.25}to{transform:scale(.8);opacity:.15}}
+.bear-note{animation:noteFloat 1.6s ease-in infinite;opacity:0}
+.bear-note.n2{animation-delay:.8s}
+@keyframes noteFloat{0%{opacity:0;transform:translateY(10px)}20%{opacity:1}100%{opacity:0;transform:translateY(-28px)}}
+@media (prefers-reduced-motion:reduce){.bear-dance,.bear-head,.bear-arm-l,.bear-arm-r,.bear-shadow,.bear-note,.dots span{animation:none}.bear-note{opacity:1}}
+.auth-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:var(--rs);overflow:hidden}
+.auth-tab{flex:1;padding:9px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:var(--surface);color:var(--text-s);transition:background .15s}
+.auth-tab.active{background:var(--text);color:#fff}
+.locked-notice{background:var(--amber-bg);border:1px solid #e6cc8a;border-radius:var(--rs);padding:10px 14px;font-size:13px;color:var(--amber-t);margin-bottom:16px}
+
+/* ── SETUP ── */
+.setup-wrap{max-width:480px;margin:60px auto}
+.setup-wrap h2{font-size:22px;font-weight:700;margin-bottom:6px}
+.setup-wrap p{font-size:14px;color:var(--text-s);margin-bottom:28px}
+.goal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.goal-card{border:2px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;transition:border-color .15s}
+.goal-card:hover{border-color:var(--accent)}
+.goal-card.selected{border-color:var(--accent);background:var(--accent-bg)}
+.goal-card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.goal-card p{font-size:13px;color:var(--text-s)}
+
+/* ── START ── */
+.hero{padding:36px 0 32px;text-align:center}
+.hero h1{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:15px;color:var(--text-s);margin-bottom:8px}
+.goal-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-bg);color:var(--accent-t);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600;margin-bottom:28px}
+.mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.mode-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:22px 18px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.mode-card:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+.mode-card-icon{font-size:20px;margin-bottom:12px}
+.mode-card-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.mode-card-desc{font-size:12px;color:var(--text-s);line-height:1.5}
+.mode-tags{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.mode-tag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--surface2);color:var(--text-s)}
+
+/* ── NAV TABS ── */
+.nav-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.nav-tab{padding:10px 16px;font-size:14px;font-weight:500;color:var(--text-s);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--accent);border-color:var(--accent);font-weight:600}
+
+/* ── WRITE ── */
+.write-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.step-badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px}
+.step-email{background:var(--accent-bg);color:var(--accent-t)}
+.step-survey{background:var(--green-bg);color:var(--green-t)}
+.step-label{font-size:13px;color:var(--text-s);margin-left:auto}
+.category-banner{display:inline-block;background:#F2EBFB;color:#5B21B6;border:1px solid #D9C4F2;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;margin-bottom:14px}
+.timer-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.timer-label{font-size:13px;font-weight:500;color:var(--text-s)}
+.timer-digits{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;transition:color .3s}
+.timer-digits.warn{color:var(--amber)}.timer-digits.danger{color:var(--red)}
+.timer-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.timer-fill{height:100%;border-radius:2px;background:var(--green);transition:width 1s linear,background .4s}
+.timer-fill.warn{background:var(--amber)}.timer-fill.danger{background:var(--red)}
+.prompt-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+.prompt-box h3{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-h);margin-bottom:10px}
+.prompt-body{font-size:15px;line-height:1.75}
+.prompt-body p{margin-bottom:10px}.prompt-body p:last-child{margin-bottom:0}
+.prompt-body ul{padding-left:20px;margin-top:6px}.prompt-body li{margin-bottom:5px}
+textarea#essay{width:100%;min-height:220px;padding:14px 16px;font-family:'Georgia',serif;font-size:15px;line-height:1.8;color:var(--text);background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);resize:vertical;outline:none;transition:border-color .15s}
+textarea#essay:focus{border-color:var(--accent)}
+.writing-footer{display:flex;align-items:center;justify-content:space-between;margin:6px 0 18px}
+.word-pill{font-size:12px;font-weight:500;padding:3px 10px;background:var(--surface2);border-radius:20px;color:var(--text-h);transition:background .2s,color .2s}
+.word-pill.good{background:var(--green-bg);color:var(--green-t)}
+.word-pill.over{background:var(--amber-bg);color:var(--amber-t)}
+.autosave-msg{font-size:12px;color:var(--text-h)}
+.autosave-msg.saved{color:var(--green)}
+.draft-banner{display:none;background:var(--amber-bg);border:1px solid #e6cc8a;border-radius:var(--rs);padding:9px 13px;font-size:13px;color:var(--amber-t);margin-bottom:14px}
+.draft-banner.show{display:block}
+
+/* ── SCORING ── */
+.scoring-center{padding:80px 0;text-align:center}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scoring-msg{font-size:16px;font-weight:500;margin-bottom:6px}
+.scoring-sub{font-size:14px;color:var(--text-s)}
+
+/* ── ERROR ── */
+.error-box{background:var(--red-bg);border:1px solid #f0b0b0;border-radius:var(--r);padding:22px;margin-bottom:14px}
+.error-box h3{font-size:15px;font-weight:600;color:var(--red-t);margin-bottom:6px}
+.error-box p{font-size:13px;color:var(--red-t);margin-bottom:12px;line-height:1.6}
+.recovered-essay{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:'Georgia',serif;font-size:14px;line-height:1.75;max-height:260px;overflow-y:auto;margin-bottom:12px;white-space:pre-wrap}
+.copy-confirm{font-size:13px;color:var(--green);display:none;margin-left:8px}
+
+/* ── RESULTS ── */
+.results-header{padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.results-header h2{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.results-header p{font-size:13px;color:var(--text-s)}
+.clb-display{display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;margin-bottom:18px}
+.clb-number{font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1;min-width:84px}
+.clb-high{color:var(--green)}.clb-mid{color:var(--amber)}.clb-low{color:var(--red)}
+.clb-info h4{font-size:15px;font-weight:600;margin-bottom:3px}
+.clb-info p{font-size:13px;color:var(--text-s)}
+.clb-goal-msg{display:inline-block;margin-top:6px;font-size:12px;padding:3px 10px;border-radius:20px;font-weight:600}
+.goal-met{background:var(--green-bg);color:var(--green-t)}
+.goal-close{background:var(--amber-bg);color:var(--amber-t)}
+.goal-far{background:var(--red-bg);color:var(--red-t)}
+.scores-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.score-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.score-tile-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-h);margin-bottom:7px}
+.score-tile-num{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:7px}
+.score-tile-max{font-size:12px;color:var(--text-h);margin-left:3px;font-weight:400}
+.score-bar-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:2px;background:var(--accent)}
+.feedback-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.card-head{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;justify-content:space-between}
+.card-body{padding:16px;font-size:14px;line-height:1.75;color:var(--text-s)}
+.save-btn{font-size:12px;padding:4px 10px;border-radius:20px;background:var(--accent-bg);color:var(--accent-t);border:none;cursor:pointer;font-weight:600;transition:background .15s}
+.save-btn:hover{background:#d0e8f5}
+.save-btn.saved-ok{background:var(--green-bg);color:var(--green-t)}
+
+/* comparison */
+.comparison-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.comp-head{padding:14px 18px;background:var(--text);color:#fff}
+.comp-head h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.comp-head p{font-size:12px;opacity:.6}
+.comp-legend{display:flex;gap:16px;padding:9px 18px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px}
+.leg-dot{width:12px;height:9px;border-radius:3px}
+.comp-cols{display:grid;grid-template-columns:1fr 1fr}
+.comp-col{padding:18px}
+.comp-col:first-child{border-right:1px solid var(--border)}
+.comp-col-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-h);margin-bottom:10px}
+.comp-text{font-family:'Georgia',serif;font-size:14px;line-height:1.9;color:var(--text);white-space:pre-wrap;word-wrap:break-word}
+.hi-spell{background:#ffd4d4;border-bottom:2px solid #cc0000;border-radius:2px;padding:0 1px}
+.hi-grammar{background:#fff0c0;border-bottom:2px solid #d4a800;border-radius:2px;padding:0 1px}
+.hi-added{background:#d4f0d4;border-radius:2px;padding:0 1px}
+
+/* vocab */
+.vocab-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.vocab-head{padding:14px 18px;background:var(--text);color:#fff}
+.vocab-head h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.vocab-head p{font-size:12px;opacity:.6}
+.vocab-item{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.vocab-item:last-child{border-bottom:none}
+.vocab-left{flex:1}
+.vocab-word-row{display:flex;align-items:baseline;gap:7px;margin-bottom:2px}
+.vocab-word{font-size:14px;font-weight:700}
+.vocab-type{font-size:11px;font-weight:600;padding:2px 6px;border-radius:20px;background:var(--accent-bg);color:var(--accent-t)}
+.vocab-def{font-size:13px;color:var(--text-s);margin-bottom:2px}
+.vocab-ex{font-size:12px;color:var(--text-h);font-style:italic}
+.star-btn{background:none;border:none;cursor:pointer;font-size:18px;color:#ccc;transition:color .15s;flex-shrink:0;padding:2px}
+.star-btn:hover{color:#f0b429}
+.star-btn.starred{color:#f0b429}
+.struct-item{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.struct-item:last-child{border-bottom:none}
+.struct-phrase{font-size:13px;font-weight:600;color:var(--accent-t);font-family:'Georgia',serif;margin-bottom:2px}
+.struct-use{font-size:12px;color:var(--text-s)}
+
+/* ── vocab card v2 (blue) ── */
+.vcard2{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.vcard2-head{padding:16px 20px;background:linear-gradient(135deg,#1A5C8A,#0E3D5F);color:#fff}
+.vcard2-head h3{font-size:15px;font-weight:700;margin-bottom:2px}
+.vcard2-head p{font-size:12px;opacity:.75}
+.vword-entry{padding:16px 20px;border-bottom:1px solid var(--border)}
+.vword-entry:last-child{border-bottom:none}
+.vword-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.vword-pill{background:#1A5C8A;color:#fff;font-family:'Georgia',serif;font-weight:700;font-size:14px;padding:5px 14px;border-radius:20px}
+.vword-pos{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--accent-bg);color:var(--accent-t)}
+.vword-star{margin-left:auto}
+.vdef-block{background:#EEF4F8;border-radius:var(--rs);padding:9px 12px;margin-bottom:8px}
+.vdef-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#5A7A90;margin-bottom:3px}
+.vdef-text{font-size:13px;color:var(--text)}
+.vex-block{border-left:3px solid #1A5C8A;padding:4px 0 4px 12px}
+.vex-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#5A7A90;margin-bottom:3px}
+.vex-text{font-family:'Georgia',serif;font-style:italic;font-size:13px;color:var(--text-s)}
+
+/* ── structure card v2 (teal) ── */
+.scard2{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.scard2-head{padding:16px 20px;background:linear-gradient(135deg,#0F766E,#0A4F49);color:#fff}
+.scard2-head h3{font-size:15px;font-weight:700;margin-bottom:2px}
+.scard2-head p{font-size:12px;opacity:.75}
+.sstruct-entry{display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:flex-start}
+.sstruct-entry:last-child{border-bottom:none}
+.sstruct-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.sstruct-body{flex:1}
+.sphrase-block{background:#E7F4F2;border-radius:var(--rs);padding:9px 12px;margin-bottom:8px}
+.sphrase-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#2E6B64;margin-bottom:3px}
+.sphrase-text{font-family:'Georgia',serif;font-weight:700;font-size:13px;color:var(--text)}
+.suse-block{border-left:3px solid #0F766E;padding:4px 0 4px 12px}
+.suse-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#2E6B64;margin-bottom:3px}
+.suse-text{font-size:13px;color:var(--text-s)}
+.sstruct-star{flex-shrink:0;margin-top:2px}
+
+/* ── notes mini-cards ── */
+.notes-section{margin-bottom:26px}
+.notes-section-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.notes-section-head h3{font-size:15px;font-weight:700}
+.notes-count{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+.notes-count.vocab{background:var(--accent-bg);color:var(--accent-t)}
+.notes-count.struct{background:#E7F4F2;color:#0F766E}
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.mini-vcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.mini-vcard-head{padding:9px 14px;background:#1A5C8A;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mini-vcard-head .word{font-family:'Georgia',serif;font-weight:700;font-size:13px}
+.mini-vcard-body{padding:11px 14px}
+.mini-vcard-def{font-size:12px;color:var(--text-s);margin-bottom:5px}
+.mini-vcard-ex{font-size:12px;font-style:italic;font-family:'Georgia',serif;color:var(--text-h)}
+.mini-scard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.mini-scard-head{padding:9px 14px;background:#0F766E;color:#fff}
+.mini-scard-head .phrase{font-family:'Georgia',serif;font-weight:700;font-size:13px}
+.mini-scard-body{padding:11px 14px;font-size:12px;color:var(--text-s)}
+.mini-card-sub{font-size:11px;color:var(--text-h);margin-top:6px;display:flex;align-items:center;justify-content:space-between}
+.mini-card-del{background:none;border:none;cursor:pointer;color:var(--text-h);font-size:14px}
+.mini-card-del:hover{color:var(--red)}
+
+/* err list */
+.err-item{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:baseline;font-size:13px}
+.err-item:last-child{border-bottom:none}
+.err-badge{font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;white-space:nowrap}
+.badge-spell{background:#ffd4d4;color:#8B1A1A}
+.badge-gram{background:#fff0c0;color:#7A4A00}
+.err-orig{font-family:'Georgia',serif;color:var(--red);text-decoration:line-through}
+.err-arrow{color:var(--text-h)}
+.err-fix{font-family:'Georgia',serif;color:var(--green);font-weight:600}
+.err-reason{color:var(--text-h);font-size:12px;margin-left:auto}
+
+.results-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:22px;border-top:1px solid var(--border)}
+
+/* ── HISTORY ── */
+.section-title{font-size:18px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--text-s);margin-bottom:20px}
+.history-empty{text-align:center;padding:60px 0;color:var(--text-h);font-size:14px}
+.history-list{display:flex;flex-direction:column;gap:10px}
+.history-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;align-items:center;gap:14px}
+.history-item:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+.history-clb{font-size:22px;font-weight:800;min-width:52px;letter-spacing:-.03em}
+.history-info{flex:1}
+.history-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.history-meta{font-size:12px;color:var(--text-h)}
+.history-type{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+
+/* history detail modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);max-width:780px;width:calc(100% - 40px);max-height:88vh;overflow-y:auto;padding:28px}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.modal-head h3{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.modal-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-h);padding:4px;transition:color .15s}
+.modal-close:hover{color:var(--text)}
+.modal-clb{display:flex;align-items:center;gap:14px;background:var(--surface2);border-radius:var(--rs);padding:14px 18px;margin-bottom:16px}
+.modal-clb-num{font-size:40px;font-weight:800;letter-spacing:-.04em}
+.modal-scores{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.modal-score-item{background:var(--surface2);border-radius:var(--rs);padding:10px 14px}
+.modal-score-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-h);margin-bottom:4px}
+.modal-score-val{font-size:20px;font-weight:700}
+.modal-essay{background:var(--surface2);border-radius:var(--rs);padding:14px;font-family:'Georgia',serif;font-size:14px;line-height:1.8;white-space:pre-wrap;margin-bottom:14px}
+
+/* ── NOTES ── */
+.notes-empty{text-align:center;padding:60px 0;color:var(--text-h);font-size:14px}
+.notes-list{display:flex;flex-direction:column;gap:8px}
+.note-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.note-content{flex:1}
+.note-text{font-size:14px;font-weight:600;font-family:'Georgia',serif;margin-bottom:3px}
+.note-sub{font-size:12px;color:var(--text-h)}
+.note-type{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px;margin-left:6px}
+.note-vocab{background:var(--accent-bg);color:var(--accent-t)}
+.note-struct{background:var(--green-bg);color:var(--green-t)}
+.note-delete{background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-h);padding:3px;transition:color .15s}
+.note-delete:hover{color:var(--red)}
+
+/* ── PROFILE ── */
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:16px}
+.profile-card h3{font-size:15px;font-weight:600;margin-bottom:16px}
+.profile-avatar-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.profile-avatar-big{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+
+/* misc */
+.tag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px}
+.tag-email{background:var(--accent-bg);color:var(--accent-t)}
+.tag-survey{background:var(--green-bg);color:var(--green-t)}
+.tag-full{background:#f0e8ff;color:#5b21b6}
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+@media(max-width:640px){
+  .mode-cards,.scores-grid,.comp-cols,.modal-scores{grid-template-columns:1fr}
+  .comp-col:first-child{border-right:none;border-bottom:1px solid var(--border)}
+  .hero h1{font-size:24px}
+  .clb-display{flex-direction:column;align-items:flex-start;gap:10px}
+  .clb-number{font-size:40px}
+  .goal-cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand">CELPIP <span>Practice</span></div>
+  <div class="topbar-right" id="topbar-right">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ══ AUTH ══ -->
+<div id="phase-auth" class="phase active">
+  <div class="auth-wrap">
+    <h2>Welcome</h2>
+    <p>Sign in to access your personal practice data, history, and notes.</p>
+    <div class="locked-notice">🔒 This site is invite-only. Contact the admin for access.</div>
+    <div class="auth-form">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="setAuthTab('login')">Sign in</div>
+        <div class="auth-tab" onclick="setAuthTab('signup')">Create account</div>
+      </div>
+      <div class="auth-err" id="auth-err"></div>
+      <div class="field"><label>Email</label><input type="email" id="auth-email" placeholder="your@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="auth-password" placeholder="Password"></div>
+      <div class="field" id="auth-name-field" style="display:none"><label>Your name</label><input type="text" id="auth-name" placeholder="e.g. Amy"></div>
+      <button class="btn btn-dark" style="width:100%" id="auth-btn" onclick="doAuth()">Sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WELCOME (after successful login) ══ -->
+<div id="phase-welcome" class="phase">
+  <div class="welcome-wrap">
+    <div class="welcome-bear" id="welcome-bear">
+      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bear dancing">
+        <ellipse class="bear-shadow" cx="100" cy="208" rx="52" ry="7" fill="#000" opacity=".25"/>
+        <text class="bear-note" x="28" y="70" font-size="22" fill="#1A5C8A">♪</text>
+        <text class="bear-note n2" x="160" y="60" font-size="24" fill="#0F766E">♫</text>
+        <g class="bear-dance">
+          <ellipse cx="78" cy="192" rx="17" ry="12" fill="#8A5A2B"/>
+          <ellipse cx="122" cy="192" rx="17" ry="12" fill="#8A5A2B"/>
+          <g class="bear-arm-l"><ellipse cx="56" cy="148" rx="13" ry="30" fill="#A9743F" transform="rotate(12 56 148)"/></g>
+          <g class="bear-arm-r"><ellipse cx="144" cy="148" rx="13" ry="30" fill="#A9743F" transform="rotate(-12 144 148)"/></g>
+          <ellipse cx="100" cy="150" rx="46" ry="50" fill="#A9743F"/>
+          <ellipse cx="100" cy="158" rx="30" ry="34" fill="#E8C99A"/>
+          <g class="bear-head">
+            <circle cx="66" cy="62" r="17" fill="#A9743F"/><circle cx="66" cy="62" r="9" fill="#E8C99A"/>
+            <circle cx="134" cy="62" r="17" fill="#A9743F"/><circle cx="134" cy="62" r="9" fill="#E8C99A"/>
+            <circle cx="100" cy="88" r="43" fill="#A9743F"/>
+            <ellipse cx="100" cy="102" rx="19" ry="15" fill="#E8C99A"/>
+            <ellipse cx="100" cy="96" rx="6.5" ry="4.5" fill="#3B2412"/>
+            <circle cx="85" cy="82" r="4.5" fill="#3B2412"/><circle cx="115" cy="82" r="4.5" fill="#3B2412"/>
+            <circle cx="86.5" cy="80.5" r="1.4" fill="#fff"/><circle cx="116.5" cy="80.5" r="1.4" fill="#fff"/>
+            <path d="M92 107 Q100 116 108 107" fill="none" stroke="#3B2412" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="75" cy="98" r="6" fill="#F4A6A0" opacity=".7"/><circle cx="125" cy="98" r="6" fill="#F4A6A0" opacity=".7"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <h2>Bingo! 🎉</h2>
+    <p>Your page will be ready in a sec</p>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- ══ SETUP (first time) ══ -->
+<div id="phase-setup" class="phase">
+  <div class="setup-wrap">
+    <h2 id="setup-greeting">Welcome! 👋</h2>
+    <p>Let's personalise your practice. What CLB score are you aiming for?</p>
+    <div class="goal-cards">
+      <div class="goal-card" id="goal-7" onclick="selectGoal(7)">
+        <h3>CLB 7+</h3>
+        <p>Immigration requirement level — solid everyday proficiency.</p>
+      </div>
+      <div class="goal-card" id="goal-9" onclick="selectGoal(9)">
+        <h3>CLB 9+</h3>
+        <p>Professional level — near-native fluency and precision.</p>
+      </div>
+    </div>
+    <button class="btn btn-dark" onclick="saveSetup()">Start practising →</button>
+  </div>
+</div>
+
+<!-- ══ MAIN (tabs) ══ -->
+<div id="phase-main" class="phase">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showTab('tab-home')" id="navtab-home">Practice</div>
+    <div class="nav-tab" onclick="showTab('tab-history')" id="navtab-history">History</div>
+    <div class="nav-tab" onclick="showTab('tab-notes')" id="navtab-notes">My Notes</div>
+    <div class="nav-tab" onclick="showTab('tab-profile')" id="navtab-profile">Profile</div>
+  </div>
+
+  <!-- HOME TAB -->
+  <div id="tab-home" class="tab-content">
+    <div class="hero">
+      <h1>Writing practice for<br><em id="hero-goal-text">CLB 9 and above</em></h1>
+      <div class="hero-sub" id="hero-sub-text"></div>
+      <div class="goal-badge" id="goal-badge-display">🎯 Goal: CLB 9+</div>
+      <div class="mode-cards">
+        <div class="mode-card" onclick="startMode('full')">
+          <div class="mode-card-icon">✉️ + 📋</div>
+          <div class="mode-card-title">Full writing test</div>
+          <div class="mode-card-desc">Both tasks in sequence, just like the real CELPIP.</div>
+          <div class="mode-tags"><span class="mode-tag">Email 27 min</span><span class="mode-tag">Survey 26 min</span></div>
+        </div>
+        <div class="mode-card" onclick="startMode('email')">
+          <div class="mode-card-icon">✉️</div>
+          <div class="mode-card-title">Email only</div>
+          <div class="mode-card-desc">Practice Task 1 — writing a formal email.</div>
+          <div class="mode-tags"><span class="mode-tag">Task 1</span><span class="mode-tag">27 min</span></div>
+        </div>
+        <div class="mode-card" onclick="startMode('survey')">
+          <div class="mode-card-icon">📋</div>
+          <div class="mode-card-title">Survey only</div>
+          <div class="mode-card-desc">Practice Task 2 — responding to a survey.</div>
+          <div class="mode-tags"><span class="mode-tag">Task 2</span><span class="mode-tag">26 min</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="tab-history" class="tab-content" style="display:none">
+    <div class="section-title">Writing history</div>
+    <div class="section-sub">Click any session to review your essay and scores.</div>
+    <div id="history-list-wrap"><div class="history-empty">No sessions yet — complete a practice task to see your history.</div></div>
+  </div>
+
+  <!-- NOTES TAB -->
+  <div id="tab-notes" class="tab-content" style="display:none">
+    <div class="section-title">My notes</div>
+    <div class="section-sub">Vocabulary and sentence structures you saved from your sessions. ⭐ to save, click × to remove.</div>
+    <div id="notes-list-wrap"><div class="notes-empty">No notes yet — star words or structures in your results to save them here.</div></div>
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div id="tab-profile" class="tab-content" style="display:none">
+    <div class="profile-card">
+      <h3>Profile</h3>
+      <div class="profile-avatar-row">
+        <div class="profile-avatar-big" id="profile-avatar-big">A</div>
+        <div>
+          <div style="font-size:16px;font-weight:600" id="profile-name-display">—</div>
+          <div style="font-size:13px;color:var(--text-h)" id="profile-email-display">—</div>
+        </div>
+      </div>
+      <div class="field"><label>Display name</label><input type="text" id="profile-name-input" placeholder="Your name"></div>
+      <button class="btn btn-dark btn-sm" onclick="saveName()">Save name</button>
+    </div>
+    <div class="profile-card">
+      <h3>CLB goal</h3>
+      <div class="goal-cards" style="margin-bottom:16px">
+        <div class="goal-card" id="profile-goal-7" onclick="updateGoal(7)"><h3>CLB 7+</h3><p>Immigration requirement level.</p></div>
+        <div class="goal-card" id="profile-goal-9" onclick="updateGoal(9)"><h3>CLB 9+</h3><p>Professional near-native level.</p></div>
+      </div>
+      <div style="font-size:13px;color:var(--text-h)" id="current-goal-display"></div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn btn-ghost btn-sm" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WRITE ══ -->
+<div id="phase-write" class="phase">
+  <div class="write-meta">
+    <span id="step-badge" class="step-badge step-email">Email</span>
+    <span id="step-label" class="step-label"></span>
+  </div>
+  <div id="category-banner" class="category-banner"></div>
+  <div class="timer-row">
+    <span class="timer-label">Time remaining</span>
+    <span id="timer-digits" class="timer-digits">27:00</span>
+  </div>
+  <div class="timer-track"><div id="timer-fill" class="timer-fill" style="width:100%"></div></div>
+  <div id="draft-banner" class="draft-banner">⚠️ Your previous draft was restored.</div>
+  <div class="prompt-box">
+    <h3 id="prompt-eyebrow">Situation &amp; prompts</h3>
+    <div id="prompt-body" class="prompt-body"></div>
+  </div>
+  <textarea id="essay" placeholder="Start writing here…" oninput="onEssayInput()"></textarea>
+  <div class="writing-footer">
+    <span id="word-pill" class="word-pill">0 words</span>
+    <span id="autosave-msg" class="autosave-msg">Autosaving…</span>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-dark" onclick="confirmSubmit()">Submit &amp; score →</button>
+    <span style="font-size:13px;color:var(--text-h)">Or wait — timer auto-submits</span>
+  </div>
+</div>
+
+<!-- ══ SCORING ══ -->
+<div id="phase-scoring" class="phase">
+  <div class="scoring-center">
+    <div class="spinner"></div>
+    <div class="scoring-msg" id="scoring-msg">Scoring your response…</div>
+    <div class="scoring-sub">This takes about 15–25 seconds</div>
+  </div>
+</div>
+
+<!-- ══ ERROR ══ -->
+<div id="phase-error" class="phase">
+  <div style="padding-top:28px">
+    <div class="error-box">
+      <h3>Scoring failed — your writing is safe</h3>
+      <p>Your response is preserved below. Copy it, then try again.</p>
+      <div id="recovered-text" class="recovered-essay"></div>
+      <div class="btn-row">
+        <button class="btn btn-ghost btn-sm" onclick="copyEssay()">Copy writing</button>
+        <span id="copy-confirm" class="copy-confirm">✓ Copied!</span>
+        <button class="btn btn-dark btn-sm" onclick="retryScoring()">Try again</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-h);margin-top:8px">Error: <span id="error-detail"></span></p>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="phase-results" class="phase">
+  <div class="results-header">
+    <h2 id="results-title">Results</h2>
+    <p id="results-sub"></p>
+  </div>
+  <div id="results-body"></div>
+</div>
+
+<!-- ══ HISTORY MODAL ══ -->
+<div class="modal-overlay" id="history-modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Session</h3>
+      <button class="modal-close" onclick="closeHistoryModal()">×</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- USER MENU -->
+<div class="user-menu" id="user-menu">
+  <div class="user-menu-item" onclick="showTab('tab-history');closeUserMenu()">📋 Writing history</div>
+  <div class="user-menu-item" onclick="showTab('tab-notes');closeUserMenu()">⭐ My notes</div>
+  <div class="user-menu-item" onclick="showTab('tab-profile');closeUserMenu()">👤 Profile</div>
+  <div class="user-menu-item danger" onclick="signOut()">Sign out</div>
+</div>
+
+<script>
+// ── Supabase init ─────────────────────────────────────────────
+const SUPA_URL = 'REPLACE_WITH_YOUR_SUPABASE_URL';
+const SUPA_KEY = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ── Question bank ─────────────────────────────────────────────
+const EMAIL_CATEGORIES = [
+  { category: 'Complaints', questions: [
+    {title:'Noise complaint to landlord',prompt:`<p>Your upstairs neighbour has been making excessive noise late at night for two weeks, affecting your sleep and work.</p><p>Write an email to your landlord:</p><ul><li>Describe the noise problem and how long it has been happening</li><li>Explain how it is affecting your daily life</li><li>Request specific action to resolve the issue</li></ul>`},
+    {title:'Road construction complaint',prompt:`<p>Road construction near your home has caused traffic delays, dust, noise, and blocked driveway access for four months.</p><p>Write an email to the municipal office:</p><ul><li>Describe the problems the construction has caused</li><li>Explain the impact on you and your neighbours</li><li>Request a timeline update and measures to reduce disruption</li></ul>`},
+    {title:'Faulty product complaint',prompt:`<p>You bought a washing machine three weeks ago and it has already broken down twice. The store has been slow to respond.</p><p>Write an email to the store's customer service manager:</p><ul><li>Describe the problems with the appliance</li><li>Explain the inconvenience this has caused</li><li>Request a replacement or refund and a clear timeline</li></ul>`},
+    {title:'Poor service at a gym',prompt:`<p>You have a one-year membership at a local gym. Several pieces of equipment have been broken for over a month and staff are unhelpful.</p><p>Write an email to the gym manager:</p><ul><li>Describe the specific problems you have experienced</li><li>Explain how this affects your ability to use the membership</li><li>Request repairs or compensation</li></ul>`},
+    {title:'Late delivery complaint',prompt:`<p>You ordered furniture online for an important event. It was promised within a week but has still not arrived after three weeks, with no updates from the company.</p><p>Write an email to the company's customer service department:</p><ul><li>Describe the order and the delay</li><li>Explain the inconvenience this has caused</li><li>Request an explanation and a resolution</li></ul>`},
+    {title:'Incorrect billing complaint',prompt:`<p>You noticed your internet provider has overcharged you for the past three months, and phone calls to customer service have not resolved the issue.</p><p>Write an email to the billing department:</p><ul><li>Describe the billing error and when you noticed it</li><li>Explain previous attempts to resolve it</li><li>Request a correction and a refund</li></ul>`}
+  ]},
+  { category: 'Requests', questions: [
+    {title:'Request for remote work',prompt:`<p>You have worked at your company for three years and want to request permission to work from home two days per week.</p><p>Write an email to your manager:</p><ul><li>Explain why you are making this request</li><li>Describe how your productivity will not be affected</li><li>Suggest a trial period and communication plan</li></ul>`},
+    {title:'Request for a reference letter',prompt:`<p>You are applying for a new job and need a reference letter from a former supervisor you worked with closely two years ago.</p><p>Write an email to your former supervisor:</p><ul><li>Remind them of your working relationship</li><li>Explain the job you are applying for and why you need the letter</li><li>Provide details about the deadline and what the letter should cover</li></ul>`},
+    {title:'Request for extended deadline',prompt:`<p>You are working on an important project at work, but unexpected personal circumstances mean you will not finish by the deadline.</p><p>Write an email to your supervisor:</p><ul><li>Explain the situation and why you need more time</li><li>Describe the progress you have made so far</li><li>Propose a new deadline and how you will manage the rest of the work</li></ul>`},
+    {title:'Request for a refund',prompt:`<p>You cancelled a vacation package two months in advance due to a family emergency, but the travel agency has not issued your refund.</p><p>Write an email to the travel agency:</p><ul><li>Explain the situation and the cancellation</li><li>Reference the agency's cancellation policy</li><li>Request the refund and a timeline for processing</li></ul>`},
+    {title:'Request to join a committee',prompt:`<p>Your workplace is forming a new committee to improve employee wellness programs, and you would like to be part of it.</p><p>Write an email to the HR department:</p><ul><li>Express your interest in joining the committee</li><li>Explain your relevant skills or experience</li><li>Ask about the application process and next steps</li></ul>`},
+    {title:'Request for equipment upgrade',prompt:`<p>Your work computer is outdated and frequently crashes, slowing down your ability to complete tasks on time.</p><p>Write an email to your IT department:</p><ul><li>Describe the problems you are experiencing</li><li>Explain how this is affecting your work</li><li>Request a specific upgrade or replacement</li></ul>`}
+  ]},
+  { category: 'Suggestions & Recommendations', questions: [
+    {title:'Library program suggestion',prompt:`<p>Your local library has very few programs for teenagers and young adults.</p><p>Write an email to the library director:</p><ul><li>Describe the lack of programs for young adults</li><li>Explain why this is a community problem</li><li>Suggest two or three specific programs the library could offer</li></ul>`},
+    {title:'Suggesting a new workplace policy',prompt:`<p>You believe your company should introduce a four-day compressed work week to improve employee wellbeing and productivity.</p><p>Write an email to your HR director:</p><ul><li>Explain the current situation and the problem you see</li><li>Describe the benefits of a compressed work week</li><li>Suggest how it could be implemented and evaluated</li></ul>`},
+    {title:'Recommending a restaurant improvement',prompt:`<p>You are a regular customer at a local restaurant and believe the menu and seating arrangement could be improved.</p><p>Write an email to the restaurant owner:</p><ul><li>Explain what you enjoy about the restaurant</li><li>Describe specific areas that could be improved</li><li>Suggest concrete changes the owner could make</li></ul>`},
+    {title:'Suggesting a new bus route',prompt:`<p>Many residents in your area struggle to reach the nearest hospital because there is no direct public transit route.</p><p>Write an email to the city's transit authority:</p><ul><li>Describe the current gap in service</li><li>Explain who is affected and how</li><li>Suggest a specific new route or schedule change</li></ul>`},
+    {title:'Suggesting changes to a course',prompt:`<p>You recently completed an online course and believe the content and structure could be improved for future students.</p><p>Write an email to the course instructor:</p><ul><li>Explain what you found valuable about the course</li><li>Describe specific weaknesses in the content or format</li><li>Suggest concrete improvements for future sessions</li></ul>`},
+    {title:'Suggesting a recycling program',prompt:`<p>Your apartment building does not currently offer recycling, and many residents have expressed interest in one.</p><p>Write an email to your building manager:</p><ul><li>Describe the current lack of a recycling program</li><li>Explain the benefits to residents and the environment</li><li>Suggest how the program could be set up</li></ul>`}
+  ]},
+  { category: 'Apologies', questions: [
+    {title:'Apologizing for missing a meeting',prompt:`<p>You missed an important client meeting due to a scheduling mix-up, and the client was left waiting.</p><p>Write an email to the client:</p><ul><li>Apologize sincerely for the missed meeting</li><li>Briefly explain what happened without making excuses</li><li>Propose a new meeting time and how you will prevent this in future</li></ul>`},
+    {title:'Apologizing for a late project',prompt:`<p>You delivered an important project to a colleague three days late, which delayed their own work.</p><p>Write an email to your colleague:</p><ul><li>Apologize for the delay and its impact on their work</li><li>Explain briefly what caused the delay</li><li>Describe what you will do to avoid this happening again</li></ul>`},
+    {title:'Apologizing for a billing mistake',prompt:`<p>Your small business accidentally overcharged a loyal customer on their last invoice.</p><p>Write an email to the customer:</p><ul><li>Apologize for the error</li><li>Explain what caused the mistake</li><li>Describe how you will correct it and prevent it in future</li></ul>`},
+    {title:'Apologizing for forgetting an event',prompt:`<p>You forgot to attend a close friend's important celebration due to a scheduling error on your part.</p><p>Write an email to your friend:</p><ul><li>Apologize sincerely for missing the event</li><li>Explain honestly what happened</li><li>Suggest a way to make it up to them</li></ul>`},
+    {title:'Apologizing for property damage',prompt:`<p>While visiting a neighbour's house, you accidentally damaged a piece of furniture.</p><p>Write an email to your neighbour:</p><ul><li>Apologize for the damage</li><li>Explain what happened</li><li>Offer to repair or replace the item</li></ul>`}
+  ]},
+  { category: 'Thank You Letters', questions: [
+    {title:'Thanking a mentor',prompt:`<p>A former manager spent significant time mentoring you over the past year, and you recently received a promotion partly because of their guidance.</p><p>Write an email to your former manager:</p><ul><li>Thank them for their mentorship</li><li>Describe specific ways they helped you</li><li>Share your recent success and how it relates to their support</li></ul>`},
+    {title:'Thanking a host after a stay',prompt:`<p>You stayed with a relative for two weeks while searching for a new apartment, and they were extremely generous and helpful.</p><p>Write an email to your relative:</p><ul><li>Thank them for their hospitality</li><li>Mention specific things they did that you appreciated</li><li>Let them know how your situation has since improved</li></ul>`},
+    {title:'Thanking a colleague for covering your work',prompt:`<p>A colleague covered your responsibilities for two weeks while you were away due to a family emergency.</p><p>Write an email to your colleague:</p><ul><li>Thank them for covering your work</li><li>Acknowledge the effort this likely took</li><li>Offer to return the favour in future</li></ul>`},
+    {title:'Thanking a teacher',prompt:`<p>A teacher provided extra support that helped you succeed in a difficult course last semester.</p><p>Write an email to your teacher:</p><ul><li>Thank them for their support</li><li>Describe specific ways they helped you</li><li>Share how the course has benefited you since</li></ul>`},
+    {title:'Thanking a community volunteer group',prompt:`<p>A local volunteer group helped your family move into a new home after a difficult year.</p><p>Write an email to the group's coordinator:</p><ul><li>Thank the group for their help</li><li>Describe specifically what they did</li><li>Explain the impact this has had on your family</li></ul>`}
+  ]},
+  { category: 'Invitations & Announcements', questions: [
+    {title:'Inviting colleagues to a retirement party',prompt:`<p>A long-time colleague is retiring, and you are organizing a celebration for them.</p><p>Write an email to your coworkers:</p><ul><li>Announce the retirement and the celebration</li><li>Provide details about the date, time, and location</li><li>Explain how colleagues can contribute or RSVP</li></ul>`},
+    {title:'Announcing a community cleanup event',prompt:`<p>You are organizing a neighbourhood cleanup event to improve a local park.</p><p>Write an email to residents in your neighbourhood:</p><ul><li>Explain the purpose of the event</li><li>Provide details about the date, time, and what to bring</li><li>Encourage residents to participate and invite others</li></ul>`},
+    {title:'Inviting a guest speaker',prompt:`<p>Your professional association is hosting an annual conference and you would like to invite a respected expert to speak.</p><p>Write an email to the potential guest speaker:</p><ul><li>Introduce the event and its purpose</li><li>Explain why you are inviting them specifically</li><li>Provide details about the date, format, and compensation</li></ul>`},
+    {title:'Announcing a change in office hours',prompt:`<p>Your small business is changing its hours of operation starting next month.</p><p>Write an email to your regular customers:</p><ul><li>Announce the new hours and when they take effect</li><li>Explain briefly why the change is happening</li><li>Reassure customers about continued service quality</li></ul>`},
+    {title:'Inviting former classmates to a reunion',prompt:`<p>You are organizing a ten-year reunion for your graduating class.</p><p>Write an email to your former classmates:</p><ul><li>Announce the reunion and its purpose</li><li>Provide details about the date, location, and cost</li><li>Ask recipients to RSVP and help spread the word</li></ul>`}
+  ]},
+  { category: 'Information & Follow-Up', questions: [
+    {title:'Following up on a job application',prompt:`<p>You applied for a position three weeks ago and have not received any response from the company.</p><p>Write an email to the hiring manager:</p><ul><li>Remind them of your application and the position</li><li>Express your continued interest</li><li>Politely ask about the status and next steps</li></ul>`},
+    {title:'Requesting information about a course',prompt:`<p>You are interested in enrolling in a professional development course but have several questions before registering.</p><p>Write an email to the course coordinator:</p><ul><li>Explain your interest in the course</li><li>Ask specific questions about content, schedule, and cost</li><li>Ask about registration deadlines</li></ul>`},
+    {title:'Following up on a medical referral',prompt:`<p>Your doctor referred you to a specialist two months ago, but you have not yet received an appointment.</p><p>Write an email to the clinic's administrative office:</p><ul><li>Explain the referral and when it was made</li><li>Describe your concern about the delay</li><li>Ask for an update and expected timeline</li></ul>`},
+    {title:'Requesting information about a visa process',prompt:`<p>You are planning to study abroad and need more information about the visa application process.</p><p>Write an email to the institution's international student office:</p><ul><li>Explain your situation and plans</li><li>Ask specific questions about required documents and timelines</li><li>Ask whether support services are available</li></ul>`},
+    {title:'Following up after a networking event',prompt:`<p>You met a professional contact at a conference last week who offered to discuss potential collaboration.</p><p>Write an email to the contact:</p><ul><li>Remind them where you met and what you discussed</li><li>Express interest in continuing the conversation</li><li>Suggest a time to meet or call</li></ul>`}
+  ]},
+  { category: 'Neighbourhood & Community', questions: [
+    {title:'Community park conditions',prompt:`<p>You recently moved to a new neighbourhood and noticed the community park is in very poor condition — playground equipment is broken, there is litter everywhere, and lights are not working at night.</p><p>Write an email to your city councillor:</p><ul><li>Describe the problems you observed</li><li>Explain how these issues affect residents and children</li><li>Request specific improvements from the city</li></ul>`},
+    {title:'Childcare facility request',prompt:`<p>Many parents in your neighbourhood struggle to find affordable childcare. You believe a community centre would help.</p><p>Write an email to your city councillor:</p><ul><li>Describe the childcare problem in your area</li><li>Explain the impact on working parents</li><li>Request the city consider establishing an affordable childcare facility</li></ul>`},
+    {title:'Organizing a neighbourhood watch',prompt:`<p>There has been an increase in minor break-ins in your neighbourhood over the past few months.</p><p>Write an email to your neighbours:</p><ul><li>Describe the recent incidents and your concerns</li><li>Propose organizing a neighbourhood watch program</li><li>Suggest a time to meet and discuss next steps</li></ul>`},
+    {title:'Requesting a crosswalk',prompt:`<p>Children in your neighbourhood must cross a busy street to reach their school, and there is no marked crosswalk or traffic light.</p><p>Write an email to the city's public works department:</p><ul><li>Describe the safety hazard</li><li>Explain who is affected and the risks involved</li><li>Request the installation of a crosswalk or traffic signal</li></ul>`},
+    {title:'Concern about a proposed development',prompt:`<p>A developer has proposed building a large commercial complex next to a residential area, and many neighbours are concerned about traffic and noise.</p><p>Write an email to your city planning department:</p><ul><li>Explain the residents' concerns about the proposed development</li><li>Describe the potential impact on the neighbourhood</li><li>Request that these concerns be considered before approval</li></ul>`}
+  ]},
+  { category: 'Work & Professional', questions: [
+    {title:'Proposing a team-building event',prompt:`<p>You believe your department would benefit from a team-building activity after several months of stressful deadlines.</p><p>Write an email to your manager:</p><ul><li>Explain why you think this would help the team</li><li>Suggest a specific activity and timing</li><li>Address the cost and how it could be budgeted</li></ul>`},
+    {title:'Raising a workplace safety concern',prompt:`<p>You have noticed a safety hazard in your workplace that has not yet been addressed despite being reported informally.</p><p>Write an email to your workplace safety officer:</p><ul><li>Describe the hazard in detail</li><li>Explain the risk it poses to employees</li><li>Request that it be addressed promptly</li></ul>`},
+    {title:'Negotiating a salary increase',prompt:`<p>You have taken on significantly more responsibility over the past year without a change in compensation.</p><p>Write an email to your manager:</p><ul><li>Summarize your contributions and added responsibilities</li><li>Explain why you believe a salary increase is warranted</li><li>Request a meeting to discuss this further</li></ul>`},
+    {title:'Proposing a new project',prompt:`<p>You have identified an opportunity to improve efficiency in your department through a new internal process.</p><p>Write an email to your manager:</p><ul><li>Describe the current inefficiency</li><li>Explain your proposed solution and its benefits</li><li>Suggest how it could be piloted or implemented</li></ul>`},
+    {title:'Resigning from a position',prompt:`<p>You have accepted a new job offer and need to formally resign from your current position.</p><p>Write an email to your manager:</p><ul><li>State your intention to resign and your last working day</li><li>Thank them for the opportunities you had</li><li>Offer to help with a smooth transition</li></ul>`}
+  ]},
+  { category: 'Academic', questions: [
+    {title:'Requesting a grade review',prompt:`<p>You believe an assignment was graded incorrectly and would like your professor to review it.</p><p>Write an email to your professor:</p><ul><li>Explain which assignment and grade you are referring to</li><li>Describe specifically why you believe it should be reviewed</li><li>Request a meeting or a re-evaluation</li></ul>`},
+    {title:'Asking for a course extension',prompt:`<p>A personal illness has prevented you from completing an assignment by the deadline.</p><p>Write an email to your instructor:</p><ul><li>Explain your situation and why you need an extension</li><li>Describe how much time you need</li><li>Reassure them about the quality of the work you will submit</li></ul>`},
+    {title:'Requesting academic advising',prompt:`<p>You are unsure which courses to take next semester to stay on track for your degree.</p><p>Write an email to your academic advisor:</p><ul><li>Explain your current situation and concerns</li><li>Describe what guidance you are looking for</li><li>Request an appointment at a convenient time</li></ul>`},
+    {title:'Applying for a scholarship',prompt:`<p>You discovered a scholarship opportunity at your university and would like more information before applying.</p><p>Write an email to the scholarships office:</p><ul><li>Explain your interest in the scholarship</li><li>Ask specific questions about eligibility and requirements</li><li>Ask about the application deadline</li></ul>`},
+    {title:'Requesting a letter of recommendation',prompt:`<p>You are applying to graduate school and need a letter of recommendation from a professor whose course you excelled in.</p><p>Write an email to your professor:</p><ul><li>Remind them of your work in their course</li><li>Explain the program you are applying to</li><li>Provide details about the deadline and submission process</li></ul>`}
+  ]}
+];
+
+const SURVEY_CATEGORIES = [
+  { category: 'Community & Government', questions: [
+    {title:'Community improvement priority',prompt:`<p><strong>Community Improvement Survey</strong></p><p>Your city is investing in one community project. Which should be the top priority?</p><ul><li>Expanding and modernising public libraries</li><li>Building new recreational facilities (gym, pool, sports courts)</li><li>Improving public transportation routes and frequency</li></ul><p>Choose one and write a detailed response with reasons, examples, and impact on different groups.</p>`},
+    {title:'Addressing homelessness',prompt:`<p><strong>Social Services Survey</strong></p><p>Which approach to addressing homelessness should be prioritised?</p><ul><li>Building more emergency shelters and temporary housing</li><li>Investing in mental health and addiction treatment</li><li>Subsidised permanent housing with on-site support services</li></ul><p>Choose one with specific reasons and consider short-term and long-term impact.</p>`},
+    {title:'Local government spending priority',prompt:`<p><strong>City Budget Survey</strong></p><p>Your city council has extra funds to allocate this year. Which should receive the most funding?</p><ul><li>Repairing roads and public infrastructure</li><li>Hiring more police and emergency services staff</li><li>Expanding parks and green spaces</li></ul><p>Choose one and explain your reasoning, including benefits and trade-offs.</p>`},
+    {title:'Public consultation methods',prompt:`<p><strong>Civic Engagement Survey</strong></p><p>Your city wants to improve how it gathers resident feedback on local decisions. Which method would be most effective?</p><ul><li>Online surveys and digital town halls</li><li>In-person community meetings</li><li>Mail-in questionnaires sent to every household</li></ul><p>Choose one and discuss its advantages and who it would best reach.</p>`},
+    {title:'Voting age change',prompt:`<p><strong>Civic Policy Survey</strong></p><p>Some cities are considering lowering the municipal voting age. Which position do you support?</p><ul><li>Lower the voting age to 16 for local elections</li><li>Keep the voting age at 18</li><li>Lower it to 16 only with a civics education requirement</li></ul><p>Choose one and explain your reasoning with specific examples.</p>`}
+  ]},
+  { category: 'Environment', questions: [
+    {title:'Environmental action priority',prompt:`<p><strong>Environmental Action Survey</strong></p><p>Which environmental initiative should be the top priority?</p><ul><li>Planting 100,000 trees over five years</li><li>Requiring new buildings to meet green energy standards</li><li>Providing rebates for solar panels or EV chargers</li></ul><p>Explain why your choice has the greatest impact and compare to the other options.</p>`},
+    {title:'Reducing plastic waste',prompt:`<p><strong>Waste Reduction Survey</strong></p><p>Your city wants to reduce single-use plastic waste. Which approach should it take?</p><ul><li>Ban single-use plastic bags and containers in stores</li><li>Charge a fee for plastic bags and packaging</li><li>Invest in education campaigns about reducing plastic use</li></ul><p>Choose one and explain your reasoning, including effectiveness and feasibility.</p>`},
+    {title:'Water conservation approach',prompt:`<p><strong>Water Conservation Survey</strong></p><p>Your region is facing water shortages. Which measure should be prioritised?</p><ul><li>Mandatory water restrictions for households</li><li>Incentives for businesses to adopt water-efficient technology</li><li>Public education campaigns on conserving water</li></ul><p>Choose one and discuss its likely effectiveness and impact on residents.</p>`},
+    {title:'Renewable energy investment',prompt:`<p><strong>Energy Policy Survey</strong></p><p>Your province is deciding where to invest in renewable energy. Which source should be prioritised?</p><ul><li>Solar power</li><li>Wind power</li><li>Hydroelectric power</li></ul><p>Choose one and explain the benefits and challenges compared to the alternatives.</p>`},
+    {title:'Protecting green spaces',prompt:`<p><strong>Urban Planning Survey</strong></p><p>Your city must decide how to balance development with protecting green spaces. Which approach is best?</p><ul><li>Strictly limit development near parks and natural areas</li><li>Allow development but require developers to fund new green spaces elsewhere</li><li>Prioritise green spaces only in already-dense neighbourhoods</li></ul><p>Choose one and explain your reasoning with examples.</p>`}
+  ]},
+  { category: 'Education', questions: [
+    {title:'School schedule format',prompt:`<p><strong>School Board Survey</strong></p><p>The school board is changing the school day format. Which do you prefer?</p><ul><li>A four-day school week with longer daily hours</li><li>Five-day week starting one hour later</li><li>Flexible scheduling — morning or afternoon sessions</li></ul><p>Choose one and explain the impact on students, parents, and teachers.</p>`},
+    {title:'Technology in classrooms',prompt:`<p><strong>Education Technology Survey</strong></p><p>Your school district is deciding how to integrate technology into classrooms. Which approach is best?</p><ul><li>Provide every student with a personal laptop or tablet</li><li>Limit technology use and emphasise traditional teaching methods</li><li>Use technology only for specific subjects like coding or research</li></ul><p>Choose one and explain your reasoning with examples.</p>`},
+    {title:'Extracurricular funding priority',prompt:`<p><strong>School Funding Survey</strong></p><p>Your school has additional funding to allocate to one extracurricular area. Which should it prioritise?</p><ul><li>Sports and athletics programs</li><li>Arts and music programs</li><li>Academic clubs and competitions</li></ul><p>Choose one and explain the benefits to students compared to the alternatives.</p>`},
+    {title:'University tuition approach',prompt:`<p><strong>Higher Education Survey</strong></p><p>Your province is considering changes to university tuition. Which approach should it take?</p><ul><li>Freeze tuition fees for the next five years</li><li>Offer more need-based financial aid instead of freezing fees</li><li>Allow fees to rise but expand co-op and work-study programs</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Teaching life skills in school',prompt:`<p><strong>Curriculum Survey</strong></p><p>Your school board wants to add a new life-skills requirement. Which topic should be prioritised?</p><ul><li>Personal finance and budgeting</li><li>Cooking and nutrition</li><li>Mental health and stress management</li></ul><p>Choose one and explain why it would benefit students most.</p>`}
+  ]},
+  { category: 'Work & Economy', questions: [
+    {title:'Remote work policy',prompt:`<p><strong>Workplace Policy Survey</strong></p><p>Companies are deciding on long-term remote work policies. Which approach is best for employees and productivity?</p><ul><li>Fully remote work for all employees</li><li>A hybrid model with set in-office days</li><li>A full return to the office</li></ul><p>Choose one and explain your reasoning, including benefits and drawbacks.</p>`},
+    {title:'Minimum wage increase',prompt:`<p><strong>Economic Policy Survey</strong></p><p>Your province is debating how to raise the minimum wage. Which approach is best?</p><ul><li>A large, immediate increase</li><li>A gradual increase over several years</li><li>Keep the current minimum wage unchanged</li></ul><p>Choose one and explain the likely effects on workers and businesses.</p>`},
+    {title:'Supporting small businesses',prompt:`<p><strong>Local Economy Survey</strong></p><p>Your city wants to support local small businesses. Which measure would be most effective?</p><ul><li>Lower commercial property taxes for small businesses</li><li>Provide grants for business improvements</li><li>Launch marketing campaigns promoting local shopping</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Job training programs',prompt:`<p><strong>Workforce Development Survey</strong></p><p>Your region wants to help workers adapt to changing industries. Which type of program should be prioritised?</p><ul><li>Free technology and digital skills training</li><li>Trades and apprenticeship programs</li><li>Small business and entrepreneurship training</li></ul><p>Choose one and explain why it would have the greatest impact.</p>`},
+    {title:'Four-day work week',prompt:`<p><strong>Labour Policy Survey</strong></p><p>Some companies are piloting a four-day work week with full pay. Which position do you support?</p><ul><li>Governments should encourage all companies to adopt it</li><li>It should remain optional, decided by individual companies</li><li>Companies should not adopt it due to productivity concerns</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]},
+  { category: 'Health & Social Services', questions: [
+    {title:'Supporting new immigrants',prompt:`<p><strong>Newcomer Settlement Survey</strong></p><p>Which initiative would best support immigrants settling in your city?</p><ul><li>Free language and job-skills training programs</li><li>A mentorship program pairing newcomers with established residents</li><li>Financial assistance for the first six months</li></ul><p>Choose one, discuss specific benefits, who benefits most, and why this approach is most effective.</p>`},
+    {title:'Improving mental health services',prompt:`<p><strong>Health Services Survey</strong></p><p>Your region wants to improve access to mental health care. Which approach should be prioritised?</p><ul><li>Hiring more mental health professionals in public clinics</li><li>Offering free online counselling services</li><li>Funding mental health programs in schools and workplaces</li></ul><p>Choose one and explain your reasoning with examples.</p>`},
+    {title:'Reducing hospital wait times',prompt:`<p><strong>Healthcare System Survey</strong></p><p>Your province wants to reduce long wait times at hospitals. Which approach would be most effective?</p><ul><li>Hiring more doctors and nurses</li><li>Expanding walk-in clinics and urgent care centres</li><li>Investing in virtual and telehealth appointments</li></ul><p>Choose one and explain the benefits compared to the alternatives.</p>`},
+    {title:'Supporting elderly residents',prompt:`<p><strong>Aging Population Survey</strong></p><p>Your city wants to better support its elderly residents. Which service should be prioritised?</p><ul><li>In-home care support services</li><li>More affordable senior housing options</li><li>Community centres with programs for seniors</li></ul><p>Choose one and explain why it would be most beneficial.</p>`},
+    {title:'Childcare affordability',prompt:`<p><strong>Family Services Survey</strong></p><p>Your province wants to address the high cost of childcare. Which approach should it take?</p><ul><li>Direct subsidies to families based on income</li><li>Capping the fees childcare centres can charge</li><li>Funding more public childcare centres directly</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]},
+  { category: 'Technology & Media', questions: [
+    {title:'Social media age restrictions',prompt:`<p><strong>Digital Policy Survey</strong></p><p>Governments are considering restrictions on social media use by minors. Which approach do you support?</p><ul><li>A strict minimum age requirement with verification</li><li>Parental consent requirements instead of age bans</li><li>No new restrictions — rely on existing platform rules</li></ul><p>Choose one and explain your reasoning with examples.</p>`},
+    {title:'Artificial intelligence in the workplace',prompt:`<p><strong>Workplace Technology Survey</strong></p><p>Your company is deciding how to approach AI tools in daily work. Which policy should it adopt?</p><ul><li>Encourage widespread use of AI tools to boost productivity</li><li>Allow AI tools only for specific approved tasks</li><li>Restrict AI tool use until clearer guidelines are developed</li></ul><p>Choose one and explain the benefits and risks.</p>`},
+    {title:'Protecting online privacy',prompt:`<p><strong>Data Privacy Survey</strong></p><p>Your government wants to strengthen protections for personal data online. Which measure would be most effective?</p><ul><li>Requiring companies to get explicit consent before collecting data</li><li>Imposing large fines for data breaches</li><li>Funding public education on protecting personal information</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'News source reliability',prompt:`<p><strong>Media Literacy Survey</strong></p><p>Misinformation online is a growing concern. Which solution would be most effective?</p><ul><li>Teaching media literacy in schools</li><li>Requiring social media platforms to label unverified content</li><li>Supporting independent fact-checking organisations</li></ul><p>Choose one and explain why it would have the greatest impact.</p>`},
+    {title:'Screen time for children',prompt:`<p><strong>Family Technology Survey</strong></p><p>Parents are concerned about children's screen time. Which approach is most effective?</p><ul><li>Government guidelines recommending limits by age</li><li>Schools teaching healthy technology habits</li><li>Leaving the decision entirely to individual families</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]},
+  { category: 'Culture & Lifestyle', questions: [
+    {title:'Supporting local arts',prompt:`<p><strong>Arts & Culture Survey</strong></p><p>Your city has funding to support local arts and culture. Which should receive priority?</p><ul><li>Funding for local artists and performers</li><li>Building or renovating cultural centres and galleries</li><li>Organising free public festivals and events</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Promoting healthy lifestyles',prompt:`<p><strong>Public Health Survey</strong></p><p>Your city wants to encourage healthier lifestyles among residents. Which initiative should be prioritised?</p><ul><li>Building more parks, trails, and recreational facilities</li><li>Subsidising gym memberships and fitness classes</li><li>Launching public education campaigns on nutrition and exercise</li></ul><p>Choose one and explain why it would be most effective.</p>`},
+    {title:'Preserving historic buildings',prompt:`<p><strong>Heritage Preservation Survey</strong></p><p>Your city must decide how to handle a historic downtown building. Which option is best?</p><ul><li>Fully restore and preserve the original building</li><li>Preserve the façade but modernise the interior</li><li>Demolish it to make way for new development</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Work-life balance priorities',prompt:`<p><strong>Lifestyle Survey</strong></p><p>Which factor contributes most to a healthy work-life balance?</p><ul><li>Flexible working hours</li><li>Generous vacation and leave policies</li><li>A reasonable commute and proximity to home</li></ul><p>Choose one and explain your reasoning with examples.</p>`},
+    {title:'Multicultural festival funding',prompt:`<p><strong>Community Events Survey</strong></p><p>Your city wants to celebrate its cultural diversity. Which approach would be most effective?</p><ul><li>Fund a large annual multicultural festival</li><li>Support smaller community-specific events throughout the year</li><li>Integrate cultural programming into existing events</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]},
+  { category: 'Immigration & Diversity', questions: [
+    {title:'Pathways to permanent residency',prompt:`<p><strong>Immigration Policy Survey</strong></p><p>Your government is reviewing pathways to permanent residency for skilled workers. Which approach should be prioritised?</p><ul><li>Prioritise applicants with in-demand job skills</li><li>Prioritise applicants with family already in the country</li><li>Prioritise applicants based on length of time working locally</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Recognizing foreign credentials',prompt:`<p><strong>Workforce Integration Survey</strong></p><p>Many skilled immigrants struggle to have their foreign credentials recognised. Which solution would help most?</p><ul><li>Faster, standardised credential assessment processes</li><li>Bridging programs that combine training with work experience</li><li>Employer incentives to hire internationally trained professionals</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Settlement services funding',prompt:`<p><strong>Newcomer Support Survey</strong></p><p>Your city has funding to improve settlement services for newcomers. Which should be prioritised?</p><ul><li>Expanded language training programs</li><li>Employment and job-search support services</li><li>Housing assistance for newly arrived families</li></ul><p>Choose one and explain why it would be most beneficial.</p>`},
+    {title:'Promoting cultural inclusion at work',prompt:`<p><strong>Workplace Diversity Survey</strong></p><p>Your company wants to improve inclusion for employees from diverse backgrounds. Which initiative should be prioritised?</p><ul><li>Mandatory diversity and inclusion training</li><li>Mentorship programs pairing diverse employees with leaders</li><li>Flexible policies accommodating cultural and religious practices</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Refugee resettlement support',prompt:`<p><strong>Refugee Services Survey</strong></p><p>Your community is welcoming a group of refugees. Which type of support should be prioritised first?</p><ul><li>Immediate housing and basic needs assistance</li><li>Language and cultural orientation programs</li><li>Employment placement and job training</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]},
+  { category: 'Personal Values & Choices', questions: [
+    {title:'Choosing where to live',prompt:`<p><strong>Lifestyle Choices Survey</strong></p><p>When choosing where to live, which factor matters most?</p><ul><li>Proximity to work or school</li><li>Cost of living and affordability</li><li>Access to nature and recreational space</li></ul><p>Choose one and explain your reasoning with personal examples.</p>`},
+    {title:'Saving versus spending',prompt:`<p><strong>Personal Finance Survey</strong></p><p>Which approach to money management do you believe is most important for young adults?</p><ul><li>Prioritising saving and building an emergency fund</li><li>Investing early for long-term growth</li><li>Spending on experiences and personal growth now</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Choosing a career path',prompt:`<p><strong>Career Values Survey</strong></p><p>When choosing a career, which factor should matter most?</p><ul><li>Salary and financial stability</li><li>Passion and personal interest in the work</li><li>Job security and long-term demand</li></ul><p>Choose one and explain your reasoning with examples.</p>`},
+    {title:'Balancing tradition and modern values',prompt:`<p><strong>Cultural Values Survey</strong></p><p>How should families balance traditional values with modern lifestyles?</p><ul><li>Prioritise preserving traditional customs and practices</li><li>Adapt traditions to fit modern circumstances</li><li>Let each generation choose its own balance</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Defining success',prompt:`<p><strong>Personal Values Survey</strong></p><p>Which factor best defines personal success?</p><ul><li>Career achievement and financial stability</li><li>Strong relationships and family life</li><li>Personal growth and lifelong learning</li></ul><p>Choose one and explain your reasoning with examples.</p>`}
+  ]},
+  { category: 'Animals & Nature', questions: [
+    {title:'Protecting local wildlife',prompt:`<p><strong>Wildlife Conservation Survey</strong></p><p>Development is threatening a local wildlife habitat. Which approach should the city take?</p><ul><li>Halt development in the area entirely</li><li>Allow development with strict environmental safeguards</li><li>Relocate the development to protect the habitat</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Pet ownership regulations',prompt:`<p><strong>Animal Policy Survey</strong></p><p>Your city is considering new rules for pet ownership in apartment buildings. Which approach is best?</p><ul><li>Allow all pets with a reasonable monthly fee</li><li>Restrict certain pet types or sizes</li><li>Leave the decision entirely to individual landlords</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Funding animal shelters',prompt:`<p><strong>Animal Welfare Survey</strong></p><p>Your city has extra funding to support animal welfare. Which should be prioritised?</p><ul><li>Expanding animal shelters and adoption programs</li><li>Funding spay/neuter programs to control stray populations</li><li>Public education on responsible pet ownership</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Urban green space for wildlife',prompt:`<p><strong>Urban Ecology Survey</strong></p><p>Your city wants to make urban areas more wildlife-friendly. Which initiative should be prioritised?</p><ul><li>Planting native species in parks and public spaces</li><li>Creating protected green corridors connecting natural areas</li><li>Public education campaigns on coexisting with urban wildlife</li></ul><p>Choose one and explain your reasoning.</p>`},
+    {title:'Farm animal welfare standards',prompt:`<p><strong>Agricultural Policy Survey</strong></p><p>Your government is reviewing farm animal welfare standards. Which approach should it take?</p><ul><li>Introduce strict new welfare regulations for all farms</li><li>Offer incentives for farms that voluntarily improve conditions</li><li>Focus on consumer education to drive market change</li></ul><p>Choose one and explain your reasoning.</p>`}
+  ]}
+];
+
+function pickEmailQuestion(){return pickFromCategories(EMAIL_CATEGORIES,'celpip_email_cat','celpip_email_used');}
+function pickSurveyQuestion(){return pickFromCategories(SURVEY_CATEGORIES,'celpip_survey_cat','celpip_survey_used');}
+
+function pickFromCategories(categories,catKey,usedKey){
+  let catIdx=0;
+  try{const r=localStorage.getItem(catKey);catIdx=r!==null?parseInt(r,10):0;}catch(e){}
+  if(isNaN(catIdx)||catIdx<0||catIdx>=categories.length)catIdx=0;
+
+  let used=[];
+  try{const r=localStorage.getItem(usedKey);used=r?JSON.parse(r):[];}catch(e){used=[];}
+
+  let cat=categories[catIdx];
+  let available=cat.questions.map((_,i)=>i).filter(i=>!used.includes(i));
+
+  if(available.length===0){
+    catIdx=(catIdx+1)%categories.length;
+    used=[];
+    cat=categories[catIdx];
+    available=cat.questions.map((_,i)=>i);
+  }
+
+  const qIdx=available[Math.floor(Math.random()*available.length)];
+  used.push(qIdx);
+
+  try{
+    localStorage.setItem(catKey,String(catIdx));
+    localStorage.setItem(usedKey,JSON.stringify(used));
+  }catch(e){}
+
+  return {task:cat.questions[qIdx],categoryName:cat.category};
+}
+
+// ── App state ─────────────────────────────────────────────────
+let currentUser = null;
+let userProfile = {};  // {name, goal_clb}
+let mode='full', taskQueue=[], queuePos=0, currentTaskType='email';
+let timerInterval=null, autosaveInterval=null;
+let timeLeft=0, timerTotal=0;
+let savedEssay='', savedTaskType='', savedPromptTitle='', savedCategoryName='';
+let currentSessionData=null;
+const DRAFT_KEY='celpip_draft_v5';
+
+// ── Phase ─────────────────────────────────────────────────────
+function showPhase(id) {
+  document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
+  document.getElementById('phase-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(tabId).style.display='block';
+  const navId = 'navtab-'+tabId.replace('tab-','');
+  const navEl = document.getElementById(navId);
+  if(navEl) navEl.classList.add('active');
+  showPhase('main');
+  if(tabId==='tab-history') loadHistory();
+  if(tabId==='tab-notes') loadNotes();
+  if(tabId==='tab-profile') renderProfile();
+  closeUserMenu();
+}
+
+// ── Auth ──────────────────────────────────────────────────────
+let authMode='login';
+function setAuthTab(m) {
+  authMode=m;
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(m==='login'?i===0:i===1)));
+  document.getElementById('auth-btn').textContent = m==='login'?'Sign in':'Create account';
+  document.getElementById('auth-name-field').style.display = m==='signup'?'block':'none';
+  document.getElementById('auth-err').classList.remove('show');
+}
+
+// Optional: to use a real GIF instead of the built-in animated bear, put a file
+// (e.g. bear.gif) next to index.html and set this to '/bear.gif'.
+const BEAR_GIF_URL = '';
+
+function showWelcome(){
+  if(BEAR_GIF_URL){
+    document.getElementById('welcome-bear').innerHTML=`<img src="${BEAR_GIF_URL}" alt="A bear dancing">`;
+  }
+  showPhase('welcome');
+}
+
+function authErrorMessage(error){
+  const msg=(error.message||'').toLowerCase();
+  const code=error.code||'';
+  if(code==='invalid_credentials'||msg.includes('invalid login credentials'))
+    return "Email and password don't match, or this account doesn't exist. Please check both and try again.";
+  if(code==='email_not_confirmed'||msg.includes('email not confirmed'))
+    return "This email hasn't been confirmed yet. Please check your inbox for the confirmation link.";
+  if(error.status===429||code==='over_request_rate_limit'||msg.includes('rate limit'))
+    return 'Too many attempts. Please wait a minute and try again.';
+  if(code==='user_already_exists'||msg.includes('already registered'))
+    return 'An account with this email already exists. Try signing in instead.';
+  if(code==='weak_password'||msg.includes('password should be'))
+    return 'That password is too weak. Please use at least 6 characters.';
+  if(code==='signup_disabled'||msg.includes('signups not allowed'))
+    return 'New sign-ups are closed. This site is invite-only.';
+  if(error.name==='AuthRetryableFetchError'||msg.includes('failed to fetch')||msg.includes('network'))
+    return 'Network problem. Please check your connection and try again.';
+  return error.message||'Something went wrong. Please try again.';
+}
+
+async function doAuth() {
+  const email=document.getElementById('auth-email').value.trim();
+  const password=document.getElementById('auth-password').value;
+  const errEl=document.getElementById('auth-err');
+  const btn=document.getElementById('auth-btn');
+  const showErr=m=>{errEl.textContent=m;errEl.classList.add('show');};
+  errEl.classList.remove('show');
+
+  if(!email&&!password){showErr('Please enter your email and password.');return;}
+  if(!email){showErr('Please enter your email address.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr("That doesn't look like a valid email address.");return;}
+  if(!password){showErr('Please enter your password.');return;}
+  if(authMode==='signup'&&password.length<6){showErr('Password must be at least 6 characters.');return;}
+
+  const idleLabel=authMode==='login'?'Sign in':'Create account';
+  btn.disabled=true;
+  btn.textContent=authMode==='login'?'Signing in…':'Creating account…';
+  try{
+    if(authMode==='login'){
+      const {data,error}=await sb.auth.signInWithPassword({email,password});
+      if(error){showErr(authErrorMessage(error));return;}
+      showWelcome();
+      const gate=new Promise(r=>setTimeout(r,2400)); // keep the welcome screen up for a moment
+      await onSignedIn(data.user,false,'',gate);
+    } else {
+      const name=document.getElementById('auth-name').value.trim()||'User';
+      const {data,error}=await sb.auth.signUp({email,password,options:{data:{name}}});
+      if(error){showErr(authErrorMessage(error));return;}
+      if(data.user){await onSignedIn(data.user,true,name);}
+      else{showErr('Check your email to confirm your account.');}
+    }
+  }catch(e){
+    showPhase('auth');
+    showErr(authErrorMessage(e||{}));
+  }finally{
+    btn.disabled=false;
+    btn.textContent=idleLabel;
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('phase-auth').classList.contains('active')
+     &&(e.target.id==='auth-email'||e.target.id==='auth-password'||e.target.id==='auth-name')){
+    doAuth();
+  }
+});
+
+async function onSignedIn(user, isNew=false, nameHint='', gate=null) {
+  currentUser=user;
+  // load or create profile
+  const {data}=await sb.from('profiles').select('*').eq('id',user.id).single();
+  if(data){
+    userProfile=data;
+    renderTopbar();
+    if(gate) await gate;
+    if(!data.goal_clb){showPhase('setup');}
+    else{enterMain();}
+  } else {
+    // new user — create profile
+    const name=nameHint||user.user_metadata?.name||user.email.split('@')[0];
+    await sb.from('profiles').insert({id:user.id,name,goal_clb:null});
+    userProfile={id:user.id,name,goal_clb:null};
+    renderTopbar();
+    document.getElementById('setup-greeting').textContent=`Welcome, ${name}! 👋`;
+    if(gate) await gate;
+    showPhase('setup');
+  }
+}
+
+async function signOut(){
+  await sb.auth.signOut();
+  currentUser=null; userProfile={};
+  document.getElementById('topbar-right').innerHTML='';
+  showPhase('auth');
+}
+
+// ── Topbar user chip ──────────────────────────────────────────
+function renderTopbar(){
+  const name=userProfile.name||'User';
+  const initials=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('topbar-right').innerHTML=`
+    <div class="user-chip" onclick="toggleUserMenu()">
+      <div class="user-avatar">${initials}</div>
+      ${name}
+    </div>`;
+}
+function toggleUserMenu(){document.getElementById('user-menu').classList.toggle('open');}
+function closeUserMenu(){document.getElementById('user-menu').classList.remove('open');}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.user-chip')&&!e.target.closest('.user-menu'))closeUserMenu();
+});
+
+// ── Setup ─────────────────────────────────────────────────────
+let selectedGoal=9;
+function selectGoal(g){
+  selectedGoal=g;
+  document.getElementById('goal-7').classList.toggle('selected',g===7);
+  document.getElementById('goal-9').classList.toggle('selected',g===9);
+}
+selectGoal(9);
+
+async function saveSetup(){
+  if(!currentUser)return;
+  await sb.from('profiles').update({goal_clb:selectedGoal}).eq('id',currentUser.id);
+  userProfile.goal_clb=selectedGoal;
+  enterMain();
+}
+
+// ── Main ──────────────────────────────────────────────────────
+function enterMain(){
+  const goal=userProfile.goal_clb||9;
+  const name=userProfile.name||'there';
+  document.getElementById('hero-goal-text').textContent=`CLB ${goal} and above`;
+  document.getElementById('goal-badge-display').textContent=`🎯 Goal: CLB ${goal}+`;
+  document.getElementById('hero-sub-text').textContent=`Hi ${name}! Keep practising to reach your CLB ${goal}+ goal.`;
+  showPhase('main');
+  showTab('tab-home');
+}
+
+// ── Profile ───────────────────────────────────────────────────
+function renderProfile(){
+  const name=userProfile.name||'';
+  const email=currentUser?.email||'';
+  const goal=userProfile.goal_clb||9;
+  const initials=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?';
+  document.getElementById('profile-avatar-big').textContent=initials;
+  document.getElementById('profile-name-display').textContent=name;
+  document.getElementById('profile-email-display').textContent=email;
+  document.getElementById('profile-name-input').value=name;
+  document.getElementById('current-goal-display').textContent=`Current goal: CLB ${goal}+`;
+  document.getElementById('profile-goal-7').classList.toggle('selected',goal===7);
+  document.getElementById('profile-goal-9').classList.toggle('selected',goal===9);
+}
+async function saveName(){
+  const name=document.getElementById('profile-name-input').value.trim();
+  if(!name||!currentUser)return;
+  await sb.from('profiles').update({name}).eq('id',currentUser.id);
+  userProfile.name=name;
+  renderTopbar();
+  renderProfile();
+  enterMain();
+}
+async function updateGoal(g){
+  if(!currentUser)return;
+  await sb.from('profiles').update({goal_clb:g}).eq('id',currentUser.id);
+  userProfile.goal_clb=g;
+  renderProfile();
+  enterMain();
+}
+
+// ── Practice modes ────────────────────────────────────────────
+function startMode(m){
+  mode=m;
+  if(m==='full') taskQueue=['email','survey'];
+  else if(m==='email') taskQueue=['email'];
+  else taskQueue=['survey'];
+  queuePos=0;
+  clearDraft();
+  loadTask(taskQueue[0]);
+}
+
+const TASK_META={
+  email:{label:'Email — Task 1',badgeClass:'step-email',duration:27*60,eyebrow:'Situation &amp; prompts'},
+  survey:{label:'Survey — Task 2',badgeClass:'step-survey',duration:26*60,eyebrow:'Survey question'}
+};
+
+function loadTask(type){
+  currentTaskType=type;
+  const meta=TASK_META[type];
+  const picked = type==='email' ? pickEmailQuestion() : pickSurveyQuestion();
+  savedPromptTitle=picked.task.title;
+  savedCategoryName=picked.categoryName;
+
+  const badge=document.getElementById('step-badge');
+  badge.textContent=meta.label; badge.className='step-badge '+meta.badgeClass;
+  const total=taskQueue.length, pos=queuePos+1;
+  document.getElementById('step-label').textContent=total>1?`Task ${pos} of ${total}`:'';
+  document.getElementById('category-banner').textContent=`📂 Category: ${picked.categoryName}`;
+  document.getElementById('prompt-eyebrow').innerHTML=meta.eyebrow;
+  document.getElementById('prompt-body').innerHTML=picked.task.prompt;
+
+  const draft=loadDraft();
+  const ea=document.getElementById('essay');
+  const banner=document.getElementById('draft-banner');
+  if(draft&&draft.type===type&&draft.text){ea.value=draft.text;banner.classList.add('show');updateWC();}
+  else{ea.value='';banner.classList.remove('show');document.getElementById('word-pill').textContent='0 words';document.getElementById('word-pill').className='word-pill';}
+
+  showPhase('write');
+  startTimer(meta.duration);
+  if(autosaveInterval)clearInterval(autosaveInterval);
+  autosaveInterval=setInterval(saveDraft,8000);
+}
+
+// ── Timer ─────────────────────────────────────────────────────
+function startTimer(s){
+  if(timerInterval)clearInterval(timerInterval);
+  timeLeft=s;timerTotal=s;renderTimer();
+  timerInterval=setInterval(()=>{timeLeft--;renderTimer();if(timeLeft<=0){clearInterval(timerInterval);doSubmit();}},1000);
+}
+function renderTimer(){
+  const m=Math.floor(timeLeft/60),s=timeLeft%60,pct=Math.max(0,(timeLeft/timerTotal)*100);
+  document.getElementById('timer-digits').textContent=m+':'+String(s).padStart(2,'0');
+  const d=document.getElementById('timer-digits'),f=document.getElementById('timer-fill');
+  f.style.width=pct+'%';
+  if(pct<=15){d.className='timer-digits danger';f.className='timer-fill danger';}
+  else if(pct<=30){d.className='timer-digits warn';f.className='timer-fill warn';}
+  else{d.className='timer-digits';f.className='timer-fill';}
+}
+function onEssayInput(){updateWC();saveDraft();}
+function updateWC(){
+  const t=document.getElementById('essay').value.trim();
+  const n=t?t.split(/\s+/).length:0;
+  const p=document.getElementById('word-pill');
+  p.textContent=n+' words';
+  p.className='word-pill'+(n>=150&&n<=210?' good':n>210?' over':'');
+}
+function saveDraft(){
+  const text=document.getElementById('essay').value;
+  if(!text.trim())return;
+  try{localStorage.setItem(DRAFT_KEY,JSON.stringify({type:currentTaskType,text}));
+    const m=document.getElementById('autosave-msg');m.textContent='✓ Draft saved';m.className='autosave-msg saved';
+    setTimeout(()=>{m.textContent='Autosaving…';m.className='autosave-msg';},2000);}catch(e){}
+}
+function loadDraft(){try{const r=localStorage.getItem(DRAFT_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+function wc(t){return t&&t.trim()?t.trim().split(/\s+/).length:0;}
+
+function confirmSubmit(){
+  const text=document.getElementById('essay').value.trim();
+  const n=wc(text);
+  if(n===0){alert('Please write your response before submitting.');return;}
+  if(n<100&&!confirm(n+' words is well below the 150–200 requirement. Score will be capped at CLB 5. Submit anyway?'))return;
+  if(n>=100&&n<150&&!confirm(n+' words is below the minimum. Score will be capped at CLB 7. Submit anyway?'))return;
+  doSubmit();
+}
+function doSubmit(){
+  if(timerInterval)clearInterval(timerInterval);
+  if(autosaveInterval)clearInterval(autosaveInterval);
+  savedEssay=document.getElementById('essay').value;
+  savedTaskType=currentTaskType;
+  saveDraft();
+  showPhase('scoring');
+  runScoring();
+}
+
+// ── Scoring ───────────────────────────────────────────────────
+const SCORE_MSGS=['Scoring your response…','Checking spelling and grammar…','Applying CELPIP rubric…','Generating CLB 9+ rewrite…','Building your word bank…','Almost done…'];
+
+async function runScoring(){
+  let mi=0;
+  const msgEl=document.getElementById('scoring-msg');
+  const loop=setInterval(()=>{msgEl.textContent=SCORE_MSGS[++mi%SCORE_MSGS.length];},2500);
+  const essay=savedEssay;
+  const goal=userProfile.goal_clb||9;
+  const taskDesc=savedTaskType==='email'
+    ?`writing a formal email — topic: "${savedPromptTitle}"`
+    :`responding to a survey question — topic: "${savedPromptTitle}"`;
+
+  const prompt=`Score this CELPIP writing response strictly.
+
+Task: ${taskDesc}
+Word count: ${wc(essay)}
+Student's CLB goal: CLB ${goal}+
+
+STUDENT RESPONSE:
+"""
+${essay||'[No response provided]'}
+"""
+
+STRICT RULES:
+- Under 100 words: max CLB 5, max taskFulfillment 5
+- 100-149 words: max CLB 7, max taskFulfillment 7
+- Not a real essay (vocab list, notes, random phrases): max CLB 4
+- Missing required bullet points: -1 per missing from taskFulfillment
+- Wrong register in email: -1 to -2 from taskFulfillment
+- Average attempt = CLB 6-7. Do NOT give CLB 8-9 to a mediocre response.
+
+THE REWRITE must be exactly 150-200 words. Count carefully. Address ALL bullet points. Use formal register.
+
+Return ONLY valid JSON (no markdown, no backticks):
+{
+  "clb": 7,
+  "scores": {"taskFulfillment":7,"coherenceOrganization":7,"vocabularyRange":7,"grammarAccuracy":7},
+  "goal_message": "A one-sentence motivational message comparing their score to their CLB ${goal}+ goal. Be honest but encouraging.",
+  "strengths": "Honest specific strengths. Do not invent praise.",
+  "improvements": "Specific problems with actual examples from the response.",
+  "rewrite": "CLB 9+ model answer, exactly 150-200 words, all bullet points addressed, correct format.",
+  "rewrite_word_count": 165,
+  "spelling_errors": [{"original":"misspeled","corrected":"misspelled","reason":"spelling error"}],
+  "grammar_errors": [{"original":"he go","corrected":"he goes","reason":"subject-verb agreement"}],
+  "corrections": [{"original":"phrase from student","corrected":"improved version","reason":"reason","type":"spelling|grammar|vocabulary|style"}],
+  "vocabulary": [
+    {"word":"word","type":"noun","definition":"definition","example":"example in context of this task"},
+    {"word":"word2","type":"verb","definition":"definition","example":"example"}
+  ],
+  "structures": [
+    {"phrase":"structure for this task type","use":"when to use"},
+    {"phrase":"another","use":"explanation"}
+  ]
+}
+vocabulary: exactly 7 topic-specific words. structures: exactly 4 for this task type. corrections: 4-8 most important.`;
+
+  let lastErr='Unknown error';
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      const res=await fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+      if(!res.ok){const e=await res.json().catch(()=>({error:res.statusText}));throw new Error(e.error||'HTTP '+res.status);}
+      const data=await res.json();
+      clearInterval(loop);
+      const raw=data.text||'';
+      const match=raw.match(/\{[\s\S]*\}/);
+      if(!match)throw new Error('No JSON in response');
+      const parsed=JSON.parse(match[0]);
+      clearDraft();
+      await saveSession(parsed,essay);
+      showResults(parsed,essay);
+      return;
+    }catch(e){
+      lastErr=e.message||String(e);
+      if(attempt<2)await new Promise(r=>setTimeout(r,2000*(attempt+1)));
+    }
+  }
+  clearInterval(loop);
+  document.getElementById('recovered-text').textContent=essay;
+  document.getElementById('error-detail').textContent=lastErr;
+  showPhase('error');
+}
+
+// ── Save session to Supabase ──────────────────────────────────
+async function saveSession(data,essay){
+  if(!currentUser)return;
+  currentSessionData=data;
+  try{
+    await sb.from('sessions').insert({
+      user_id:currentUser.id,
+      task_type:savedTaskType,
+      prompt_title:savedPromptTitle,
+      category_name:savedCategoryName,
+      essay_text:essay,
+      clb:data.clb,
+      score_task:data.scores?.taskFulfillment,
+      score_coherence:data.scores?.coherenceOrganization,
+      score_vocab:data.scores?.vocabularyRange,
+      score_grammar:data.scores?.grammarAccuracy,
+      strengths:data.strengths,
+      improvements:data.improvements,
+      rewrite:data.rewrite,
+      vocabulary:JSON.stringify(data.vocabulary||[]),
+      structures:JSON.stringify(data.structures||[])
+    });
+  }catch(e){console.error('Save session error:',e);}
+}
+
+// ── History ───────────────────────────────────────────────────
+async function loadHistory(){
+  if(!currentUser)return;
+  const wrap=document.getElementById('history-list-wrap');
+  wrap.innerHTML='<div style="color:var(--text-h);font-size:14px;padding:20px 0">Loading…</div>';
+  const {data,error}=await sb.from('sessions').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error||!data||data.length===0){
+    wrap.innerHTML='<div class="history-empty">No sessions yet — complete a practice task to see your history.</div>';return;
+  }
+  wrap.innerHTML=`<div class="history-list">${data.map(s=>{
+    const date=new Date(s.created_at).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'});
+    const clbClass=s.clb>=9?'clb-high':s.clb>=7?'clb-mid':'clb-low';
+    const typeTag=s.task_type==='email'?'tag-email':'tag-survey';
+    const typeLabel=s.task_type==='email'?'Email':'Survey';
+    return `<div class="history-item" onclick="showHistoryDetail('${s.id}')">
+      <div class="history-clb ${clbClass}">CLB ${s.clb}</div>
+      <div class="history-info">
+        <div class="history-title">${escH(s.prompt_title)}</div>
+        <div class="history-meta">${date} · ${wc(s.essay_text)} words <span class="tag ${typeTag}" style="margin-left:4px">${typeLabel}</span>${s.category_name?` <span class="tag" style="background:#F2EBFB;color:#5B21B6;margin-left:4px">📂 ${escH(s.category_name)}</span>`:''}</div>
+      </div>
+      <div style="color:var(--text-h);font-size:18px">›</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+async function showHistoryDetail(id){
+  const {data}=await sb.from('sessions').select('*').eq('id',id).single();
+  if(!data)return;
+  const date=new Date(data.created_at).toLocaleDateString('en-CA',{month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const clbClass=data.clb>=9?'clb-high':data.clb>=7?'clb-mid':'clb-low';
+  const scores=[
+    {label:'Task fulfillment',val:data.score_task},
+    {label:'Coherence & org',val:data.score_coherence},
+    {label:'Vocabulary',val:data.score_vocab},
+    {label:'Grammar',val:data.score_grammar}
+  ];
+  document.getElementById('modal-title').textContent=data.prompt_title;
+  document.getElementById('modal-body').innerHTML=`
+    <div style="font-size:12px;color:var(--text-h);margin-bottom:12px">${date}${data.category_name?` · 📂 ${escH(data.category_name)}`:''}</div>
+    <div class="modal-clb">
+      <div class="modal-clb-num ${clbClass}">CLB ${data.clb}</div>
+      <div><div style="font-weight:600;font-size:14px">${clbLabel(data.clb)}</div><div style="font-size:13px;color:var(--text-s)">${wc(data.essay_text)} words</div></div>
+    </div>
+    <div class="modal-scores">${scores.map(s=>`<div class="modal-score-item"><div class="modal-score-label">${s.label}</div><div class="modal-score-val">${s.val||'—'}<span style="font-size:13px;font-weight:400;color:var(--text-h)">/12</span></div></div>`).join('')}</div>
+    <div class="card-head" style="border-radius:6px 6px 0 0;margin-bottom:0">Your essay</div>
+    <div class="modal-essay">${escH(data.essay_text)}</div>
+    <div class="card-head" style="border-radius:6px 6px 0 0;margin-bottom:0">Strengths</div>
+    <div class="modal-essay" style="font-family:inherit;font-size:14px">${escH(data.strengths||'—')}</div>
+    <div class="card-head" style="border-radius:6px 6px 0 0;margin-bottom:0">To improve</div>
+    <div class="modal-essay" style="font-family:inherit;font-size:14px">${escH(data.improvements||'—')}</div>
+  `;
+  document.getElementById('history-modal').classList.add('open');
+}
+function closeModal(e){if(e.target===document.getElementById('history-modal'))closeHistoryModal();}
+function closeHistoryModal(){document.getElementById('history-modal').classList.remove('open');}
+
+// ── Notes ─────────────────────────────────────────────────────
+async function saveNote(text,type,context){
+  if(!currentUser)return false;
+  try{
+    const {error}=await sb.from('notes').insert({user_id:currentUser.id,content:text,note_type:type,context});
+    return !error;
+  }catch(e){return false;}
+}
+function parseVocabNote(content){
+  const m=content.match(/^(.+?)\s*\((.+?)\):\s*([\s\S]*?)\s*—\s*"([\s\S]*)"$/);
+  if(!m)return{word:content,type:'',definition:'',example:''};
+  return{word:m[1],type:m[2],definition:m[3],example:m[4]};
+}
+function parseStructNote(content){
+  const m=content.match(/^"([\s\S]*?)"\s*—\s*([\s\S]*)$/);
+  if(!m)return{phrase:content,use:''};
+  return{phrase:m[1],use:m[2]};
+}
+
+async function loadNotes(){
+  if(!currentUser)return;
+  const wrap=document.getElementById('notes-list-wrap');
+  wrap.innerHTML='<div style="color:var(--text-h);font-size:14px;padding:20px 0">Loading…</div>';
+  const {data,error}=await sb.from('notes').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error||!data||data.length===0){wrap.innerHTML='<div class="notes-empty">No notes yet — star words or structures in your results to save them here.</div>';return;}
+
+  const vocabNotes=data.filter(n=>n.note_type==='vocab');
+  const structNotes=data.filter(n=>n.note_type==='struct');
+  const dateStr=n=>new Date(n.created_at).toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+
+  const vocabSection=`
+    <div class="notes-section">
+      <div class="notes-section-head"><h3>📘 Vocabulary</h3><span class="notes-count vocab">${vocabNotes.length}</span></div>
+      ${vocabNotes.length?`<div class="notes-grid">${vocabNotes.map(n=>{
+        const v=parseVocabNote(n.content);
+        return `<div class="mini-vcard">
+          <div class="mini-vcard-head"><span class="word">${escH(v.word)}</span></div>
+          <div class="mini-vcard-body">
+            <div class="mini-vcard-def">${escH(v.definition)}</div>
+            <div class="mini-vcard-ex">"${escH(v.example)}"</div>
+            <div class="mini-card-sub"><span>${escH(n.context||'')} · ${dateStr(n)}</span><button class="mini-card-del" onclick="deleteNote('${n.id}',this)" title="Remove">×</button></div>
+          </div>
+        </div>`;
+      }).join('')}</div>`:'<div class="notes-empty" style="padding:24px 0">No vocabulary saved yet.</div>'}
+    </div>`;
+
+  const structSection=`
+    <div class="notes-section">
+      <div class="notes-section-head"><h3>📗 Sentence Structures</h3><span class="notes-count struct">${structNotes.length}</span></div>
+      ${structNotes.length?`<div class="notes-grid">${structNotes.map(n=>{
+        const st=parseStructNote(n.content);
+        return `<div class="mini-scard">
+          <div class="mini-scard-head"><span class="phrase">"${escH(st.phrase)}"</span></div>
+          <div class="mini-scard-body">
+            ${escH(st.use)}
+            <div class="mini-card-sub"><span>${escH(n.context||'')} · ${dateStr(n)}</span><button class="mini-card-del" onclick="deleteNote('${n.id}',this)" title="Remove">×</button></div>
+          </div>
+        </div>`;
+      }).join('')}</div>`:'<div class="notes-empty" style="padding:24px 0">No sentence structures saved yet.</div>'}
+    </div>`;
+
+  wrap.innerHTML=vocabSection+structSection;
+}
+async function deleteNote(id,btn){
+  await sb.from('notes').delete().eq('id',id);
+  const card=btn.closest('.mini-vcard')||btn.closest('.mini-scard');
+  if(card)card.remove();
+  else loadNotes();
+}
+
+// ── Results ───────────────────────────────────────────────────
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function clbColor(c){return c>=9?'clb-high':c>=7?'clb-mid':'clb-low';}
+function clbLabel(c){
+  if(c>=10)return'Exceptional — above CLB 9 target';
+  if(c===9)return'Strong — CLB 9 target met';
+  if(c===8)return'Competent — one step from CLB 9';
+  if(c===7)return'Developing — needs focused work';
+  return'Needs improvement — keep practising';
+}
+function goalMsg(clb,goal){
+  if(clb>=goal)return{cls:'goal-met',text:`🎉 You reached your CLB ${goal}+ goal!`};
+  if(clb>=goal-1)return{cls:'goal-close',text:`So close! One more point to reach CLB ${goal}+.`};
+  return{cls:'goal-far',text:`Keep going — CLB ${goal}+ takes consistent practice. You can do it!`};
+}
+
+function highlightErrors(text,spells,grams){
+  let r=escH(text);
+  [...(spells||[]).map(e=>({...e,cls:'hi-spell'})),...(grams||[]).map(e=>({...e,cls:'hi-grammar'}))].forEach(e=>{
+    if(!e.original)return;
+    r=r.replace(escH(e.original),`<span class="${e.cls}" title="${escH(e.reason||'')}">${escH(e.original)}</span>`);
+  });
+  return r;
+}
+function highlightRewrite(rewrite,corrections){
+  let r=escH(rewrite);
+  (corrections||[]).forEach(c=>{
+    if(!c.corrected)return;
+    r=r.replace(escH(c.corrected),`<span class="hi-added" title="${escH(c.reason||'')}">${escH(c.corrected)}</span>`);
+  });
+  return r;
+}
+
+function showResults(data,essay){
+  const meta=TASK_META[savedTaskType];
+  const goal=userProfile.goal_clb||9;
+  document.getElementById('results-title').textContent=(savedTaskType==='email'?'Email':'Survey')+' results';
+  document.getElementById('results-sub').textContent=savedPromptTitle;
+
+  const s=data.scores||{}, clb=data.clb||6;
+  const spells=data.spelling_errors||[], grams=data.grammar_errors||[], corrs=data.corrections||[];
+  const gm=goalMsg(clb,goal);
+
+  const scoresHTML=[
+    {label:'Task fulfillment',val:s.taskFulfillment},
+    {label:'Coherence & organization',val:s.coherenceOrganization},
+    {label:'Vocabulary range',val:s.vocabularyRange},
+    {label:'Grammar accuracy',val:s.grammarAccuracy}
+  ].map(item=>{
+    const v=item.val||0,pct=Math.round((v/12)*100);
+    return `<div class="score-tile"><div class="score-tile-label">${item.label}</div><div class="score-tile-num">${v}<span class="score-tile-max">/12</span></div><div class="score-bar-track"><div class="score-bar-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+
+  const errItems=[
+    ...spells.map(e=>`<div class="err-item"><span class="err-badge badge-spell">SPELL</span><span class="err-orig">${escH(e.original)}</span><span class="err-arrow">→</span><span class="err-fix">${escH(e.corrected)}</span><span class="err-reason">${escH(e.reason)}</span></div>`),
+    ...grams.map(e=>`<div class="err-item"><span class="err-badge badge-gram">GRAMMAR</span><span class="err-orig">${escH(e.original)}</span><span class="err-arrow">→</span><span class="err-fix">${escH(e.corrected)}</span><span class="err-reason">${escH(e.reason)}</span></div>`)
+  ].join('');
+
+  const errCard=(spells.length+grams.length)>0?`
+    <div class="vocab-card">
+      <div class="vocab-head"><h3>Spelling &amp; grammar corrections</h3><p>${spells.length} spelling · ${grams.length} grammar issues</p></div>
+      ${errItems}
+    </div>`:`
+    <div class="feedback-card"><div class="card-head">Spelling &amp; Grammar</div><div class="card-body" style="color:var(--green)">✓ No errors detected.</div></div>`;
+
+  const rwc=wc(data.rewrite||'');
+  const compHTML=`
+    <div class="comparison-card">
+      <div class="comp-head"><h3>Side-by-side comparison</h3><p>Your answer vs CLB 9+ rewrite (${rwc} words)</p></div>
+      <div class="comp-legend">
+        <div class="leg"><div class="leg-dot" style="background:#ffd4d4;border:1px solid #cc6666"></div>Spelling</div>
+        <div class="leg"><div class="leg-dot" style="background:#fff0c0;border:1px solid #d4a800"></div>Grammar</div>
+        <div class="leg"><div class="leg-dot" style="background:#d4f0d4;border:1px solid #6abf6a"></div>Improved</div>
+      </div>
+      <div class="comp-cols">
+        <div class="comp-col"><div class="comp-col-label">Your answer — ${wc(essay)} words</div><div class="comp-text">${highlightErrors(essay,spells,grams)}</div></div>
+        <div class="comp-col"><div class="comp-col-label">CLB 9+ rewrite — ${rwc} words</div><div class="comp-text">${highlightRewrite(data.rewrite||'',corrs)}</div></div>
+      </div>
+    </div>`;
+
+  const vocabHTML=(data.vocabulary||[]).map((v,i)=>`
+    <div class="vword-entry">
+      <div class="vword-row">
+        <span class="vword-pill">${escH(v.word)}</span>
+        <span class="vword-pos">${escH(v.type)}</span>
+        <button class="star-btn vword-star" id="vstar-${i}" onclick="starVocab(${i})" title="Save to notes">☆</button>
+      </div>
+      <div class="vdef-block"><div class="vdef-label">DEFINITION</div><div class="vdef-text">${escH(v.definition)}</div></div>
+      <div class="vex-block"><div class="vex-label">EXAMPLE</div><div class="vex-text">"${escH(v.example)}"</div></div>
+    </div>`).join('');
+
+  const structHTML=(data.structures||[]).map((st,i)=>`
+    <div class="sstruct-entry">
+      <div class="sstruct-num">${i+1}</div>
+      <div class="sstruct-body">
+        <div class="sphrase-block"><div class="sphrase-label">STRUCTURE</div><div class="sphrase-text">"${escH(st.phrase)}"</div></div>
+        <div class="suse-block"><div class="suse-label">WHEN TO USE</div><div class="suse-text">${escH(st.use)}</div></div>
+      </div>
+      <button class="star-btn sstruct-star" id="sstar-${i}" onclick="starStruct(${i})" title="Save to notes">☆</button>
+    </div>`).join('');
+
+  const hasNext=queuePos<taskQueue.length-1;
+  const nextLabel=hasNext?(taskQueue[queuePos+1]==='survey'?'Continue to Task 2: Survey →':'Continue to Task 1: Email →'):'Practice again ↺';
+
+  document.getElementById('results-body').innerHTML=`
+    <div class="clb-display">
+      <div class="clb-number ${clbColor(clb)}">CLB ${clb}</div>
+      <div class="clb-info">
+        <h4>${clbLabel(clb)}</h4>
+        <p>${wc(essay)} words written</p>
+        <span class="clb-goal-msg ${gm.cls}">${gm.text}</span>
+      </div>
+    </div>
+    <div class="scores-grid">${scoresHTML}</div>
+    <div class="feedback-card"><div class="card-head">Strengths</div><div class="card-body">${data.strengths||'—'}</div></div>
+    <div class="feedback-card"><div class="card-head">To reach CLB ${goal}+</div><div class="card-body">${data.improvements||'—'}</div></div>
+    ${errCard}
+    ${compHTML}
+    <div class="vcard2">
+      <div class="vcard2-head"><h3>📘 High-score vocabulary</h3><p>${escH(savedPromptTitle)} · ⭐ to save to My Notes</p></div>
+      ${vocabHTML}
+    </div>
+    <div class="scard2">
+      <div class="scard2-head"><h3>📗 Sentence structures</h3><p>${savedTaskType==='email'?'Email task':'Survey task'} · ⭐ to save to My Notes</p></div>
+      ${structHTML}
+    </div>
+    <div class="results-actions">
+      <button class="btn btn-dark" onclick="${hasNext?'nextTask()':'showPhase(\'main\')'}">${nextLabel}</button>
+      <button class="btn btn-ghost" onclick="showPhase('main')">← Back to home</button>
+    </div>`;
+
+  showPhase('results');
+}
+
+async function starVocab(i){
+  const v=(currentSessionData?.vocabulary||[])[i];
+  if(!v)return;
+  const btn=document.getElementById('vstar-'+i);
+  const ok=await saveNote(`${v.word} (${v.type}): ${v.definition} — "${v.example}"`, 'vocab', savedPromptTitle);
+  if(ok){btn.textContent='⭐';btn.classList.add('starred');btn.disabled=true;}
+}
+async function starStruct(i){
+  const st=(currentSessionData?.structures||[])[i];
+  if(!st)return;
+  const btn=document.getElementById('sstar-'+i);
+  const ok=await saveNote(`"${st.phrase}" — ${st.use}`, 'struct', savedTaskType==='email'?'Email task':'Survey task');
+  if(ok){btn.textContent='⭐';btn.classList.add('starred');btn.disabled=true;}
+}
+
+function nextTask(){queuePos++;clearDraft();loadTask(taskQueue[queuePos]);}
+function copyEssay(){
+  const text=document.getElementById('recovered-text').textContent;
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject())
+    .catch(()=>{const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);})
+    .finally(()=>{const el=document.getElementById('copy-confirm');el.style.display='inline';setTimeout(()=>{el.style.display='none';},3000);});
+}
+function retryScoring(){document.getElementById('essay').value=savedEssay;showPhase('scoring');runScoring();}
+
+// ── Boot ──────────────────────────────────────────────────────
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(session?.user){await onSignedIn(session.user);}
+  else{showPhase('auth');}
+})();
+</script>
+</body>
+</html>

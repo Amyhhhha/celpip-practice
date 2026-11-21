@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         'X-Title': 'CELPIP Writing Practice'
       },
       body: JSON.stringify({
-        model: 'openrouter/auto',
+        model: 'google/gemini-3.1-flash-lite',
         messages: [
           {
             role: 'system',
@@ -40,7 +40,8 @@ CLB = mathematical average of four scores with penalties, rounded.`
           },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 2200,
+        max_tokens: 3000,
+        reasoning: { effort: 'low' },
         temperature: 0.1
       })
     });

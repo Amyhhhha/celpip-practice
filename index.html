@@ -133,6 +133,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .timer-fill.warn{background:var(--amber)}.timer-fill.danger{background:var(--red)}
 .prompt-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
 .prompt-box h3{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-h);margin-bottom:10px}
+.word-req{margin-top:14px;padding:9px 12px;background:#FFF8E6;border:1px solid #F2DFA6;border-radius:8px;font-size:13px;font-weight:600;color:#7A5B00}
 .prompt-body{font-size:15px;line-height:1.75}
 .prompt-body p{margin-bottom:10px}.prompt-body p:last-child{margin-bottom:0}
 .prompt-body ul{padding-left:20px;margin-top:6px}.prompt-body li{margin-bottom:5px}
@@ -542,6 +543,7 @@ textarea#essay:focus{border-color:var(--accent)}
   <div class="prompt-box">
     <h3 id="prompt-eyebrow">Situation &amp; prompts</h3>
     <div id="prompt-body" class="prompt-body"></div>
+    <div class="word-req">✍️ Word count: write 150–200 words. Under 150 words lowers your score; under 100 words is capped at CLB 5.</div>
   </div>
   <textarea id="essay" placeholder="Start writing here…" oninput="onEssayInput()"></textarea>
   <div class="writing-footer">

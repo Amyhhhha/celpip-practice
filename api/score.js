@@ -21,11 +21,11 @@ export default async function handler(req, res) {
         'X-Title': 'CELPIP Writing Practice'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-haiku-5.5',
+        model: 'google/gemini-3.7-flash',
         messages: [
           {
             role: 'system',
-            content: `You are a strict certified CELPIP examiner. Apply the official rubric exactly. Return ONLY valid JSON — no markdown, no backticks, no preamble.
+            content: `You are a strict certified CELPIP examiner. Apply the official rubric exactly. Return ONLY valid JSON — no markdown, no backticks, no preamble. Never put a double-quote character inside a string value (use single quotes instead) and keep every string on one line.
 
 BEFORE SCORING (do this silently): list every grammar, punctuation, word-choice, and awkward-phrasing error in the essay, and check each required bullet point. Base every score on what you found. Never give a score the evidence does not support.
 
@@ -52,6 +52,7 @@ CLB = mathematical average of four scores with penalties, rounded down when exac
           { role: 'user', content: prompt }
         ],
         max_tokens: 3000,
+        reasoning: { effort: 'low' },
         temperature: 0.1
       })
     });
